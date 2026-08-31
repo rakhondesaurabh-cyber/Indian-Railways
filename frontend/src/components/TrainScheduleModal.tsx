@@ -72,7 +72,7 @@ export const TrainScheduleModal: React.FC<TrainScheduleProps> = ({ show, onHide,
     try {
       const response = await fetch(`http://localhost:8000/api/trains/${num}/schedule`);
       const data = await response.json();
-      
+
       if (response.ok && data.success) {
         setScheduleData(data.data);
       } else {
@@ -112,7 +112,7 @@ export const TrainScheduleModal: React.FC<TrainScheduleProps> = ({ show, onHide,
           </div>
         </Modal.Title>
       </Modal.Header>
-      
+
       <Modal.Body className="p-0 bg-light">
         {loading ? (
           <div className="d-flex flex-column justify-content-center align-items-center py-5">
@@ -134,7 +134,7 @@ export const TrainScheduleModal: React.FC<TrainScheduleProps> = ({ show, onHide,
                 <Col md={3} sm={6}>
                   <div className="text-muted extra-small text-uppercase fw-bold mb-1">Route</div>
                   <div className="fw-semibold text-dark d-flex align-items-center gap-1">
-                    {scheduleData.train.origin} <Navigation size={12} className="text-primary"/> {scheduleData.train.destination}
+                    {scheduleData.train.origin} <Navigation size={12} className="text-primary" /> {scheduleData.train.destination}
                   </div>
                 </Col>
                 <Col md={3} sm={6}>
@@ -171,7 +171,7 @@ export const TrainScheduleModal: React.FC<TrainScheduleProps> = ({ show, onHide,
               <h6 className="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
                 <MapPin size={16} className="text-primary" /> Route & Halts ({scheduleData.train.totalHalts} stops)
               </h6>
-              
+
               <Table responsive hover className="align-middle bg-white border rounded shadow-sm">
                 <thead className="table-light">
                   <tr>

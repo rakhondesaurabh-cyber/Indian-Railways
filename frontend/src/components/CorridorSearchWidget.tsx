@@ -28,7 +28,7 @@ export const CorridorSearchWidget: React.FC<CorridorSearchWidgetProps> = ({
 }) => {
   const [fromQuery, setFromQuery] = useState<string>('');
   const [toQuery, setToQuery] = useState<string>('');
-  
+
   const [fromCode, setFromCode] = useState<string>('');
   const [toCode, setToCode] = useState<string>('');
 
@@ -337,9 +337,8 @@ export const CorridorSearchWidget: React.FC<CorridorSearchWidgetProps> = ({
               <button
                 key={c.label}
                 type="button"
-                className={`btn btn-xs py-0 px-2 rounded-pill ${
-                  isCurrent ? 'btn-primary text-white fw-bold' : 'btn-outline-secondary'
-                }`}
+                className={`btn btn-xs py-0 px-2 rounded-pill ${isCurrent ? 'btn-primary text-white fw-bold' : 'btn-outline-secondary'
+                  }`}
                 style={{ fontSize: '0.7rem' }}
                 onClick={() => handleQuickPick(c.from, c.to)}
                 disabled={loading}
@@ -370,9 +369,9 @@ export const CorridorSearchWidget: React.FC<CorridorSearchWidgetProps> = ({
             <span>Running Trains: <strong>{activeCorridor.trains_count}</strong></span>
           </div>
           {onScheduleMaintenance && (
-            <Button 
-              variant="outline-primary" 
-              size="sm" 
+            <Button
+              variant="outline-primary"
+              size="sm"
               className="w-100 fw-bold d-flex align-items-center justify-content-center gap-1"
               style={{ fontSize: '0.75rem' }}
               onClick={() => onScheduleMaintenance(activeCorridor.corridor_id)}

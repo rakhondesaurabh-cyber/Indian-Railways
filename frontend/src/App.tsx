@@ -58,7 +58,7 @@ function App() {
   const [trains, setTrains] = useState<Train[]>([]);
   const [optimizationPlan, setOptimizationPlan] = useState<ScheduledBlock[] | null>(null);
   const [metrics, setMetrics] = useState<OptimizationMetrics | null>(null);
-  
+
   // Multi-Plan & Train Disruption State
   const [candidatePlans, setCandidatePlans] = useState<CandidatePlan[]>([]);
   const [breakdownByMaintenance, setBreakdownByMaintenance] = useState<Record<string, BreakdownByMaintenance>>({});
@@ -66,7 +66,7 @@ function App() {
   const [affectedTrains, setAffectedTrains] = useState<AffectedTrain[]>([]);
   const [unaffectedTrains, setUnaffectedTrains] = useState<UnaffectedTrain[]>([]);
   const [corridorTrainsByAsset, setCorridorTrainsByAsset] = useState<Record<string, CorridorTrain[]>>({});
-  
+
   const [loading, setLoading] = useState<boolean>(false);
   const [emergencyActive, setEmergencyActive] = useState<boolean>(false);
   const [emergencyAssetId, setEmergencyAssetId] = useState<string | null>(null);
@@ -97,7 +97,7 @@ function App() {
   // Search & Filters for Maintenance
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [priorityFilter, setPriorityFilter] = useState<string>('ALL');
-  
+
   // Expand/Collapse state for maintenance cards
   const [expandedMaintenanceId, setExpandedMaintenanceId] = useState<string | null>(null);
 
@@ -234,7 +234,7 @@ function App() {
     if (data.breakdown_by_maintenance) setBreakdownByMaintenance(data.breakdown_by_maintenance);
     if (data.recommended_plan_id) setSelectedPlanId(data.recommended_plan_id);
     if (data.corridor_trains_by_asset) setCorridorTrainsByAsset(data.corridor_trains_by_asset);
-    
+
     setOptimizationPlan(data.plan);
     setMetrics(data.metrics);
     setAffectedTrains(data.affected_trains || []);
@@ -702,8 +702,8 @@ function App() {
               activeCorridor={activeCorridor}
               onClearCorridor={handleClearCorridor}
               onScheduleMaintenance={(assetId) => {
-                 setSelectedTrackId(assetId);
-                 setShowMaintenanceModal(true);
+                setSelectedTrackId(assetId);
+                setShowMaintenanceModal(true);
               }}
               loading={corridorLoading}
             />
@@ -771,9 +771,8 @@ function App() {
                         <button
                           key={p}
                           type="button"
-                          className={`btn btn-xs py-0 px-2 rounded-pill ${
-                            priorityFilter === p ? 'btn-dark' : 'btn-outline-secondary'
-                          }`}
+                          className={`btn btn-xs py-0 px-2 rounded-pill ${priorityFilter === p ? 'btn-dark' : 'btn-outline-secondary'
+                            }`}
                           style={{ fontSize: '0.72rem' }}
                           onClick={() => setPriorityFilter(p)}
                         >
@@ -819,18 +818,17 @@ function App() {
                         return (
                           <li
                             key={req.id}
-                            className={`list-group-item p-2 rounded border transition-all ${
-                              isEmg
+                            className={`list-group-item p-2 rounded border transition-all ${isEmg
                                 ? 'border-danger bg-danger bg-opacity-10'
                                 : isSelectedTrack
-                                ? 'border-primary bg-primary bg-opacity-10'
-                                : 'border-light-subtle bg-white'
-                            }`}
+                                  ? 'border-primary bg-primary bg-opacity-10'
+                                  : 'border-light-subtle bg-white'
+                              }`}
                             style={{ cursor: 'pointer' }}
                           >
                             <div>
                               <div className="d-flex justify-content-between align-items-center mb-1">
-                                <span 
+                                <span
                                   className="fw-bold text-dark small d-flex align-items-center gap-1"
                                   onClick={() => {
                                     setSelectedTrackId(req.asset_id);
@@ -858,7 +856,7 @@ function App() {
                                 </div>
                               </div>
 
-                              <div 
+                              <div
                                 className="text-dark small fw-medium mb-1"
                                 onClick={() => {
                                   setSelectedTrackId(req.asset_id);
@@ -872,8 +870,8 @@ function App() {
                                 {req.type}
                               </div>
 
-                              <div 
-                                className="d-flex justify-content-between align-items-center text-muted extra-small" 
+                              <div
+                                className="d-flex justify-content-between align-items-center text-muted extra-small"
                                 style={{ fontSize: '0.75rem' }}
                                 onClick={() => {
                                   setSelectedTrackId(req.asset_id);
@@ -900,10 +898,10 @@ function App() {
                                 </span>
                               </div>
                             </div>
-                            
+
                             {/* Expandable options viewer if AI optimization has run */}
                             {isExpanded && breakdown && scheduledBlock && (
-                              <MaintenanceOptionSelector 
+                              <MaintenanceOptionSelector
                                 breakdown={breakdown}
                                 selectedOptionId={scheduledBlock.option_id || breakdown.options[0].id}
                                 onSelectOption={handleOptionSelect}
@@ -1088,7 +1086,7 @@ function App() {
 
                     {/* Multi-Plan Strategy Selector (if optimization active) */}
                     {candidatePlans.length > 0 && (
-                      <CandidatePlansComparison 
+                      <CandidatePlansComparison
                         plans={candidatePlans}
                         selectedPlanId={selectedPlanId}
                         onSelectPlan={(id) => setSelectedPlanId(id)}

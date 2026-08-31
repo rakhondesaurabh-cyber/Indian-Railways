@@ -52,7 +52,7 @@ export const EmergencyModal: React.FC<EmergencyModalProps> = ({
       fetch(`http://localhost:8000/api/network/stations/search?q=${encodeURIComponent(fromJunction.trim())}`)
         .then(res => res.json())
         .then(data => setFromSearchResults(data.slice(0, 5)))
-        .catch(() => {});
+        .catch(() => { });
     }
   }, [fromJunction]);
 
@@ -61,16 +61,16 @@ export const EmergencyModal: React.FC<EmergencyModalProps> = ({
       fetch(`http://localhost:8000/api/network/stations/search?q=${encodeURIComponent(toJunction.trim())}`)
         .then(res => res.json())
         .then(data => setToSearchResults(data.slice(0, 5)))
-        .catch(() => {});
+        .catch(() => { });
     }
   }, [toJunction]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const finalAssetId = selectionMode === 'junctions' 
+    const finalAssetId = selectionMode === 'junctions'
       ? `${fromJunction.trim().toUpperCase()}-${toJunction.trim().toUpperCase()}`
       : assetId;
-      
+
     if (!finalAssetId) return;
     await onSubmit(finalAssetId, durationMins, failureType, priority);
     onHide();
@@ -117,8 +117,8 @@ export const EmergencyModal: React.FC<EmergencyModalProps> = ({
           {/* Mode Tabs */}
           <Nav variant="pills" className="nav-fill mb-3 bg-light p-1 rounded">
             <Nav.Item>
-              <Nav.Link 
-                active={selectionMode === 'preset'} 
+              <Nav.Link
+                active={selectionMode === 'preset'}
                 onClick={() => setSelectionMode('preset')}
                 className="py-1 extra-small fw-bold"
                 style={{ cursor: 'pointer' }}
@@ -127,8 +127,8 @@ export const EmergencyModal: React.FC<EmergencyModalProps> = ({
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link 
-                active={selectionMode === 'junctions'} 
+              <Nav.Link
+                active={selectionMode === 'junctions'}
                 onClick={() => setSelectionMode('junctions')}
                 className="py-1 extra-small fw-bold"
                 style={{ cursor: 'pointer' }}
@@ -184,10 +184,10 @@ export const EmergencyModal: React.FC<EmergencyModalProps> = ({
                   {fromSearchResults.length > 0 && fromJunction.length < 5 && (
                     <div className="d-flex flex-wrap gap-1 mt-1">
                       {fromSearchResults.map(s => (
-                        <Badge 
-                          key={s.code} 
-                          bg="light" 
-                          text="dark" 
+                        <Badge
+                          key={s.code}
+                          bg="light"
+                          text="dark"
                           className="border extra-small"
                           style={{ cursor: 'pointer' }}
                           onClick={() => setFromJunction(s.code)}
@@ -217,10 +217,10 @@ export const EmergencyModal: React.FC<EmergencyModalProps> = ({
                   {toSearchResults.length > 0 && toJunction.length < 5 && (
                     <div className="d-flex flex-wrap gap-1 mt-1">
                       {toSearchResults.map(s => (
-                        <Badge 
-                          key={s.code} 
-                          bg="light" 
-                          text="dark" 
+                        <Badge
+                          key={s.code}
+                          bg="light"
+                          text="dark"
                           className="border extra-small"
                           style={{ cursor: 'pointer' }}
                           onClick={() => setToJunction(s.code)}

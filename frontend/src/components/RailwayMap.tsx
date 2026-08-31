@@ -181,9 +181,8 @@ function MapTopRightControls({
             type="button"
             onClick={onToggleFullScreen}
             title={isFullScreen ? 'Exit Full Screen Mode (Esc)' : 'Expand Map to Full Screen for National Analysis'}
-            className={`btn btn-sm shadow-sm d-flex align-items-center gap-1 py-1 px-2 fw-semibold ${
-              isFullScreen ? 'btn-dark text-white border-white' : 'btn-primary text-white'
-            }`}
+            className={`btn btn-sm shadow-sm d-flex align-items-center gap-1 py-1 px-2 fw-semibold ${isFullScreen ? 'btn-dark text-white border-white' : 'btn-primary text-white'
+              }`}
             style={{ fontSize: '0.78rem' }}
           >
             {isFullScreen ? (
@@ -317,11 +316,10 @@ export const RailwayMap: React.FC<RailwayMapProps> = ({
           <circle cx="12" cy="12" r="${radius}" fill="${color}" stroke="${stroke}" stroke-width="2.2" />
           <circle cx="12" cy="12" r="${isSelected ? 3.5 : 2.5}" fill="#ffffff" />
         </svg>
-        ${
-          showLabels
-            ? `<div class="station-tag-label ${isSelected ? 'highlight' : ''}">${node.code || node.name}</div>`
-            : ''
-        }
+        ${showLabels
+        ? `<div class="station-tag-label ${isSelected ? 'highlight' : ''}">${node.code || node.name}</div>`
+        : ''
+      }
       </div>
     `;
 
@@ -347,11 +345,10 @@ export const RailwayMap: React.FC<RailwayMapProps> = ({
           <circle cx="12" cy="12" r="${radius}" fill="${color}" stroke="${stroke}" stroke-width="2" />
           ${isEnd ? '<circle cx="12" cy="12" r="2.5" fill="#ffffff" />' : ''}
         </svg>
-        ${
-          showLabels || isEnd
-            ? `<div class="station-tag-label ${isEnd ? 'highlight' : ''}" style="font-size: ${isEnd ? '0.75rem' : '0.68rem'}">${stn.code}</div>`
-            : ''
-        }
+        ${showLabels || isEnd
+        ? `<div class="station-tag-label ${isEnd ? 'highlight' : ''}" style="font-size: ${isEnd ? '0.75rem' : '0.68rem'}">${stn.code}</div>`
+        : ''
+      }
       </div>
     `;
 
@@ -398,7 +395,7 @@ export const RailwayMap: React.FC<RailwayMapProps> = ({
   // Resolve coordinates of live searched train
   const searchedTrainPosition: [number, number] | null = useMemo(() => {
     if (!searchedLiveTrain || !searchedLiveTrain.route || searchedLiveTrain.route.length === 0) return null;
-    
+
     // Find current active halt station or first upcoming
     const upcoming = searchedLiveTrain.route.find(r => r.status === 'upcoming') || searchedLiveTrain.route[0];
     if (!upcoming) return null;
@@ -592,9 +589,8 @@ export const RailwayMap: React.FC<RailwayMapProps> = ({
         <button
           type="button"
           onClick={() => setShowTrackLines(!showTrackLines)}
-          className={`btn btn-sm shadow-sm d-flex align-items-center gap-1 ${
-            showTrackLines ? 'btn-primary text-white fw-bold' : 'btn-light border text-secondary'
-          }`}
+          className={`btn btn-sm shadow-sm d-flex align-items-center gap-1 ${showTrackLines ? 'btn-primary text-white fw-bold' : 'btn-light border text-secondary'
+            }`}
           style={{ fontSize: '0.75rem' }}
           title="Toggle railway track lines ON/OFF (Kept OFF by default to eliminate lag and heavy page load)"
         >
@@ -603,9 +599,8 @@ export const RailwayMap: React.FC<RailwayMapProps> = ({
         <button
           type="button"
           onClick={() => setShowMaintenance(!showMaintenance)}
-          className={`btn btn-sm shadow-sm d-flex align-items-center gap-1 ${
-            showMaintenance ? 'btn-warning text-dark fw-semibold' : 'btn-light border'
-          }`}
+          className={`btn btn-sm shadow-sm d-flex align-items-center gap-1 ${showMaintenance ? 'btn-warning text-dark fw-semibold' : 'btn-light border'
+            }`}
           style={{ fontSize: '0.75rem' }}
         >
           <Wrench size={13} /> Maintenance Blocks ({maintenanceRequests.length})
@@ -613,9 +608,8 @@ export const RailwayMap: React.FC<RailwayMapProps> = ({
         <button
           type="button"
           onClick={() => setShowLabels(!showLabels)}
-          className={`btn btn-sm shadow-sm d-flex align-items-center gap-1 ${
-            showLabels ? 'btn-secondary text-white' : 'btn-light border'
-          }`}
+          className={`btn btn-sm shadow-sm d-flex align-items-center gap-1 ${showLabels ? 'btn-secondary text-white' : 'btn-light border'
+            }`}
           style={{ fontSize: '0.75rem' }}
         >
           <MapPin size={13} /> Station Labels
