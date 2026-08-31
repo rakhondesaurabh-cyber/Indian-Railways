@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+pandas
+numpy
+ortools
+networkx
+scikit-learn
+xgboost
+firebase-admin
+pydantic

@@ -1,0 +1,1787 @@
+{
+  "network": {
+    "nodes": [
+      {
+        "id": "AGR",
+        "name": "Agra Junction",
+        "code": "AGR",
+        "zone": "IR",
+        "lat": 27.1767,
+        "lng": 78.0081
+      },
+      {
+        "id": "AHM",
+        "name": "Ahmedabad Junction",
+        "code": "AHM",
+        "zone": "IR",
+        "lat": 23.0225,
+        "lng": 72.5714
+      },
+      {
+        "id": "AJM",
+        "name": "Ajmer Junction",
+        "code": "AJM",
+        "zone": "IR",
+        "lat": 26.4499,
+        "lng": 74.6399
+      },
+      {
+        "id": "AKO",
+        "name": "Akola Junction",
+        "code": "AKO",
+        "zone": "IR",
+        "lat": 20.7059,
+        "lng": 77.0019
+      },
+      {
+        "id": "ALI",
+        "name": "Aligarh Junction",
+        "code": "ALI",
+        "zone": "IR",
+        "lat": 27.8974,
+        "lng": 78.088
+      },
+      {
+        "id": "ALI5",
+        "name": "Alipurduar Junction",
+        "code": "ALI5",
+        "zone": "IR",
+        "lat": 26.4919,
+        "lng": 89.5271
+      },
+      {
+        "id": "ANA",
+        "name": "Anand Junction",
+        "code": "ANA",
+        "zone": "IR",
+        "lat": 22.5645,
+        "lng": 72.9289
+      },
+      {
+        "id": "ANA9",
+        "name": "Anakapalle Junction",
+        "code": "ANA9",
+        "zone": "IR",
+        "lat": 17.6896,
+        "lng": 83.0024
+      },
+      {
+        "id": "ASA",
+        "name": "Asansol Junction",
+        "code": "ASA",
+        "zone": "IR",
+        "lat": 23.6739,
+        "lng": 86.9524
+      },
+      {
+        "id": "BAL",
+        "name": "Balharshah Junction",
+        "code": "BAL",
+        "zone": "IR",
+        "lat": 19.8496,
+        "lng": 79.3541
+      },
+      {
+        "id": "BAN",
+        "name": "Banda Junction",
+        "code": "BAN",
+        "zone": "IR",
+        "lat": 25.4764,
+        "lng": 80.3396
+      },
+      {
+        "id": "BAR",
+        "name": "Bardhaman Junction",
+        "code": "BAR",
+        "zone": "IR",
+        "lat": 23.2324,
+        "lng": 87.8615
+      },
+      {
+        "id": "BAR2",
+        "name": "Barauni Junction",
+        "code": "BAR2",
+        "zone": "IR",
+        "lat": 25.4776,
+        "lng": 85.9877
+      },
+      {
+        "id": "BHU",
+        "name": "Bhusaval Junction",
+        "code": "BHU",
+        "zone": "IR",
+        "lat": 21.0455,
+        "lng": 75.7628
+      },
+      {
+        "id": "BIN",
+        "name": "Bina Junction",
+        "code": "BIN",
+        "zone": "IR",
+        "lat": 24.1683,
+        "lng": 78.1887
+      },
+      {
+        "id": "BSC",
+        "name": "Bokaro Steel City Junction",
+        "code": "BSC",
+        "zone": "IR",
+        "lat": 23.6693,
+        "lng": 86.1511
+      },
+      {
+        "id": "CHA",
+        "name": "Chandausi Junction",
+        "code": "CHA",
+        "zone": "IR",
+        "lat": 28.4552,
+        "lng": 78.7753
+      },
+      {
+        "id": "CHE",
+        "name": "Chengalpattu Junction",
+        "code": "CHE",
+        "zone": "IR",
+        "lat": 12.6841,
+        "lng": 79.9836
+      },
+      {
+        "id": "CHH",
+        "name": "Chhapra Junction",
+        "code": "CHH",
+        "zone": "IR",
+        "lat": 25.7796,
+        "lng": 84.7499
+      },
+      {
+        "id": "CHI",
+        "name": "Chittaranjan Junction",
+        "code": "CHI",
+        "zone": "IR",
+        "lat": 23.8647,
+        "lng": 86.9066
+      },
+      {
+        "id": "CUT",
+        "name": "Cuttack Junction",
+        "code": "CUT",
+        "zone": "IR",
+        "lat": 20.4625,
+        "lng": 85.8828
+      },
+      {
+        "id": "DAU",
+        "name": "Daund Junction",
+        "code": "DAU",
+        "zone": "IR",
+        "lat": 18.4633,
+        "lng": 74.5824
+      },
+      {
+        "id": "DHA",
+        "name": "Dhanbad Junction",
+        "code": "DHA",
+        "zone": "IR",
+        "lat": 23.7957,
+        "lng": 86.4304
+      },
+      {
+        "id": "DIN",
+        "name": "Dindigul Junction",
+        "code": "DIN",
+        "zone": "IR",
+        "lat": 10.3673,
+        "lng": 77.9803
+      },
+      {
+        "id": "DUR",
+        "name": "Durg Junction",
+        "code": "DUR",
+        "zone": "IR",
+        "lat": 21.1938,
+        "lng": 81.2849
+      },
+      {
+        "id": "ERO",
+        "name": "Erode Junction",
+        "code": "ERO",
+        "zone": "IR",
+        "lat": 11.341,
+        "lng": 77.7172
+      },
+      {
+        "id": "GAY",
+        "name": "Gaya Junction",
+        "code": "GAY",
+        "zone": "IR",
+        "lat": 24.7914,
+        "lng": 85.0002
+      },
+      {
+        "id": "GHA",
+        "name": "Ghaziabad Junction",
+        "code": "GHA",
+        "zone": "IR",
+        "lat": 28.6692,
+        "lng": 77.4538
+      },
+      {
+        "id": "GON",
+        "name": "Gonda Junction",
+        "code": "GON",
+        "zone": "IR",
+        "lat": 27.1331,
+        "lng": 81.9622
+      },
+      {
+        "id": "GOR",
+        "name": "Gorakhpur Junction",
+        "code": "GOR",
+        "zone": "IR",
+        "lat": 26.7606,
+        "lng": 83.3732
+      },
+      {
+        "id": "GUN",
+        "name": "Guntakal Junction",
+        "code": "GUN",
+        "zone": "IR",
+        "lat": 15.1674,
+        "lng": 77.3828
+      },
+      {
+        "id": "GUD",
+        "name": "Gudur Junction",
+        "code": "GUD",
+        "zone": "IR",
+        "lat": 14.1463,
+        "lng": 79.8504
+      },
+      {
+        "id": "HAB",
+        "name": "Habibganj Junction",
+        "code": "HAB",
+        "zone": "IR",
+        "lat": 23.2104,
+        "lng": 77.4334
+      },
+      {
+        "id": "HAR",
+        "name": "Haridwar Junction",
+        "code": "HAR",
+        "zone": "IR",
+        "lat": 29.9457,
+        "lng": 78.1642
+      },
+      {
+        "id": "ITA",
+        "name": "Itarsi Junction",
+        "code": "ITA",
+        "zone": "IR",
+        "lat": 22.6105,
+        "lng": 77.7634
+      },
+      {
+        "id": "JAI",
+        "name": "Jaipur Junction",
+        "code": "JAI",
+        "zone": "IR",
+        "lat": 26.9124,
+        "lng": 75.7873
+      },
+      {
+        "id": "JAB",
+        "name": "Jabalpur Junction",
+        "code": "JAB",
+        "zone": "IR",
+        "lat": 23.1815,
+        "lng": 79.9864
+      },
+      {
+        "id": "JAL",
+        "name": "Jalgaon Junction",
+        "code": "JAL",
+        "zone": "IR",
+        "lat": 21.0077,
+        "lng": 75.5626
+      },
+      {
+        "id": "JAL5",
+        "name": "Jalpaiguri Junction",
+        "code": "JAL5",
+        "zone": "IR",
+        "lat": 26.5401,
+        "lng": 88.7193
+      },
+      {
+        "id": "JHA",
+        "name": "Jhansi Junction",
+        "code": "JHA",
+        "zone": "IR",
+        "lat": 25.4484,
+        "lng": 78.5685
+      },
+      {
+        "id": "JOL",
+        "name": "Jolarpettai Junction",
+        "code": "JOL",
+        "zone": "IR",
+        "lat": 12.5714,
+        "lng": 78.5721
+      },
+      {
+        "id": "KAT",
+        "name": "Katni Junction",
+        "code": "KAT",
+        "zone": "IR",
+        "lat": 23.832,
+        "lng": 80.4005
+      },
+      {
+        "id": "KAZ",
+        "name": "Kazipet Junction",
+        "code": "KAZ",
+        "zone": "IR",
+        "lat": 17.9756,
+        "lng": 79.5303
+      },
+      {
+        "id": "KIU",
+        "name": "Kiul Junction",
+        "code": "KIU",
+        "zone": "IR",
+        "lat": 25.1706,
+        "lng": 86.0645
+      },
+      {
+        "id": "KOT",
+        "name": "Kota Junction",
+        "code": "KOT",
+        "zone": "IR",
+        "lat": 25.2138,
+        "lng": 75.8648
+      },
+      {
+        "id": "KHA",
+        "name": "Kharagpur Junction",
+        "code": "KHA",
+        "zone": "IR",
+        "lat": 22.3302,
+        "lng": 87.3237
+      },
+      {
+        "id": "LUC",
+        "name": "Lucknow Junction",
+        "code": "LUC",
+        "zone": "IR",
+        "lat": 26.8467,
+        "lng": 80.9462
+      },
+      {
+        "id": "MAD",
+        "name": "Madurai Junction",
+        "code": "MAD",
+        "zone": "IR",
+        "lat": 9.9252,
+        "lng": 78.1198
+      },
+      {
+        "id": "MAN",
+        "name": "Manmad Junction",
+        "code": "MAN",
+        "zone": "IR",
+        "lat": 20.2526,
+        "lng": 74.4373
+      },
+      {
+        "id": "MAT",
+        "name": "Mathura Junction",
+        "code": "MAT",
+        "zone": "IR",
+        "lat": 27.4924,
+        "lng": 77.6737
+      },
+      {
+        "id": "PDDU",
+        "name": "Pt. Deen Dayal Upadhyay Junction",
+        "code": "PDDU",
+        "zone": "IR",
+        "lat": 25.275,
+        "lng": 83.1205
+      },
+      {
+        "id": "NAG",
+        "name": "Nagpur Junction",
+        "code": "NAG",
+        "zone": "IR",
+        "lat": 21.1458,
+        "lng": 79.0882
+      },
+      {
+        "id": "NAG9",
+        "name": "Nagercoil Junction",
+        "code": "NAG9",
+        "zone": "IR",
+        "lat": 8.1833,
+        "lng": 77.4119
+      },
+      {
+        "id": "ND",
+        "name": "New Delhi Junction",
+        "code": "ND",
+        "zone": "IR",
+        "lat": 28.6139,
+        "lng": 77.209
+      },
+      {
+        "id": "NJ",
+        "name": "New Jalpaiguri Junction",
+        "code": "NJ",
+        "zone": "IR",
+        "lat": 26.6917,
+        "lng": 88.4357
+      },
+      {
+        "id": "PAL",
+        "name": "Palakkad Junction",
+        "code": "PAL",
+        "zone": "IR",
+        "lat": 10.7867,
+        "lng": 76.6548
+      },
+      {
+        "id": "PAT",
+        "name": "Pathankot Junction",
+        "code": "PAT",
+        "zone": "IR",
+        "lat": 32.2643,
+        "lng": 75.6479
+      },
+      {
+        "id": "PRA",
+        "name": "Prayagraj Junction",
+        "code": "PRA",
+        "zone": "IR",
+        "lat": 25.4358,
+        "lng": 81.8463
+      },
+      {
+        "id": "PUN",
+        "name": "Pune Junction",
+        "code": "PUN",
+        "zone": "IR",
+        "lat": 18.5204,
+        "lng": 73.8567
+      },
+      {
+        "id": "RAI",
+        "name": "Raipur Junction",
+        "code": "RAI",
+        "zone": "IR",
+        "lat": 21.2514,
+        "lng": 81.6296
+      },
+      {
+        "id": "RAT",
+        "name": "Ratlam Junction",
+        "code": "RAT",
+        "zone": "IR",
+        "lat": 23.3315,
+        "lng": 75.0367
+      },
+      {
+        "id": "REN",
+        "name": "Renigunta Junction",
+        "code": "REN",
+        "zone": "IR",
+        "lat": 13.6429,
+        "lng": 79.5165
+      },
+      {
+        "id": "SAL",
+        "name": "Salem Junction",
+        "code": "SAL",
+        "zone": "IR",
+        "lat": 11.6643,
+        "lng": 78.146
+      },
+      {
+        "id": "SAM",
+        "name": "Samastipur Junction",
+        "code": "SAM",
+        "zone": "IR",
+        "lat": 25.8629,
+        "lng": 85.7811
+      },
+      {
+        "id": "SEC",
+        "name": "Secunderabad Junction",
+        "code": "SEC",
+        "zone": "IR",
+        "lat": 17.433,
+        "lng": 78.5046
+      },
+      {
+        "id": "SUR",
+        "name": "Surat Junction",
+        "code": "SUR",
+        "zone": "IR",
+        "lat": 21.1702,
+        "lng": 72.8311
+      },
+      {
+        "id": "TAT",
+        "name": "Tatanagar Junction",
+        "code": "TAT",
+        "zone": "IR",
+        "lat": 22.7758,
+        "lng": 86.195
+      },
+      {
+        "id": "TIR",
+        "name": "Tiruchirappalli Junction",
+        "code": "TIR",
+        "zone": "IR",
+        "lat": 10.7905,
+        "lng": 78.7047
+      },
+      {
+        "id": "TIR8",
+        "name": "Tirupati Junction",
+        "code": "TIR8",
+        "zone": "IR",
+        "lat": 13.6288,
+        "lng": 79.4192
+      },
+      {
+        "id": "TUN",
+        "name": "Tundla Junction",
+        "code": "TUN",
+        "zone": "IR",
+        "lat": 27.2076,
+        "lng": 78.2259
+      },
+      {
+        "id": "UDH",
+        "name": "Udhampur Junction",
+        "code": "UDH",
+        "zone": "IR",
+        "lat": 32.9268,
+        "lng": 75.1436
+      },
+      {
+        "id": "VAD",
+        "name": "Vadodara Junction",
+        "code": "VAD",
+        "zone": "IR",
+        "lat": 22.3072,
+        "lng": 73.1812
+      },
+      {
+        "id": "VIJ",
+        "name": "Vijayawada Junction",
+        "code": "VIJ",
+        "zone": "IR",
+        "lat": 16.5062,
+        "lng": 80.648
+      },
+      {
+        "id": "VIL",
+        "name": "Villupuram Junction",
+        "code": "VIL",
+        "zone": "IR",
+        "lat": 11.9401,
+        "lng": 79.4861
+      },
+      {
+        "id": "VIR",
+        "name": "Virar Junction",
+        "code": "VIR",
+        "zone": "IR",
+        "lat": 19.4533,
+        "lng": 72.8055
+      },
+      {
+        "id": "YES",
+        "name": "Yesvantpur Junction",
+        "code": "YES",
+        "zone": "IR",
+        "lat": 13.0232,
+        "lng": 77.5384
+      },
+      {
+        "id": "KC",
+        "name": "Kanpur Central",
+        "code": "KC",
+        "zone": "IR",
+        "lat": 26.4537,
+        "lng": 80.3507
+      },
+      {
+        "id": "PAT7",
+        "name": "Patna Junction",
+        "code": "PAT7",
+        "zone": "IR",
+        "lat": 25.6022,
+        "lng": 85.1376
+      },
+      {
+        "id": "HOW",
+        "name": "Howrah",
+        "code": "HOW",
+        "zone": "IR",
+        "lat": 22.5839,
+        "lng": 88.3433
+      },
+      {
+        "id": "MC",
+        "name": "Mumbai Central",
+        "code": "MC",
+        "zone": "IR",
+        "lat": 18.969,
+        "lng": 72.8205
+      },
+      {
+        "id": "BHO",
+        "name": "Bhopal Junction",
+        "code": "BHO",
+        "zone": "IR",
+        "lat": 23.2599,
+        "lng": 77.4126
+      },
+      {
+        "id": "KSRB",
+        "name": "KSR Bengaluru",
+        "code": "KSRB",
+        "zone": "IR",
+        "lat": 12.9779,
+        "lng": 77.5671
+      },
+      {
+        "id": "CC",
+        "name": "Chennai Central",
+        "code": "CC",
+        "zone": "IR",
+        "lat": 13.0827,
+        "lng": 80.2707
+      }
+    ],
+    "edges": [
+      {
+        "id": "AGR-TUN",
+        "source": "AGR",
+        "target": "TUN",
+        "travel_time_mins": 30,
+        "distance_km": 21
+      },
+      {
+        "id": "AGR-MAT",
+        "source": "AGR",
+        "target": "MAT",
+        "travel_time_mins": 33,
+        "distance_km": 48
+      },
+      {
+        "id": "AGR-ALI",
+        "source": "AGR",
+        "target": "ALI",
+        "travel_time_mins": 46,
+        "distance_km": 80
+      },
+      {
+        "id": "AHM-ANA",
+        "source": "AHM",
+        "target": "ANA",
+        "travel_time_mins": 35,
+        "distance_km": 62
+      },
+      {
+        "id": "AHM-VAD",
+        "source": "AHM",
+        "target": "VAD",
+        "travel_time_mins": 101,
+        "distance_km": 101
+      },
+      {
+        "id": "AHM-SUR",
+        "source": "AHM",
+        "target": "SUR",
+        "travel_time_mins": 135,
+        "distance_km": 207
+      },
+      {
+        "id": "AJM-JAI",
+        "source": "AJM",
+        "target": "JAI",
+        "travel_time_mins": 80,
+        "distance_km": 125
+      },
+      {
+        "id": "AJM-KOT",
+        "source": "AJM",
+        "target": "KOT",
+        "travel_time_mins": 167,
+        "distance_km": 184
+      },
+      {
+        "id": "AJM-MAT",
+        "source": "AJM",
+        "target": "MAT",
+        "travel_time_mins": 322,
+        "distance_km": 322
+      },
+      {
+        "id": "AKO-BHU",
+        "source": "AKO",
+        "target": "BHU",
+        "travel_time_mins": 85,
+        "distance_km": 134
+      },
+      {
+        "id": "AKO-JAL",
+        "source": "AKO",
+        "target": "JAL",
+        "travel_time_mins": 127,
+        "distance_km": 153
+      },
+      {
+        "id": "AKO-NAG",
+        "source": "AKO",
+        "target": "NAG",
+        "travel_time_mins": 138,
+        "distance_km": 222
+      },
+      {
+        "id": "ALI-MAT",
+        "source": "ALI",
+        "target": "MAT",
+        "travel_time_mins": 52,
+        "distance_km": 60
+      },
+      {
+        "id": "ALI-TUN",
+        "source": "ALI",
+        "target": "TUN",
+        "travel_time_mins": 52,
+        "distance_km": 77
+      },
+      {
+        "id": "ALI5-JAL5",
+        "source": "ALI5",
+        "target": "JAL5",
+        "travel_time_mins": 55,
+        "distance_km": 80
+      },
+      {
+        "id": "ALI5-NJ",
+        "source": "ALI5",
+        "target": "NJ",
+        "travel_time_mins": 81,
+        "distance_km": 110
+      },
+      {
+        "id": "ALI5-BAR2",
+        "source": "ALI5",
+        "target": "BAR2",
+        "travel_time_mins": 229,
+        "distance_km": 371
+      },
+      {
+        "id": "ANA-VAD",
+        "source": "ANA",
+        "target": "VAD",
+        "travel_time_mins": 30,
+        "distance_km": 38
+      },
+      {
+        "id": "ANA-SUR",
+        "source": "ANA",
+        "target": "SUR",
+        "travel_time_mins": 121,
+        "distance_km": 155
+      },
+      {
+        "id": "ANA9-VIJ",
+        "source": "ANA9",
+        "target": "VIJ",
+        "travel_time_mins": 265,
+        "distance_km": 282
+      },
+      {
+        "id": "ANA9-KAZ",
+        "source": "ANA9",
+        "target": "KAZ",
+        "travel_time_mins": 287,
+        "distance_km": 368
+      },
+      {
+        "id": "ANA9-RAI",
+        "source": "ANA9",
+        "target": "RAI",
+        "travel_time_mins": 332,
+        "distance_km": 421
+      },
+      {
+        "id": "ASA-CHI",
+        "source": "ASA",
+        "target": "CHI",
+        "travel_time_mins": 30,
+        "distance_km": 21
+      },
+      {
+        "id": "ASA-DHA",
+        "source": "ASA",
+        "target": "DHA",
+        "travel_time_mins": 45,
+        "distance_km": 54
+      },
+      {
+        "id": "ASA-BSC",
+        "source": "ASA",
+        "target": "BSC",
+        "travel_time_mins": 76,
+        "distance_km": 81
+      },
+      {
+        "id": "BAL-NAG",
+        "source": "BAL",
+        "target": "NAG",
+        "travel_time_mins": 100,
+        "distance_km": 146
+      },
+      {
+        "id": "BAL-KAZ",
+        "source": "BAL",
+        "target": "KAZ",
+        "travel_time_mins": 142,
+        "distance_km": 209
+      },
+      {
+        "id": "BAL-DUR",
+        "source": "BAL",
+        "target": "DUR",
+        "travel_time_mins": 224,
+        "distance_km": 250
+      },
+      {
+        "id": "BAN-KC",
+        "source": "BAN",
+        "target": "KC",
+        "travel_time_mins": 91,
+        "distance_km": 108
+      },
+      {
+        "id": "BAN-PRA",
+        "source": "BAN",
+        "target": "PRA",
+        "travel_time_mins": 126,
+        "distance_km": 151
+      },
+      {
+        "id": "BAN-LUC",
+        "source": "BAN",
+        "target": "LUC",
+        "travel_time_mins": 136,
+        "distance_km": 163
+      },
+      {
+        "id": "BAR-HOW",
+        "source": "BAR",
+        "target": "HOW",
+        "travel_time_mins": 81,
+        "distance_km": 87
+      },
+      {
+        "id": "BAR-ASA",
+        "source": "BAR",
+        "target": "ASA",
+        "travel_time_mins": 85,
+        "distance_km": 104
+      },
+      {
+        "id": "BAR-KHA",
+        "source": "BAR",
+        "target": "KHA",
+        "travel_time_mins": 90,
+        "distance_km": 114
+      },
+      {
+        "id": "BAR2-KIU",
+        "source": "BAR2",
+        "target": "KIU",
+        "travel_time_mins": 30,
+        "distance_km": 34
+      },
+      {
+        "id": "BAR2-SAM",
+        "source": "BAR2",
+        "target": "SAM",
+        "travel_time_mins": 45,
+        "distance_km": 47
+      },
+      {
+        "id": "BAR2-PAT7",
+        "source": "BAR2",
+        "target": "PAT7",
+        "travel_time_mins": 52,
+        "distance_km": 86
+      },
+      {
+        "id": "BHU-JAL",
+        "source": "BHU",
+        "target": "JAL",
+        "travel_time_mins": 30,
+        "distance_km": 21
+      },
+      {
+        "id": "BHU-MAN",
+        "source": "BHU",
+        "target": "MAN",
+        "travel_time_mins": 111,
+        "distance_km": 163
+      },
+      {
+        "id": "BIN-BHO",
+        "source": "BIN",
+        "target": "BHO",
+        "travel_time_mins": 84,
+        "distance_km": 128
+      },
+      {
+        "id": "BIN-HAB",
+        "source": "BIN",
+        "target": "HAB",
+        "travel_time_mins": 94,
+        "distance_km": 131
+      },
+      {
+        "id": "BIN-JHA",
+        "source": "BIN",
+        "target": "JHA",
+        "travel_time_mins": 147,
+        "distance_km": 147
+      },
+      {
+        "id": "BSC-DHA",
+        "source": "BSC",
+        "target": "DHA",
+        "travel_time_mins": 30,
+        "distance_km": 31
+      },
+      {
+        "id": "BSC-CHI",
+        "source": "BSC",
+        "target": "CHI",
+        "travel_time_mins": 46,
+        "distance_km": 79
+      },
+      {
+        "id": "CHA-ALI",
+        "source": "CHA",
+        "target": "ALI",
+        "travel_time_mins": 54,
+        "distance_km": 91
+      },
+      {
+        "id": "CHA-GHA",
+        "source": "CHA",
+        "target": "GHA",
+        "travel_time_mins": 74,
+        "distance_km": 131
+      },
+      {
+        "id": "CHA-TUN",
+        "source": "CHA",
+        "target": "TUN",
+        "travel_time_mins": 129,
+        "distance_km": 148
+      },
+      {
+        "id": "CHE-CC",
+        "source": "CHE",
+        "target": "CC",
+        "travel_time_mins": 32,
+        "distance_km": 54
+      },
+      {
+        "id": "CHE-VIL",
+        "source": "CHE",
+        "target": "VIL",
+        "travel_time_mins": 63,
+        "distance_km": 98
+      },
+      {
+        "id": "CHE-REN",
+        "source": "CHE",
+        "target": "REN",
+        "travel_time_mins": 116,
+        "distance_km": 118
+      },
+      {
+        "id": "CHH-PAT7",
+        "source": "CHH",
+        "target": "PAT7",
+        "travel_time_mins": 30,
+        "distance_km": 43
+      },
+      {
+        "id": "CHH-SAM",
+        "source": "CHH",
+        "target": "SAM",
+        "travel_time_mins": 60,
+        "distance_km": 103
+      },
+      {
+        "id": "CHH-GAY",
+        "source": "CHH",
+        "target": "GAY",
+        "travel_time_mins": 105,
+        "distance_km": 112
+      },
+      {
+        "id": "CHI-DHA",
+        "source": "CHI",
+        "target": "DHA",
+        "travel_time_mins": 30,
+        "distance_km": 49
+      },
+      {
+        "id": "CUT-KHA",
+        "source": "CUT",
+        "target": "KHA",
+        "travel_time_mins": 184,
+        "distance_km": 255
+      },
+      {
+        "id": "CUT-TAT",
+        "source": "CUT",
+        "target": "TAT",
+        "travel_time_mins": 154,
+        "distance_km": 259
+      },
+      {
+        "id": "CUT-HOW",
+        "source": "CUT",
+        "target": "HOW",
+        "travel_time_mins": 270,
+        "distance_km": 347
+      },
+      {
+        "id": "DAU-PUN",
+        "source": "DAU",
+        "target": "PUN",
+        "travel_time_mins": 51,
+        "distance_km": 76
+      },
+      {
+        "id": "DAU-MC",
+        "source": "DAU",
+        "target": "MC",
+        "travel_time_mins": 112,
+        "distance_km": 193
+      },
+      {
+        "id": "DAU-MAN",
+        "source": "DAU",
+        "target": "MAN",
+        "travel_time_mins": 190,
+        "distance_km": 199
+      },
+      {
+        "id": "DIN-MAD",
+        "source": "DIN",
+        "target": "MAD",
+        "travel_time_mins": 33,
+        "distance_km": 51
+      },
+      {
+        "id": "DIN-TIR",
+        "source": "DIN",
+        "target": "TIR",
+        "travel_time_mins": 87,
+        "distance_km": 92
+      },
+      {
+        "id": "DIN-ERO",
+        "source": "DIN",
+        "target": "ERO",
+        "travel_time_mins": 69,
+        "distance_km": 112
+      },
+      {
+        "id": "DUR-RAI",
+        "source": "DUR",
+        "target": "RAI",
+        "travel_time_mins": 35,
+        "distance_km": 36
+      },
+      {
+        "id": "DUR-NAG",
+        "source": "DUR",
+        "target": "NAG",
+        "travel_time_mins": 148,
+        "distance_km": 227
+      },
+      {
+        "id": "ERO-SAL",
+        "source": "ERO",
+        "target": "SAL",
+        "travel_time_mins": 34,
+        "distance_km": 58
+      },
+      {
+        "id": "ERO-TIR",
+        "source": "ERO",
+        "target": "TIR",
+        "travel_time_mins": 83,
+        "distance_km": 123
+      },
+      {
+        "id": "GAY-PAT7",
+        "source": "GAY",
+        "target": "PAT7",
+        "travel_time_mins": 52,
+        "distance_km": 91
+      },
+      {
+        "id": "GAY-KIU",
+        "source": "GAY",
+        "target": "KIU",
+        "travel_time_mins": 101,
+        "distance_km": 115
+      },
+      {
+        "id": "GHA-ND",
+        "source": "GHA",
+        "target": "ND",
+        "travel_time_mins": 30,
+        "distance_km": 24
+      },
+      {
+        "id": "GHA-ALI",
+        "source": "GHA",
+        "target": "ALI",
+        "travel_time_mins": 70,
+        "distance_km": 105
+      },
+      {
+        "id": "GON-LUC",
+        "source": "GON",
+        "target": "LUC",
+        "travel_time_mins": 58,
+        "distance_km": 105
+      },
+      {
+        "id": "GON-GOR",
+        "source": "GON",
+        "target": "GOR",
+        "travel_time_mins": 84,
+        "distance_km": 145
+      },
+      {
+        "id": "GON-KC",
+        "source": "GON",
+        "target": "KC",
+        "travel_time_mins": 102,
+        "distance_km": 176
+      },
+      {
+        "id": "GOR-PDDU",
+        "source": "GOR",
+        "target": "PDDU",
+        "travel_time_mins": 159,
+        "distance_km": 167
+      },
+      {
+        "id": "GOR-CHH",
+        "source": "GOR",
+        "target": "CHH",
+        "travel_time_mins": 148,
+        "distance_km": 175
+      },
+      {
+        "id": "GUN-YES",
+        "source": "GUN",
+        "target": "YES",
+        "travel_time_mins": 181,
+        "distance_km": 239
+      },
+      {
+        "id": "GUN-KSRB",
+        "source": "GUN",
+        "target": "KSRB",
+        "travel_time_mins": 157,
+        "distance_km": 244
+      },
+      {
+        "id": "GUN-TIR8",
+        "source": "GUN",
+        "target": "TIR8",
+        "travel_time_mins": 213,
+        "distance_km": 278
+      },
+      {
+        "id": "GUD-REN",
+        "source": "GUD",
+        "target": "REN",
+        "travel_time_mins": 39,
+        "distance_km": 66
+      },
+      {
+        "id": "GUD-TIR8",
+        "source": "GUD",
+        "target": "TIR8",
+        "travel_time_mins": 45,
+        "distance_km": 74
+      },
+      {
+        "id": "GUD-CC",
+        "source": "GUD",
+        "target": "CC",
+        "travel_time_mins": 100,
+        "distance_km": 126
+      },
+      {
+        "id": "HAB-BHO",
+        "source": "HAB",
+        "target": "BHO",
+        "travel_time_mins": 30,
+        "distance_km": 5
+      },
+      {
+        "id": "HAB-ITA",
+        "source": "HAB",
+        "target": "ITA",
+        "travel_time_mins": 67,
+        "distance_km": 74
+      },
+      {
+        "id": "HAR-GHA",
+        "source": "HAR",
+        "target": "GHA",
+        "travel_time_mins": 110,
+        "distance_km": 157
+      },
+      {
+        "id": "HAR-ND",
+        "source": "HAR",
+        "target": "ND",
+        "travel_time_mins": 158,
+        "distance_km": 174
+      },
+      {
+        "id": "HAR-CHA",
+        "source": "HAR",
+        "target": "CHA",
+        "travel_time_mins": 106,
+        "distance_km": 176
+      },
+      {
+        "id": "ITA-BHO",
+        "source": "ITA",
+        "target": "BHO",
+        "travel_time_mins": 56,
+        "distance_km": 80
+      },
+      {
+        "id": "ITA-BIN",
+        "source": "ITA",
+        "target": "BIN",
+        "travel_time_mins": 130,
+        "distance_km": 178
+      },
+      {
+        "id": "JAI-KOT",
+        "source": "JAI",
+        "target": "KOT",
+        "travel_time_mins": 171,
+        "distance_km": 189
+      },
+      {
+        "id": "JAI-MAT",
+        "source": "JAI",
+        "target": "MAT",
+        "travel_time_mins": 111,
+        "distance_km": 197
+      },
+      {
+        "id": "JAB-KAT",
+        "source": "JAB",
+        "target": "KAT",
+        "travel_time_mins": 46,
+        "distance_km": 83
+      },
+      {
+        "id": "JAB-BIN",
+        "source": "JAB",
+        "target": "BIN",
+        "travel_time_mins": 188,
+        "distance_km": 213
+      },
+      {
+        "id": "JAB-ITA",
+        "source": "JAB",
+        "target": "ITA",
+        "travel_time_mins": 221,
+        "distance_km": 236
+      },
+      {
+        "id": "JAL-MAN",
+        "source": "JAL",
+        "target": "MAN",
+        "travel_time_mins": 93,
+        "distance_km": 144
+      },
+      {
+        "id": "JAL5-NJ",
+        "source": "JAL5",
+        "target": "NJ",
+        "travel_time_mins": 30,
+        "distance_km": 32
+      },
+      {
+        "id": "JAL5-BAR2",
+        "source": "JAL5",
+        "target": "BAR2",
+        "travel_time_mins": 198,
+        "distance_km": 297
+      },
+      {
+        "id": "JHA-BAN",
+        "source": "JHA",
+        "target": "BAN",
+        "travel_time_mins": 107,
+        "distance_km": 177
+      },
+      {
+        "id": "JHA-TUN",
+        "source": "JHA",
+        "target": "TUN",
+        "travel_time_mins": 120,
+        "distance_km": 198
+      },
+      {
+        "id": "JOL-SAL",
+        "source": "JOL",
+        "target": "SAL",
+        "travel_time_mins": 67,
+        "distance_km": 110
+      },
+      {
+        "id": "JOL-KSRB",
+        "source": "JOL",
+        "target": "KSRB",
+        "travel_time_mins": 93,
+        "distance_km": 117
+      },
+      {
+        "id": "JOL-VIL",
+        "source": "JOL",
+        "target": "VIL",
+        "travel_time_mins": 78,
+        "distance_km": 121
+      },
+      {
+        "id": "KAT-BAN",
+        "source": "KAT",
+        "target": "BAN",
+        "travel_time_mins": 110,
+        "distance_km": 182
+      },
+      {
+        "id": "KAT-BIN",
+        "source": "KAT",
+        "target": "BIN",
+        "travel_time_mins": 151,
+        "distance_km": 227
+      },
+      {
+        "id": "KAZ-SEC",
+        "source": "KAZ",
+        "target": "SEC",
+        "travel_time_mins": 75,
+        "distance_km": 124
+      },
+      {
+        "id": "KAZ-VIJ",
+        "source": "KAZ",
+        "target": "VIJ",
+        "travel_time_mins": 147,
+        "distance_km": 201
+      },
+      {
+        "id": "KIU-SAM",
+        "source": "KIU",
+        "target": "SAM",
+        "travel_time_mins": 67,
+        "distance_km": 82
+      },
+      {
+        "id": "KIU-PAT7",
+        "source": "KIU",
+        "target": "PAT7",
+        "travel_time_mins": 58,
+        "distance_km": 104
+      },
+      {
+        "id": "KOT-RAT",
+        "source": "KOT",
+        "target": "RAT",
+        "travel_time_mins": 198,
+        "distance_km": 225
+      },
+      {
+        "id": "KHA-HOW",
+        "source": "KHA",
+        "target": "HOW",
+        "travel_time_mins": 73,
+        "distance_km": 108
+      },
+      {
+        "id": "KHA-TAT",
+        "source": "KHA",
+        "target": "TAT",
+        "travel_time_mins": 111,
+        "distance_km": 126
+      },
+      {
+        "id": "LUC-KC",
+        "source": "LUC",
+        "target": "KC",
+        "travel_time_mins": 43,
+        "distance_km": 73
+      },
+      {
+        "id": "MAD-TIR",
+        "source": "MAD",
+        "target": "TIR",
+        "travel_time_mins": 113,
+        "distance_km": 115
+      },
+      {
+        "id": "MAD-ERO",
+        "source": "MAD",
+        "target": "ERO",
+        "travel_time_mins": 150,
+        "distance_km": 163
+      },
+      {
+        "id": "MAN-VIR",
+        "source": "MAN",
+        "target": "VIR",
+        "travel_time_mins": 174,
+        "distance_km": 192
+      },
+      {
+        "id": "MAT-TUN",
+        "source": "MAT",
+        "target": "TUN",
+        "travel_time_mins": 45,
+        "distance_km": 63
+      },
+      {
+        "id": "PDDU-PRA",
+        "source": "PDDU",
+        "target": "PRA",
+        "travel_time_mins": 104,
+        "distance_km": 129
+      },
+      {
+        "id": "PDDU-CHH",
+        "source": "PDDU",
+        "target": "CHH",
+        "travel_time_mins": 138,
+        "distance_km": 172
+      },
+      {
+        "id": "NAG-ITA",
+        "source": "NAG",
+        "target": "ITA",
+        "travel_time_mins": 120,
+        "distance_km": 212
+      },
+      {
+        "id": "NAG9-MAD",
+        "source": "NAG9",
+        "target": "MAD",
+        "travel_time_mins": 162,
+        "distance_km": 208
+      },
+      {
+        "id": "NAG9-DIN",
+        "source": "NAG9",
+        "target": "DIN",
+        "travel_time_mins": 169,
+        "distance_km": 250
+      },
+      {
+        "id": "NAG9-PAL",
+        "source": "NAG9",
+        "target": "PAL",
+        "travel_time_mins": 234,
+        "distance_km": 301
+      },
+      {
+        "id": "ND-ALI",
+        "source": "ND",
+        "target": "ALI",
+        "travel_time_mins": 93,
+        "distance_km": 117
+      },
+      {
+        "id": "ND-MAT",
+        "source": "ND",
+        "target": "MAT",
+        "travel_time_mins": 98,
+        "distance_km": 132
+      },
+      {
+        "id": "NJ-BAR2",
+        "source": "NJ",
+        "target": "BAR2",
+        "travel_time_mins": 180,
+        "distance_km": 279
+      },
+      {
+        "id": "PAL-ERO",
+        "source": "PAL",
+        "target": "ERO",
+        "travel_time_mins": 123,
+        "distance_km": 131
+      },
+      {
+        "id": "PAL-DIN",
+        "source": "PAL",
+        "target": "DIN",
+        "travel_time_mins": 104,
+        "distance_km": 152
+      },
+      {
+        "id": "PAL-MAD",
+        "source": "PAL",
+        "target": "MAD",
+        "travel_time_mins": 134,
+        "distance_km": 186
+      },
+      {
+        "id": "PAT-UDH",
+        "source": "PAT",
+        "target": "UDH",
+        "travel_time_mins": 75,
+        "distance_km": 87
+      },
+      {
+        "id": "PAT-HAR",
+        "source": "PAT",
+        "target": "HAR",
+        "travel_time_mins": 306,
+        "distance_km": 351
+      },
+      {
+        "id": "PAT-ND",
+        "source": "PAT",
+        "target": "ND",
+        "travel_time_mins": 282,
+        "distance_km": 432
+      },
+      {
+        "id": "PRA-LUC",
+        "source": "PRA",
+        "target": "LUC",
+        "travel_time_mins": 140,
+        "distance_km": 180
+      },
+      {
+        "id": "PUN-MC",
+        "source": "PUN",
+        "target": "MC",
+        "travel_time_mins": 86,
+        "distance_km": 119
+      },
+      {
+        "id": "PUN-VIR",
+        "source": "PUN",
+        "target": "VIR",
+        "travel_time_mins": 90,
+        "distance_km": 151
+      },
+      {
+        "id": "RAI-NAG",
+        "source": "RAI",
+        "target": "NAG",
+        "travel_time_mins": 175,
+        "distance_km": 263
+      },
+      {
+        "id": "RAI-JAB",
+        "source": "RAI",
+        "target": "JAB",
+        "travel_time_mins": 207,
+        "distance_km": 273
+      },
+      {
+        "id": "RAT-VAD",
+        "source": "RAT",
+        "target": "VAD",
+        "travel_time_mins": 168,
+        "distance_km": 221
+      },
+      {
+        "id": "RAT-ANA",
+        "source": "RAT",
+        "target": "ANA",
+        "travel_time_mins": 188,
+        "distance_km": 232
+      },
+      {
+        "id": "REN-TIR8",
+        "source": "REN",
+        "target": "TIR8",
+        "travel_time_mins": 30,
+        "distance_km": 10
+      },
+      {
+        "id": "REN-CC",
+        "source": "REN",
+        "target": "CC",
+        "travel_time_mins": 82,
+        "distance_km": 102
+      },
+      {
+        "id": "SAL-TIR",
+        "source": "SAL",
+        "target": "TIR",
+        "travel_time_mins": 88,
+        "distance_km": 114
+      },
+      {
+        "id": "SAM-PAT7",
+        "source": "SAM",
+        "target": "PAT7",
+        "travel_time_mins": 60,
+        "distance_km": 70
+      },
+      {
+        "id": "SEC-VIJ",
+        "source": "SEC",
+        "target": "VIJ",
+        "travel_time_mins": 234,
+        "distance_km": 250
+      },
+      {
+        "id": "SEC-GUN",
+        "source": "SEC",
+        "target": "GUN",
+        "travel_time_mins": 172,
+        "distance_km": 278
+      },
+      {
+        "id": "SUR-VAD",
+        "source": "SUR",
+        "target": "VAD",
+        "travel_time_mins": 97,
+        "distance_km": 131
+      },
+      {
+        "id": "SUR-VIR",
+        "source": "SUR",
+        "target": "VIR",
+        "travel_time_mins": 105,
+        "distance_km": 190
+      },
+      {
+        "id": "TAT-BSC",
+        "source": "TAT",
+        "target": "BSC",
+        "travel_time_mins": 84,
+        "distance_km": 99
+      },
+      {
+        "id": "TAT-DHA",
+        "source": "TAT",
+        "target": "DHA",
+        "travel_time_mins": 63,
+        "distance_km": 115
+      },
+      {
+        "id": "TIR8-CC",
+        "source": "TIR8",
+        "target": "CC",
+        "travel_time_mins": 103,
+        "distance_km": 110
+      },
+      {
+        "id": "UDH-HAR",
+        "source": "UDH",
+        "target": "HAR",
+        "travel_time_mins": 316,
+        "distance_km": 438
+      },
+      {
+        "id": "UDH-ND",
+        "source": "UDH",
+        "target": "ND",
+        "travel_time_mins": 338,
+        "distance_km": 518
+      },
+      {
+        "id": "VIJ-GUD",
+        "source": "VIJ",
+        "target": "GUD",
+        "travel_time_mins": 157,
+        "distance_km": 275
+      },
+      {
+        "id": "VIL-SAL",
+        "source": "VIL",
+        "target": "SAL",
+        "travel_time_mins": 82,
+        "distance_km": 149
+      },
+      {
+        "id": "VIR-MC",
+        "source": "VIR",
+        "target": "MC",
+        "travel_time_mins": 38,
+        "distance_km": 53
+      },
+      {
+        "id": "YES-KSRB",
+        "source": "YES",
+        "target": "KSRB",
+        "travel_time_mins": 30,
+        "distance_km": 5
+      },
+      {
+        "id": "YES-JOL",
+        "source": "YES",
+        "target": "JOL",
+        "travel_time_mins": 83,
+        "distance_km": 122
+      },
+      {
+        "id": "YES-SAL",
+        "source": "YES",
+        "target": "SAL",
+        "travel_time_mins": 120,
+        "distance_km": 164
+      },
+      {
+        "id": "HOW-ASA",
+        "source": "HOW",
+        "target": "ASA",
+        "travel_time_mins": 153,
+        "distance_km": 186
+      },
+      {
+        "id": "KSRB-SAL",
+        "source": "KSRB",
+        "target": "SAL",
+        "travel_time_mins": 107,
+        "distance_km": 159
+      }
+    ]
+  },
+  "trains": [],
+  "maintenance_requests": []
+}
