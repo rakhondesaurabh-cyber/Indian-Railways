@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Form, Button, InputGroup, Badge, Spinner } from 'react-bootstrap';
 import { Search, ArrowRightLeft, MapPin, X, Navigation, CheckCircle2, Wrench } from 'lucide-react';
 import type { StationSearchResult, CorridorSearchResult } from '../types';
+import { API_BASE_URL } from '../config';
 
 interface CorridorSearchWidgetProps {
   onSearchCorridor: (fromCode: string, toCode: string) => void;
@@ -77,7 +78,7 @@ export const CorridorSearchWidget: React.FC<CorridorSearchWidgetProps> = ({
     }
     const timer = setTimeout(async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/network/stations/search?q=${encodeURIComponent(fromQuery.trim())}`);
+        const res = await fetch(`${API_BASE_URL}/network/stations/search?q=${encodeURIComponent(fromQuery.trim())}`);
         if (res.ok) {
           const data = await res.json();
           setFromResults(data);
@@ -98,7 +99,7 @@ export const CorridorSearchWidget: React.FC<CorridorSearchWidgetProps> = ({
     }
     const timer = setTimeout(async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/network/stations/search?q=${encodeURIComponent(toQuery.trim())}`);
+        const res = await fetch(`${API_BASE_URL}/network/stations/search?q=${encodeURIComponent(toQuery.trim())}`);
         if (res.ok) {
           const data = await res.json();
           setToResults(data);

@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { Modal, Button, Form, Alert, Badge, InputGroup, Nav } from 'react-bootstrap';
 import { AlertTriangle, ShieldAlert, Clock, Search, MapPin } from 'lucide-react';
 import type { RailwayNetwork, TrackEdge, StationSearchResult } from '../types';
+import { API_BASE_URL } from '../config';
 
 interface EmergencyModalProps {
   show: boolean;
@@ -49,7 +50,7 @@ export const EmergencyModal: React.FC<EmergencyModalProps> = ({
   // Autocomplete for custom junctions
   useEffect(() => {
     if (fromJunction.length >= 1) {
-      fetch(`http://localhost:8000/api/network/stations/search?q=${encodeURIComponent(fromJunction.trim())}`)
+      fetch(`${API_BASE_URL}/network/stations/search?q=${encodeURIComponent(fromJunction.trim())}`)
         .then(res => res.json())
         .then(data => setFromSearchResults(data.slice(0, 5)))
         .catch(() => { });
@@ -58,7 +59,7 @@ export const EmergencyModal: React.FC<EmergencyModalProps> = ({
 
   useEffect(() => {
     if (toJunction.length >= 1) {
-      fetch(`http://localhost:8000/api/network/stations/search?q=${encodeURIComponent(toJunction.trim())}`)
+      fetch(`${API_BASE_URL}/network/stations/search?q=${encodeURIComponent(toJunction.trim())}`)
         .then(res => res.json())
         .then(data => setToSearchResults(data.slice(0, 5)))
         .catch(() => { });

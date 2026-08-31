@@ -27,6 +27,7 @@ import {
   Route
 } from 'lucide-react';
 import { Badge, Button, Form, InputGroup } from 'react-bootstrap';
+import { API_BASE_URL } from '../config';
 
 // Fix default Leaflet icon paths in React/Vite
 delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIconUrl;
@@ -273,7 +274,7 @@ export const RailwayMap: React.FC<RailwayMapProps> = ({
     }
     const timer = setTimeout(async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/network/stations/search?q=${encodeURIComponent(searchQuery.trim())}`);
+        const res = await fetch(`${API_BASE_URL}/network/stations/search?q=${encodeURIComponent(searchQuery.trim())}`);
         if (res.ok) {
           const data = await res.json();
           setSearchResults(data);

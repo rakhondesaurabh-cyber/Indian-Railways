@@ -49,7 +49,7 @@ import type {
   AiExplanation,
 } from './types';
 
-const API_URL = 'http://localhost:8000/api';
+import { API_BASE_URL as API_URL } from './config';
 
 function App() {
   const [maintenanceRequests, setMaintenanceRequests] = useState<MaintenanceRequest[]>([]);

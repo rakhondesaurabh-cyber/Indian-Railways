@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Table, Spinner, Badge, Alert, Row, Col } from 'react-bootstrap';
 import { MapPin, Train as TrainIcon, Navigation } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 interface TrainScheduleProps {
   show: boolean;
@@ -70,7 +71,7 @@ export const TrainScheduleModal: React.FC<TrainScheduleProps> = ({ show, onHide,
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`http://localhost:8000/api/trains/${num}/schedule`);
+      const response = await fetch(`${API_BASE_URL}/trains/${num}/schedule`);
       const data = await response.json();
 
       if (response.ok && data.success) {

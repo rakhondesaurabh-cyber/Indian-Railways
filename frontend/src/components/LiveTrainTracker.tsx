@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Form, Button, InputGroup, Badge, Spinner, ListGroup } from 'react-bootstrap';
 import { Search, Train as TrainIcon, Navigation, CheckCircle, Activity, MapPin } from 'lucide-react';
 import type { LiveTrainData } from '../types';
+import { API_BASE_URL as API_URL } from '../config';
 
 interface LiveTrainTrackerProps {
   onLiveTrainLoaded: (data: LiveTrainData | null) => void;
@@ -9,7 +10,6 @@ interface LiveTrainTrackerProps {
   setLoading: (loading: boolean) => void;
 }
 
-const API_URL = 'http://localhost:8000/api';
 
 export function LiveTrainTracker({ onLiveTrainLoaded, loading, setLoading }: LiveTrainTrackerProps) {
   const [trainsDataset, setTrainsDataset] = useState<{ number: string, name: string }[]>([]);
