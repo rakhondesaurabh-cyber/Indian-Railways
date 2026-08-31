@@ -23,7 +23,8 @@ import {
   ShieldAlert,
   Navigation,
   Compass,
-  Layers
+  Layers,
+  Route
 } from 'lucide-react';
 import { Badge, Button, Form, InputGroup } from 'react-bootstrap';
 
@@ -76,8 +77,17 @@ function MapController({
   searchedLiveTrain?: LiveTrainData | null;
 }) {
   const map = useMap();
+  const initialFitDone = useRef(false);
 
   useEffect(() => {
+    // Initial auto-fit when network nodes load for the first time
+    if (!initialFitDone.current && nodes.length > 0 && !activeCorridor && !searchedLiveTrain && !selectedStationId && !selectedTrackId && !searchTargetCoords) {
+      initialFitDone.current = true;
+      const bounds = L.latLngBounds(nodes.map((n) => [n.lat, n.lng]));
+      map.fitBounds(bounds, { padding: [35, 35] });
+      return;
+    }
+
     // 1. If an active corridor is selected, fit bounds to that entire corridor
     if (activeCorridor && activeCorridor.track_coordinates.length > 0) {
       const bounds = L.latLngBounds(activeCorridor.track_coordinates.map(([lat, lng]) => [lat, lng]));
@@ -235,6 +245,7 @@ export const RailwayMap: React.FC<RailwayMapProps> = ({
   onScheduleMaintenanceForTrack,
 }) => {
   // Layer visibility toggles
+  const [showTrackLines, setShowTrackLines] = useState<boolean>(false);
   const [showMaintenance, setShowMaintenance] = useState<boolean>(true);
   const [showLabels, setShowLabels] = useState<boolean>(true);
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -295,16 +306,16 @@ export const RailwayMap: React.FC<RailwayMapProps> = ({
   // Custom Station Icon Generator for National Hubs
   const createStationIcon = (node: StationNode, isSelected: boolean) => {
     const isJunction = node.is_junction || (node.train_count && node.train_count > 30);
-    const color = isSelected ? '#ff5722' : isJunction ? '#003366' : '#5c6bc0';
-    const radius = isSelected ? 9 : isJunction ? 6.5 : 4.5;
+    const color = isSelected ? '#ef4444' : isJunction ? '#0b3a75' : '#2563eb';
+    const radius = isSelected ? 9.5 : isJunction ? 7.5 : 5.5;
     const stroke = '#ffffff';
 
     const html = `
       <div class="custom-station-pin ${isSelected ? 'selected-pin' : ''}">
-        <div class="station-halo"></div>
-        <svg width="22" height="22" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="${radius}" fill="${color}" stroke="${stroke}" stroke-width="2" />
-          <circle cx="12" cy="12" r="2.2" fill="#ffffff" />
+        <div class="station-halo ${isJunction ? 'junction-halo' : ''}"></div>
+        <svg width="24" height="24" viewBox="0 0 24 24" style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35));">
+          <circle cx="12" cy="12" r="${radius}" fill="${color}" stroke="${stroke}" stroke-width="2.2" />
+          <circle cx="12" cy="12" r="${isSelected ? 3.5 : 2.5}" fill="#ffffff" />
         </svg>
         ${
           showLabels
@@ -317,9 +328,9 @@ export const RailwayMap: React.FC<RailwayMapProps> = ({
     return L.divIcon({
       html,
       className: 'station-div-icon',
-      iconSize: [22, 22],
-      iconAnchor: [11, 11],
-      popupAnchor: [0, -11],
+      iconSize: [24, 24],
+      iconAnchor: [12, 12],
+      popupAnchor: [0, -12],
     });
   };
 
@@ -580,6 +591,17 @@ export const RailwayMap: React.FC<RailwayMapProps> = ({
       >
         <button
           type="button"
+          onClick={() => setShowTrackLines(!showTrackLines)}
+          className={`btn btn-sm shadow-sm d-flex align-items-center gap-1 ${
+            showTrackLines ? 'btn-primary text-white fw-bold' : 'btn-light border text-secondary'
+          }`}
+          style={{ fontSize: '0.75rem' }}
+          title="Toggle railway track lines ON/OFF (Kept OFF by default to eliminate lag and heavy page load)"
+        >
+          <Route size={13} /> Track Lines: {showTrackLines ? 'ON' : 'OFF (Fast)'}
+        </button>
+        <button
+          type="button"
           onClick={() => setShowMaintenance(!showMaintenance)}
           className={`btn btn-sm shadow-sm d-flex align-items-center gap-1 ${
             showMaintenance ? 'btn-warning text-dark fw-semibold' : 'btn-light border'
@@ -710,112 +732,102 @@ export const RailwayMap: React.FC<RailwayMapProps> = ({
             );
           })}
 
-        {/* 2. RENDER DEFAULT NETWORK TRACKS (When no specific corridor is active) */}
+        {/* 2. RENDER TRACKS (When showTrackLines is ON or when active maintenance / emergency / selected track exists) */}
         {!activeCorridor &&
-          edges.map((edge) => {
-            const src = nodeMap.get(edge.source);
-            const tgt = nodeMap.get(edge.target);
-            if (!src || !tgt) return null;
+          edges
+            .filter((edge) => {
+              const isSelected = selectedTrackId === edge.id;
+              const isEmergency = emergencyActive && (emergencyAssetId === edge.id || emergencyAssetId === `${edge.target}-${edge.source}`);
+              const hasMaintenance = showMaintenance && maintenanceRequests.some(
+                (m) => m.asset_id === edge.id || m.asset_id === `${edge.target}-${edge.source}`
+              );
+              return showTrackLines || isSelected || isEmergency || hasMaintenance;
+            })
+            .map((edge) => {
+              const src = nodeMap.get(edge.source);
+              const tgt = nodeMap.get(edge.target);
+              if (!src || !tgt) return null;
 
-            const isSelected = selectedTrackId === edge.id;
-            const isEmergency = emergencyActive && (emergencyAssetId === edge.id || emergencyAssetId === `${edge.target}-${edge.source}`);
-            const hasMaintenance = showMaintenance && maintenanceRequests.some(
-              (m) => m.asset_id === edge.id || m.asset_id === `${edge.target}-${edge.source}`
-            );
+              const isSelected = selectedTrackId === edge.id;
+              const isEmergency = emergencyActive && (emergencyAssetId === edge.id || emergencyAssetId === `${edge.target}-${edge.source}`);
+              const hasMaintenance = showMaintenance && maintenanceRequests.some(
+                (m) => m.asset_id === edge.id || m.asset_id === `${edge.target}-${edge.source}`
+              );
 
-            let strokeColor = '#3b82f6'; // default rail blue
-            let strokeWidth = 2.5;
-            let strokeOpacity = 0.65;
-            let dashArray: string | undefined = undefined;
+              const strokeColor = isEmergency ? '#dc2626' : hasMaintenance ? '#f59e0b' : '#ec4899';
+              const strokeWidth = isEmergency ? 5 : isSelected ? 4.5 : 4;
+              const strokeOpacity = 0.95;
+              const dashArray = isEmergency || hasMaintenance ? '6, 6' : undefined;
 
-            if (isEmergency) {
-              strokeColor = '#dc2626'; // critical red
-              strokeWidth = 5;
-              strokeOpacity = 1.0;
-            } else if (hasMaintenance) {
-              strokeColor = '#f59e0b'; // amber maintenance
-              strokeWidth = 4;
-              strokeOpacity = 0.9;
-              dashArray = '6, 6';
-            } else if (isSelected) {
-              strokeColor = '#ec4899'; // selected track pink
-              strokeWidth = 4.5;
-              strokeOpacity = 1.0;
-            } else if (edge.daily_trains && edge.daily_trains >= 20) {
-              strokeColor = '#1e3a8a'; // heavy traffic dark navy
-              strokeWidth = 3.0;
-              strokeOpacity = 0.8;
-            }
-
-            return (
-              <Polyline
-                key={edge.id}
-                positions={[
-                  [src.lat, src.lng],
-                  [tgt.lat, tgt.lng],
-                ]}
-                pathOptions={{
-                  color: strokeColor,
-                  weight: strokeWidth,
-                  opacity: strokeOpacity,
-                  dashArray: dashArray,
-                }}
-                eventHandlers={{
-                  click: () => onSelectTrack?.(edge.id),
-                }}
-              >
-                <Tooltip sticky>
-                  <div style={{ fontSize: '0.8rem' }}>
-                    <strong>{src.name} ➔ {tgt.name}</strong>
-                    <br />
-                    <span className="text-muted">Corridor: {edge.id}</span>
-                    <br />
-                    <span>Distance: {edge.distance_km || 150} km | Time: {edge.travel_time_mins} mins</span>
-                    {hasMaintenance && <div className="text-warning fw-bold mt-1">⚠️ Active Maintenance Block</div>}
-                    {isEmergency && <div className="text-danger fw-bold mt-1">🚨 CRITICAL TRACK FAILURE</div>}
-                  </div>
-                </Tooltip>
-                <Popup>
-                  <div style={{ minWidth: '220px', fontSize: '0.85rem' }}>
-                    <div className="fw-bold fs-6 text-primary mb-1">
-                      {src.name} ➔ {tgt.name}
-                    </div>
-                    <div className="text-muted small mb-2">
-                      Corridor Code: <code>{edge.id}</code>
+              return (
+                <Polyline
+                  key={edge.id}
+                  positions={[
+                    [src.lat, src.lng],
+                    [tgt.lat, tgt.lng],
+                  ]}
+                  pathOptions={{
+                    color: strokeColor,
+                    weight: strokeWidth,
+                    opacity: strokeOpacity,
+                    dashArray: dashArray,
+                  }}
+                  eventHandlers={{
+                    click: () => onSelectTrack?.(edge.id),
+                  }}
+                >
+                  <Tooltip sticky>
+                    <div style={{ fontSize: '0.8rem' }}>
+                      <strong>{src.name} ➔ {tgt.name}</strong>
                       <br />
-                      Distance: {edge.distance_km || 150} km | Travel Time: {edge.travel_time_mins} mins
+                      <span className="text-muted">Corridor: {edge.id}</span>
+                      <br />
+                      <span>Distance: {edge.distance_km || 150} km | Time: {edge.travel_time_mins} mins</span>
+                      {hasMaintenance && <div className="text-warning fw-bold mt-1">⚠️ Active Maintenance Block</div>}
+                      {isEmergency && <div className="text-danger fw-bold mt-1">🚨 CRITICAL TRACK FAILURE</div>}
                     </div>
-                    <div className="d-flex flex-column gap-1">
-                      <Button
-                        size="sm"
-                        variant="primary"
-                        className="py-1"
-                        style={{ fontSize: '0.75rem' }}
-                        onClick={() => {
-                          onSelectTrack?.(edge.id);
-                          onScheduleMaintenanceForTrack?.(edge.id);
-                        }}
-                      >
-                        <Wrench size={12} className="me-1" /> Schedule Planned Maintenance
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="danger"
-                        className="py-1"
-                        style={{ fontSize: '0.75rem' }}
-                        onClick={() => {
-                          onSelectTrack?.(edge.id);
-                          onInjectEmergencyForTrack?.(edge.id);
-                        }}
-                      >
-                        <ShieldAlert size={12} className="me-1" /> Inject Track Emergency
-                      </Button>
+                  </Tooltip>
+                  <Popup>
+                    <div style={{ minWidth: '220px', fontSize: '0.85rem' }}>
+                      <div className="fw-bold fs-6 text-primary mb-1">
+                        {src.name} ➔ {tgt.name}
+                      </div>
+                      <div className="text-muted small mb-2">
+                        Corridor Code: <code>{edge.id}</code>
+                        <br />
+                        Distance: {edge.distance_km || 150} km | Travel Time: {edge.travel_time_mins} mins
+                      </div>
+                      <div className="d-flex flex-column gap-1">
+                        <Button
+                          size="sm"
+                          variant="primary"
+                          className="py-1"
+                          style={{ fontSize: '0.75rem' }}
+                          onClick={() => {
+                            onSelectTrack?.(edge.id);
+                            onScheduleMaintenanceForTrack?.(edge.id);
+                          }}
+                        >
+                          <Wrench size={12} className="me-1" /> Schedule Planned Maintenance
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="danger"
+                          className="py-1"
+                          style={{ fontSize: '0.75rem' }}
+                          onClick={() => {
+                            onSelectTrack?.(edge.id);
+                            onInjectEmergencyForTrack?.(edge.id);
+                          }}
+                        >
+                          <ShieldAlert size={12} className="me-1" /> Inject Track Emergency
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                </Popup>
-              </Polyline>
-            );
-          })}
+                  </Popup>
+                </Polyline>
+              );
+            })}
 
         {/* 2b. RENDER DEFAULT NETWORK STATIONS (When no specific corridor is active) */}
         {!activeCorridor &&

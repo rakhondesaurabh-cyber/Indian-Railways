@@ -10,6 +10,13 @@ def test_all():
     assert r.status_code == 200, f"Root failed: {r.status_code}"
     print("Root response:", r.json()["dataset"])
 
+    print("\nTesting /api/network?mode=major ...")
+    r = client.get("/api/network?mode=major")
+    assert r.status_code == 200
+    net_major = r.json()
+    print(f"Major network: {len(net_major['nodes'])} nodes, {len(net_major['edges'])} edges")
+    assert len(net_major['nodes']) > 0, "Major network nodes should not be empty"
+
     print("\nTesting /api/network?mode=hdn ...")
     r = client.get("/api/network?mode=hdn")
     assert r.status_code == 200

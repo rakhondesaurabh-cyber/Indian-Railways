@@ -1,22 +1,13 @@
 {
   "maintenance_requests": [
     {
-      "id": "MNT-SCD-100",
-      "asset_id": "AK-KGP",
-      "type": "Track Renewal",
-      "duration_mins": 90,
-      "priority": "High",
-      "status": "Pending Block",
-      "deadline": "2026-09-05T00:00:00"
-    },
-    {
-      "id": "MNT-SCD-101",
-      "asset_id": "AK-AMI",
-      "type": "Track Renewal",
-      "duration_mins": 30,
-      "priority": "High",
-      "status": "Pending Block",
-      "deadline": "2026-09-05T00:00:00"
+      "id": "EMG-100",
+      "asset_id": "CNB-NDLS",
+      "type": "Track Failure",
+      "duration_mins": 180,
+      "priority": "Critical",
+      "status": "Active Block",
+      "deadline": "2026-09-02T00:00:00"
     }
   ]
 }

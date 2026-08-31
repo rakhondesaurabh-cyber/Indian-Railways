@@ -109,10 +109,14 @@ export const TrainImpactList: React.FC<Props> = ({
     }
 
     // Check precomputed corridor trains by asset
-    if (corridorTrainsByAsset) {
+    if (corridorTrainsByAsset && selectedTrackId) {
       if (corridorTrainsByAsset[selectedTrackId]) return corridorTrainsByAsset[selectedTrackId];
       const revId = selectedTrackId.split('-').reverse().join('-');
       if (corridorTrainsByAsset[revId]) return corridorTrainsByAsset[revId];
+      const matchKey = Object.keys(corridorTrainsByAsset).find(
+        (k) => k.toUpperCase() === selectedTrackId.toUpperCase() || k.toUpperCase() === revId.toUpperCase()
+      );
+      if (matchKey && corridorTrainsByAsset[matchKey]) return corridorTrainsByAsset[matchKey];
     }
 
     // Fallback: derive from affected and unaffected trains matching route

@@ -3,6 +3,7 @@ import os
 import random
 import pandas as pd
 import numpy as np
+import glob
 from datetime import datetime, timedelta
 from station_coordinates import MAJOR_STATIONS, get_station_coords, interpolate_station_coords
 
@@ -26,10 +27,69 @@ def parse_time_str(time_str):
     except Exception:
         return None
 
+def load_json_datasets():
+    json_files = glob.glob(os.path.join(os.path.dirname(__file__), "dataset", "Train Schedule", "*.json"))
+    if os.path.exists(JSON_DATASET_PATH) and JSON_DATASET_PATH not in json_files:
+        json_files.append(JSON_DATASET_PATH)
+    rows = []
+    for jf in json_files:
+        with open(jf, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            for train in data:
+                t_no = train.get('trainNumber', '')
+                t_name = train.get('trainName', '')
+                train_route = train.get('trainRoute', [])
+                if not train_route:
+                    continue
+                
+                # get source/dest from first/last
+                first_stn = train_route[0].get('stationName', ' - ')
+                last_stn = train_route[-1].get('stationName', ' - ')
+                src_name, src_code = first_stn.rsplit(' - ', 1) if ' - ' in first_stn else (first_stn, first_stn)
+                dest_name, dest_code = last_stn.rsplit(' - ', 1) if ' - ' in last_stn else (last_stn, last_stn)
+                
+                for halt in train_route:
+                    sno = halt.get('sno', '1')
+                    stn_raw = halt.get('stationName', ' - ')
+                    stn_name, stn_code = stn_raw.rsplit(' - ', 1) if ' - ' in stn_raw else (stn_raw, stn_raw)
+                    dist_raw = halt.get('distance', '0 kms')
+                    dist = ''.join([c for c in str(dist_raw) if c.isdigit()])
+                    arr = halt.get('arrives', 'Source')
+                    dep = halt.get('departs', 'Destination')
+                    
+                    rows.append({
+                        'Train No.': t_no,
+                        'train Name': t_name,
+                        'station Code': stn_code.strip(),
+                        'Station Name': stn_name.strip(),
+                        'Source Station Code': src_code.strip(),
+                        'source Station Name': src_name.strip(),
+                        'Destination station Code': dest_code.strip(),
+                        'Destination Station Name': dest_name.strip(),
+                        'islno': sno,
+                        'Distance': dist if dist else '0',
+                        'Arrival time': arr,
+                        'Departure time': dep
+                    })
+    return pd.DataFrame(rows)
+
 def process_complete_dataset():
     print(f"Loading full CSV dataset from {CSV_DATASET_PATH}...")
     df = pd.read_csv(CSV_DATASET_PATH)
     print(f"Loaded {len(df)} halt records for {df['Train No.'].nunique()} unique trains.")
+
+    # Load JSON and combine
+    print("Loading new JSON datasets...")
+    try:
+        json_df = load_json_datasets()
+        if not json_df.empty:
+            print(f"Loaded {len(json_df)} halt records from JSON for {json_df['Train No.'].nunique()} unique trains.")
+            df = pd.concat([df, json_df], ignore_index=True)
+            # drop duplicates just in case
+            df = df.drop_duplicates(subset=['Train No.', 'islno'])
+            print(f"Combined dataset has {len(df)} halt records for {df['Train No.'].nunique()} unique trains.")
+    except Exception as e:
+        print(f"Failed to load JSON datasets: {e}")
 
     # Clean string columns
     df['Train No.'] = df['Train No.'].astype(str).str.strip().str.strip("'")

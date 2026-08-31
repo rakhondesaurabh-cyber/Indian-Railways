@@ -65,13 +65,16 @@ export const MaintenanceOptionSelector: React.FC<Props> = ({ breakdown, selected
                   <div className="text-muted extra-small mb-1" style={{ fontSize: '0.7rem', lineHeight: '1.2' }}>
                     {opt.rationale}
                   </div>
-                  <div className="d-flex justify-content-between align-items-center extra-small fw-medium" style={{ fontSize: '0.75rem' }}>
-                    <div className="d-flex gap-3">
+                  <div className="d-flex justify-content-between align-items-center extra-small fw-medium gap-2 flex-wrap" style={{ fontSize: '0.75rem' }}>
+                    <div className="d-flex gap-2 align-items-center flex-wrap">
                       <span className={opt.delay_caused > 60 ? 'text-danger' : 'text-success'}>
                         <Clock size={11} className="me-1" /> {opt.delay_caused}m Delay
                       </span>
-                      <span className={opt.affected_trains.length > 2 ? 'text-danger' : 'text-success'}>
-                        <TrainIcon size={11} className="me-1" /> {opt.affected_trains.length} Trains
+                      <span className="text-primary fw-semibold">
+                        <TrainIcon size={11} className="me-1" /> {opt.corridor_trains?.length || opt.affected_trains.length} Trains on Track
+                      </span>
+                      <span className={`badge ${opt.affected_trains.length > 0 ? 'bg-danger text-white' : 'bg-success text-white'} extra-small py-0 px-1`}>
+                        {opt.affected_trains.length} Delayed • {Math.max(0, (opt.corridor_trains?.length || opt.affected_trains.length) - opt.affected_trains.length)} On-Time
                       </span>
                     </div>
 

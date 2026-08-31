@@ -8,8 +8,11 @@ import urllib.error
 import pandas as pd
 from pydantic import BaseModel
 from typing import List, Optional
+import math
+from heapq import heappush, heappop
 from optimizer import run_optimization, predict_ml_delay, get_ml_model
 from live_telemetry import get_live_corridor_delays
+from find_trains import find_trains_between_stations
 
 app = FastAPI(title="RailOpt AI Engine", description="Scalable AI Railway Maintenance & Network Graph Engine")
 
@@ -25,6 +28,7 @@ app.add_middleware(
 # Paths
 BASE_DIR = os.path.dirname(__file__)
 STATE_PATH = os.path.join(BASE_DIR, "railway_state.json")
+NETWORK_MAJOR_PATH = os.path.join(BASE_DIR, "railway_network_major.json")
 NETWORK_HDN_PATH = os.path.join(BASE_DIR, "railway_network_hdn.json")
 NETWORK_FULL_PATH = os.path.join(BASE_DIR, "railway_network_full.json")
 TRAINS_REGISTRY_PATH = os.path.join(BASE_DIR, "trains_registry_full.json")
@@ -38,6 +42,18 @@ _cached_network_full = None
 _cached_trains = None
 _cached_search_index = None
 _cached_live = {}
+_cached_exp_trains = None
+
+def get_exp_trains_data():
+    global _cached_exp_trains
+    if _cached_exp_trains is None:
+        path = os.path.join(BASE_DIR, "dataset", "EXP-TRAINS.json")
+        if os.path.exists(path):
+            with open(path, "r", encoding="utf-8") as f:
+                _cached_exp_trains = json.load(f)
+        else:
+            _cached_exp_trains = []
+    return _cached_exp_trains
 
 def get_network_hdn():
     global _cached_network_hdn
@@ -132,11 +148,31 @@ def save_live_cache(data):
     _cached_live = data
     with open(LIVE_CACHE_PATH, "w", encoding="utf-8") as f:
         json.dump(data, f)
+METRO_CLUSTERS = {
+    "MUMBAI": {"CSMT", "CSTM", "MMCT", "BCT", "LTT", "BDTS", "DR"},
+    "CSMT": {"CSMT", "CSTM", "MMCT", "BCT", "LTT", "BDTS", "DR"},
+    "CSTM": {"CSMT", "CSTM", "MMCT", "BCT", "LTT", "BDTS", "DR"},
+    "MMCT": {"MMCT", "BCT", "CSMT", "CSTM", "LTT", "BDTS", "DR"},
+    "BCT": {"MMCT", "BCT", "CSMT", "CSTM", "LTT", "BDTS", "DR"},
+    "DELHI": {"NDLS", "DLI", "NZM", "ANVR", "DEC", "DEE"},
+    "NDLS": {"NDLS", "DLI", "NZM", "ANVR", "DEC", "DEE"},
+    "KOLKATA": {"HWH", "SDAH", "KOAA", "SHM"},
+    "HWH": {"HWH", "SDAH", "KOAA", "SHM"},
+    "CHENNAI": {"MAS", "MS", "MBM", "TBM"},
+    "MAS": {"MAS", "MS", "MBM", "TBM"},
+    "BANGALORE": {"SBC", "YPR", "SMVB", "BNC"},
+    "SBC": {"SBC", "YPR", "SMVB", "BNC"},
+    "HYDERABAD": {"SC", "HYB", "KCG"},
+    "SC": {"SC", "HYB", "KCG"},
+}
+
 STATION_ALIASES = {
-    "MMCT": "BCT",
-    "MUMBAI": "BCT",
-    "CSMT": "CSTM",
-    "CST": "CSTM",
+    "MMCT": "CSMT",
+    "BCT": "CSMT",
+    "MUMBAI": "CSMT",
+    "CSMT": "CSMT",
+    "CSTM": "CSMT",
+    "CST": "CSMT",
     "NEW DELHI": "NDLS",
     "DELHI": "NDLS",
     "BANGALORE": "SBC",
@@ -150,8 +186,9 @@ STATION_ALIASES = {
     "KANPUR": "CNB",
     "PRAYAGRAJ": "PRYJ",
     "ALLAHABAD": "ALD",
+    "ALD": "PRYJ",
     "LUCKNOW": "LKO",
-    "HYDERABAD": "HYB",
+    "HYDERABAD": "SC",
     "SECUNDERABAD": "SC",
     "PUNE": "PUNE",
     "PUNE JN": "PUNE",
@@ -191,16 +228,20 @@ _cached_network_major = None
 def get_network_major():
     global _cached_network_major
     if _cached_network_major is None:
-        hdn = get_network_hdn()
-        major_nodes = [n for n in hdn.get("nodes", []) if n["code"] in MAJOR_HUB_CODES]
-        node_codes = {n["code"] for n in major_nodes}
-        major_edges = [e for e in hdn.get("edges", []) if e["source"] in node_codes and e["target"] in node_codes]
-        _cached_network_major = {
-            "nodes": major_nodes,
-            "edges": major_edges,
-            "total_stations": len(major_nodes),
-            "total_edges": len(major_edges)
-        }
+        if os.path.exists(NETWORK_MAJOR_PATH):
+            with open(NETWORK_MAJOR_PATH, "r", encoding="utf-8") as f:
+                _cached_network_major = json.load(f)
+        else:
+            hdn = get_network_hdn()
+            major_nodes = [n for n in hdn.get("nodes", []) if n.get("code") in MAJOR_HUB_CODES]
+            node_codes = {n.get("code") for n in major_nodes}
+            major_edges = [e for e in hdn.get("edges", []) if e.get("source") in node_codes and e.get("target") in node_codes]
+            _cached_network_major = {
+                "nodes": major_nodes,
+                "edges": major_edges,
+                "total_stations": len(major_nodes),
+                "total_edges": len(major_edges)
+            }
     return _cached_network_major
 
 def resolve_station_code(code_or_name: str) -> str:
@@ -217,11 +258,29 @@ def resolve_station_code(code_or_name: str) -> str:
             return item["code"]
     return cleaned
 
+def get_station_code_variants(code: str) -> set:
+    if not code:
+        return set()
+    raw = code.strip().upper()
+    c = resolve_station_code(code)
+    variants = {raw, c}
+    if c in STATION_ALIASES:
+        variants.add(STATION_ALIASES[c])
+    for k, v in STATION_ALIASES.items():
+        if v == c or k == raw or v == raw:
+            variants.add(k)
+            variants.add(v)
+    for item in list(variants):
+        if item in METRO_CLUSTERS:
+            variants.update(METRO_CLUSTERS[item])
+    return variants
+
 def normalize_asset_id(asset_id: str) -> str:
     parts = asset_id.split("-")
     if len(parts) == 2:
         return f"{resolve_station_code(parts[0])}-{resolve_station_code(parts[1])}"
     return asset_id
+
 
 @app.get("/")
 def read_root():
@@ -239,6 +298,7 @@ def read_root():
             "/api/network/corridor",
             "/api/network/stations/search",
             "/api/trains",
+            "/api/trains/between",
             "/api/maintenance",
             "/api/optimize",
             "/api/emergency",
@@ -254,13 +314,63 @@ def get_network(mode: str = Query("major", description="Network mode: 'major' (m
         return get_network_full()
     elif mode.lower() == "hdn":
         return get_network_hdn()
-    return get_network_major()
-
-import math
-from heapq import heappush, heappop
-
+    else:
+        return get_network_major()
 # Curated coordinates overrides for accurate geographical track interpolation
 STATION_GEO_OVERRIDES = {
+    # Mumbai Central / CST / Suburban & Pune Corridor
+    "CSMT": {"code": "CSMT", "name": "Chhatrapati Shivaji Maharaj Terminus", "lat": 18.9401, "lng": 72.8353, "zone": "CR", "is_junction": True},
+    "CSTM": {"code": "CSTM", "name": "Chhatrapati Shivaji Maharaj Terminus", "lat": 18.9401, "lng": 72.8353, "zone": "CR", "is_junction": True},
+    "MMCT": {"code": "MMCT", "name": "Mumbai Central", "lat": 18.9690, "lng": 72.8205, "zone": "WR", "is_junction": True},
+    "BCT": {"code": "BCT", "name": "Mumbai Central", "lat": 18.9690, "lng": 72.8205, "zone": "WR", "is_junction": True},
+    "DR": {"code": "DR", "name": "Dadar Central", "lat": 19.0178, "lng": 72.8437, "zone": "CR", "is_junction": True},
+    "CLA": {"code": "CLA", "name": "Kurla Jn", "lat": 19.0653, "lng": 72.8794, "zone": "CR", "is_junction": True},
+    "LTT": {"code": "LTT", "name": "Lokmanya Tilak Terminus", "lat": 19.0697, "lng": 72.8917, "zone": "CR", "is_junction": True},
+    "GC": {"code": "GC", "name": "Ghatkopar", "lat": 19.0860, "lng": 72.9080, "zone": "CR", "is_junction": False},
+    "VK": {"code": "VK", "name": "Vikhroli", "lat": 19.1110, "lng": 72.9280, "zone": "CR", "is_junction": False},
+    "BND": {"code": "BND", "name": "Bhandup", "lat": 19.1430, "lng": 72.9370, "zone": "CR", "is_junction": False},
+    "NHU": {"code": "NHU", "name": "Nahur", "lat": 19.1550, "lng": 72.9460, "zone": "CR", "is_junction": False},
+    "MLND": {"code": "MLND", "name": "Mulund", "lat": 19.1720, "lng": 72.9560, "zone": "CR", "is_junction": False},
+    "TNA": {"code": "TNA", "name": "Thane", "lat": 19.1860, "lng": 72.9754, "zone": "CR", "is_junction": True},
+    "KLVA": {"code": "KLVA", "name": "Kalva", "lat": 19.1950, "lng": 72.9920, "zone": "CR", "is_junction": False},
+    "MBQ": {"code": "MBQ", "name": "Mumbra", "lat": 19.1850, "lng": 73.0160, "zone": "CR", "is_junction": False},
+    "DIVA": {"code": "DIVA", "name": "Diva Jn", "lat": 19.1894, "lng": 73.0428, "zone": "CR", "is_junction": True},
+    "KOPR": {"code": "KOPR", "name": "Kopar", "lat": 19.2130, "lng": 73.0760, "zone": "CR", "is_junction": False},
+    "DI": {"code": "DI", "name": "Dombivli", "lat": 19.2180, "lng": 73.0860, "zone": "CR", "is_junction": False},
+    "THK": {"code": "THK", "name": "Thakurli", "lat": 19.2220, "lng": 73.1040, "zone": "CR", "is_junction": False},
+    "KYN": {"code": "KYN", "name": "Kalyan Jn", "lat": 19.2364, "lng": 73.1306, "zone": "CR", "is_junction": True},
+    "VLDI": {"code": "VLDI", "name": "Vithalwadi", "lat": 19.2310, "lng": 73.1490, "zone": "CR", "is_junction": False},
+    "ULNR": {"code": "ULNR", "name": "Ulhasnagar", "lat": 19.2190, "lng": 73.1640, "zone": "CR", "is_junction": False},
+    "ABH": {"code": "ABH", "name": "Ambernath", "lat": 19.2010, "lng": 73.1950, "zone": "CR", "is_junction": False},
+    "BUD": {"code": "BUD", "name": "Badlapur", "lat": 19.1620, "lng": 73.2620, "zone": "CR", "is_junction": False},
+    "VGI": {"code": "VGI", "name": "Vangani", "lat": 19.0910, "lng": 73.3120, "zone": "CR", "is_junction": False},
+    "SHLU": {"code": "SHLU", "name": "Shelu", "lat": 19.0600, "lng": 73.3090, "zone": "CR", "is_junction": False},
+    "NRL": {"code": "NRL", "name": "Neral", "lat": 19.0280, "lng": 73.3180, "zone": "CR", "is_junction": True},
+    "BVS": {"code": "BVS", "name": "Bhivpuri Road", "lat": 18.9710, "lng": 73.3080, "zone": "CR", "is_junction": False},
+    "KJT": {"code": "KJT", "name": "Karjat", "lat": 18.9100, "lng": 73.3200, "zone": "CR", "is_junction": True},
+    "PHT": {"code": "PHT", "name": "Palasdari", "lat": 18.8650, "lng": 73.3180, "zone": "CR", "is_junction": False},
+    "KAD": {"code": "KAD", "name": "Khandala", "lat": 18.7610, "lng": 73.3750, "zone": "CR", "is_junction": False},
+    "LNL": {"code": "LNL", "name": "Lonavala", "lat": 18.7510, "lng": 73.4070, "zone": "CR", "is_junction": True},
+    "KMST": {"code": "KMST", "name": "Kamshet", "lat": 18.7350, "lng": 73.4850, "zone": "CR", "is_junction": False},
+    "VDN": {"code": "VDN", "name": "Vadgaon", "lat": 18.7300, "lng": 73.5820, "zone": "CR", "is_junction": False},
+    "TGN": {"code": "TGN", "name": "Talegaon", "lat": 18.7340, "lng": 73.6764, "zone": "CR", "is_junction": True},
+    "DEHR": {"code": "DEHR", "name": "Dehu Road", "lat": 18.7172, "lng": 73.7294, "zone": "CR", "is_junction": True},
+    "AKRD": {"code": "AKRD", "name": "Akurdi", "lat": 18.6510, "lng": 73.7650, "zone": "CR", "is_junction": False},
+    "CCH": {"code": "CCH", "name": "Chinchwad", "lat": 18.6347, "lng": 73.7847, "zone": "CR", "is_junction": True},
+    "PMP": {"code": "PMP", "name": "Pimpri", "lat": 18.6228, "lng": 73.7997, "zone": "CR", "is_junction": False},
+    "KSWD": {"code": "KSWD", "name": "Kasarwadi", "lat": 18.6017, "lng": 73.8186, "zone": "CR", "is_junction": False},
+    "DAPD": {"code": "DAPD", "name": "Dapodi", "lat": 18.5774, "lng": 73.8305, "zone": "CR", "is_junction": False},
+    "KK": {"code": "KK", "name": "Khadki", "lat": 18.5623, "lng": 73.8420, "zone": "CR", "is_junction": True},
+    "SVJR": {"code": "SVJR", "name": "Shivajinagar", "lat": 18.5314, "lng": 73.8553, "zone": "CR", "is_junction": True},
+    "PUNE": {"code": "PUNE", "name": "Pune Jn", "lat": 18.5284, "lng": 73.8744, "zone": "CR", "is_junction": True},
+    "ADH": {"code": "ADH", "name": "Andheri", "lat": 19.1197, "lng": 72.8464, "zone": "WR", "is_junction": True},
+    "BVI": {"code": "BVI", "name": "Borivali", "lat": 19.2288, "lng": 72.8569, "zone": "WR", "is_junction": True},
+    "BYR": {"code": "BYR", "name": "Bhayandar", "lat": 19.3005, "lng": 72.8520, "zone": "WR", "is_junction": True},
+    "BSR": {"code": "BSR", "name": "Vasai Road", "lat": 19.3828, "lng": 72.8322, "zone": "WR", "is_junction": True},
+    "JCNR": {"code": "JCNR", "name": "Juchandra", "lat": 19.3523, "lng": 72.8712, "zone": "CR", "is_junction": False},
+    "PNVL": {"code": "PNVL", "name": "Panvel", "lat": 18.9894, "lng": 73.1214, "zone": "CR", "is_junction": True},
+    "KLMG": {"code": "KLMG", "name": "Kalamboli", "lat": 19.0140, "lng": 73.1110, "zone": "CR", "is_junction": False},
+
     # Central Railway / Vidarbha Corridor
     "AK": {"code": "AK", "name": "Akola Jn", "lat": 20.7059, "lng": 77.0172, "zone": "CR", "is_junction": True},
     "MZR": {"code": "MZR", "name": "Murtajapur Jn", "lat": 20.7317, "lng": 77.3688, "zone": "CR", "is_junction": True},
@@ -273,6 +383,39 @@ STATION_GEO_OVERRIDES = {
     "SNI": {"code": "SNI", "name": "Sindi", "lat": 20.8117, "lng": 78.8950, "zone": "CR", "is_junction": False},
     "AJNI": {"code": "AJNI", "name": "Ajni", "lat": 21.1214, "lng": 79.0717, "zone": "CR", "is_junction": False},
     "NGP": {"code": "NGP", "name": "Nagpur Jn", "lat": 21.1458, "lng": 79.0882, "zone": "CR", "is_junction": True},
+    
+    # Nagpur - Gondia - Raipur - Bilaspur SECR Main Line
+    "KAV": {"code": "KAV", "name": "Kalamna", "lat": 21.1680, "lng": 79.1380, "zone": "SECR", "is_junction": False},
+    "KP": {"code": "KP", "name": "Kamptee", "lat": 21.2229, "lng": 79.1978, "zone": "SECR", "is_junction": False},
+    "SAL": {"code": "SAL", "name": "Salwa", "lat": 21.2050, "lng": 79.3360, "zone": "SECR", "is_junction": False},
+    "CHCR": {"code": "CHCR", "name": "Chacher", "lat": 21.2185, "lng": 79.4312, "zone": "SECR", "is_junction": False},
+    "TAR": {"code": "TAR", "name": "Tharsa", "lat": 21.2280, "lng": 79.5210, "zone": "SECR", "is_junction": False},
+    "BRD": {"code": "BRD", "name": "Bhandara Road", "lat": 21.2383, "lng": 79.6458, "zone": "SECR", "is_junction": True},
+    "KOKA": {"code": "KOKA", "name": "Koka", "lat": 21.2750, "lng": 79.6920, "zone": "SECR", "is_junction": False},
+    "TMR": {"code": "TMR", "name": "Tumsar Road", "lat": 21.3128, "lng": 79.7425, "zone": "SECR", "is_junction": True},
+    "MNU": {"code": "MNU", "name": "Mundikota", "lat": 21.3650, "lng": 79.8350, "zone": "SECR", "is_junction": False},
+    "TRO": {"code": "TRO", "name": "Tirora", "lat": 21.4135, "lng": 79.9328, "zone": "SECR", "is_junction": False},
+    "KWN": {"code": "KWN", "name": "Kachewani", "lat": 21.4380, "lng": 80.0510, "zone": "SECR", "is_junction": False},
+    "GJ": {"code": "GJ", "name": "Gangajhari", "lat": 21.4490, "lng": 80.1120, "zone": "SECR", "is_junction": False},
+    "G": {"code": "G", "name": "Gondia Jn", "lat": 21.4587, "lng": 80.1961, "zone": "SECR", "is_junction": True},
+    "GDM": {"code": "GDM", "name": "Gudma", "lat": 21.4150, "lng": 80.2850, "zone": "SECR", "is_junction": False},
+    "AGN": {"code": "AGN", "name": "Amgaon", "lat": 21.3653, "lng": 80.3794, "zone": "SECR", "is_junction": False},
+    "DNL": {"code": "DNL", "name": "Dhanoli", "lat": 21.3320, "lng": 80.4610, "zone": "SECR", "is_junction": False},
+    "SKS": {"code": "SKS", "name": "Salekasa", "lat": 21.3117, "lng": 80.5511, "zone": "SECR", "is_junction": False},
+    "DKS": {"code": "DKS", "name": "Darekasa", "lat": 21.2850, "lng": 80.6420, "zone": "SECR", "is_junction": False},
+    "DGG": {"code": "DGG", "name": "Dongargarh", "lat": 21.1894, "lng": 80.7606, "zone": "SECR", "is_junction": True},
+    "PJB": {"code": "PJB", "name": "Paniajob", "lat": 21.1450, "lng": 80.8520, "zone": "SECR", "is_junction": False},
+    "BCA": {"code": "BCA", "name": "Bachhera", "lat": 21.1120, "lng": 80.9450, "zone": "SECR", "is_junction": False},
+    "RJN": {"code": "RJN", "name": "Raj Nandgaon", "lat": 21.0963, "lng": 81.0369, "zone": "SECR", "is_junction": True},
+    "PMS": {"code": "PMS", "name": "Parmalkasa", "lat": 21.1250, "lng": 81.1420, "zone": "SECR", "is_junction": False},
+    "MUP": {"code": "MUP", "name": "Murhipar", "lat": 21.1510, "lng": 81.2150, "zone": "SECR", "is_junction": False},
+    "DURG": {"code": "DURG", "name": "Durg Jn", "lat": 21.1904, "lng": 81.2849, "zone": "SECR", "is_junction": True},
+    "BPHB": {"code": "BPHB", "name": "Bhilai Power House", "lat": 21.2086, "lng": 81.3853, "zone": "SECR", "is_junction": False},
+    "BIA": {"code": "BIA", "name": "Bhilai", "lat": 21.2180, "lng": 81.4420, "zone": "SECR", "is_junction": False},
+    "KMI": {"code": "KMI", "name": "Kumhari", "lat": 21.2310, "lng": 81.5210, "zone": "SECR", "is_junction": False},
+    "R": {"code": "R", "name": "Raipur Jn", "lat": 21.2514, "lng": 81.6296, "zone": "SECR", "is_junction": True},
+    "BYT": {"code": "BYT", "name": "Bhatapara", "lat": 21.7375, "lng": 81.9372, "zone": "SECR", "is_junction": False},
+    "BSP": {"code": "BSP", "name": "Bilaspur Jn", "lat": 22.0797, "lng": 82.1409, "zone": "SECR", "is_junction": True},
 }
 
 def haversine_km(lat1, lon1, lat2, lon2):
@@ -333,15 +476,19 @@ def get_corridor(
     # 1. Straight line distance for detour detection
     straight_dist = get_segment_distance(u, v)
     
-    # 2. Find all trains traversing both u and v
+    # 2. Find all trains traversing both u and v (including cluster variants)
     corridor_trains = []
     candidate_subroutes = []
+    u_vars = get_station_code_variants(u)
+    v_vars = get_station_code_variants(v)
     
     for t in trains:
         r = t.get("route", [])
-        if u in r and v in r:
-            u_idx = r.index(u)
-            v_idx = r.index(v)
+        u_stn = next((s for s in r if s in u_vars), None)
+        v_stn = next((s for s in r if s in v_vars), None)
+        if u_stn and v_stn:
+            u_idx = r.index(u_stn)
+            v_idx = r.index(v_stn)
             if u_idx < v_idx:
                 sub = r[u_idx:v_idx+1]
                 direction = "forward"
@@ -353,8 +500,8 @@ def get_corridor(
             clean_name = t.get("train_name") or t.get("name", "").split(" #")[0]
             
             halts = t.get("halts", [])
-            u_halt = next((h for h in halts if h.get("stationCode") == u), None)
-            v_halt = next((h for h in halts if h.get("stationCode") == v), None)
+            u_halt = next((h for h in halts if h.get("stationCode") in u_vars), None)
+            v_halt = next((h for h in halts if h.get("stationCode") in v_vars), None)
             
             dep_time = u_halt.get("departureTime") if u_halt else t.get("start_time", "06:00:00")
             arr_time = v_halt.get("arrivalTime") if v_halt else "12:00:00"
@@ -387,14 +534,25 @@ def get_corridor(
                 "ratio": ratio
             })
             
-    # 3. Filter candidate routes to continuous direct track paths (discard anomalous detours with ratio > 1.6)
-    valid_routes = [cr for cr in candidate_subroutes if cr["ratio"] <= 1.6]
+    # 3. Filter candidate routes to shortest direct railway paths
+    # Always prioritize direct shortest path distance, eliminating long circular loops
+    valid_routes = [cr for cr in candidate_subroutes if cr["dist"] > 0]
     
     corridor_stations_codes = []
     if valid_routes:
-        # Sort by most comprehensive stops on the corridor without taking huge detours, then by shortest track length
-        valid_routes.sort(key=lambda x: (-x["stops"], x["dist"]))
-        corridor_stations_codes = valid_routes[0]["route"]
+        min_dist = min(cr["dist"] for cr in valid_routes)
+        # Keep candidate subroutes that are direct (within 35% of shortest direct path)
+        shortest_candidates = [cr for cr in valid_routes if cr["dist"] <= min_dist * 1.35]
+        if not shortest_candidates:
+            shortest_candidates = sorted(valid_routes, key=lambda x: x["dist"])[:1]
+        
+        anchor_u = {u, resolve_station_code(u), "CSMT", "CSTM"} if u in {"CSMT", "CSTM", "MMCT", "BCT", "MUMBAI"} else {u, resolve_station_code(u)}
+        shortest_candidates.sort(key=lambda x: (
+            0 if x["route"][0] in anchor_u else 1,
+            -x["stops"],
+            x["dist"]
+        ))
+        corridor_stations_codes = shortest_candidates[0]["route"]
     else:
         # 4. Fallback: Dijkstra shortest path on physical graph edges
         net = get_network_full()
@@ -525,6 +683,24 @@ def search_stations(q: str = Query("", description="Station code or name substri
                 return results
 
     return results
+
+@app.get("/api/trains/between")
+def get_trains_between(
+    start: str = Query(..., description="Start station code (e.g. MJ)"),
+    end: str = Query(..., description="End station code (e.g. KBK)")
+):
+    data = get_exp_trains_data()
+    if not data:
+        raise HTTPException(status_code=500, detail="EXP-TRAINS dataset not available")
+    
+    trains = find_trains_between_stations(start, end, data)
+    return {
+        "status": "success",
+        "start_station": start.upper(),
+        "end_station": end.upper(),
+        "trains": trains,
+        "count": len(trains)
+    }
 
 @app.get("/api/trains")
 def get_trains(

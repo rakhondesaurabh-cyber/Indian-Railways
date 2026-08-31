@@ -61,6 +61,80 @@ def extract_station_time(train, station_code, default_hour=6):
         return hh, 0, 0
     return default_hour, 0, 0
 
+METRO_CLUSTERS = {
+    "MUMBAI": {"CSMT", "CSTM", "MMCT", "BCT", "LTT", "BDTS", "DR"},
+    "CSMT": {"CSMT", "CSTM", "MMCT", "BCT", "LTT", "BDTS", "DR"},
+    "CSTM": {"CSMT", "CSTM", "MMCT", "BCT", "LTT", "BDTS", "DR"},
+    "MMCT": {"MMCT", "BCT", "CSMT", "CSTM", "LTT", "BDTS", "DR"},
+    "BCT": {"MMCT", "BCT", "CSMT", "CSTM", "LTT", "BDTS", "DR"},
+    "DELHI": {"NDLS", "DLI", "NZM", "ANVR", "DEC", "DEE"},
+    "NDLS": {"NDLS", "DLI", "NZM", "ANVR", "DEC", "DEE"},
+    "KOLKATA": {"HWH", "SDAH", "KOAA", "SHM"},
+    "HWH": {"HWH", "SDAH", "KOAA", "SHM"},
+    "CHENNAI": {"MAS", "MS", "MBM", "TBM"},
+    "MAS": {"MAS", "MS", "MBM", "TBM"},
+    "BANGALORE": {"SBC", "YPR", "SMVB", "BNC"},
+    "SBC": {"SBC", "YPR", "SMVB", "BNC"},
+    "HYDERABAD": {"SC", "HYB", "KCG"},
+    "SC": {"SC", "HYB", "KCG"},
+}
+
+STATION_ALIASES = {
+    "MMCT": "CSMT",
+    "BCT": "CSMT",
+    "MUMBAI": "CSMT",
+    "CSMT": "CSMT",
+    "CSTM": "CSMT",
+    "CST": "CSMT",
+    "NEW DELHI": "NDLS",
+    "DELHI": "NDLS",
+    "BANGALORE": "SBC",
+    "BENGALURU": "SBC",
+    "CHENNAI": "MAS",
+    "KOLKATA": "HWH",
+    "CALCUTTA": "HWH",
+    "VARANASI": "BSB",
+    "PATNA": "PNBE",
+    "AHMEDABAD": "ADI",
+    "KANPUR": "CNB",
+    "PRAYAGRAJ": "PRYJ",
+    "ALLAHABAD": "ALD",
+    "ALD": "PRYJ",
+    "LUCKNOW": "LKO",
+    "HYDERABAD": "SC",
+    "SECUNDERABAD": "SC",
+    "PUNE": "PUNE",
+    "PUNE JN": "PUNE",
+    "AKOLA": "AK",
+    "AKOLA JN": "AK",
+    "JAIPUR": "JP",
+    "BHOPAL": "BPL",
+    "NAGPUR": "NGP",
+}
+
+def resolve_station_code(code_or_name: str) -> str:
+    cleaned = str(code_or_name).strip().upper()
+    if cleaned in STATION_ALIASES:
+        return STATION_ALIASES[cleaned]
+    return cleaned
+
+def get_station_code_variants(code: str) -> set:
+    if not code:
+        return set()
+    raw = str(code).strip().upper()
+    c = resolve_station_code(code)
+    variants = {raw, c}
+    if c in STATION_ALIASES:
+        variants.add(STATION_ALIASES[c])
+    for k, v in STATION_ALIASES.items():
+        if v == c or k == raw or v == raw:
+            variants.add(k)
+            variants.add(v)
+    for item in list(variants):
+        if item in METRO_CLUSTERS:
+            variants.update(METRO_CLUSTERS[item])
+    return variants
+
 def build_corridor_inverted_index(network, trains):
     """
     Build an inverted index mapping each corridor edge_id to its sorted list of train crossing events,
@@ -92,7 +166,8 @@ def build_corridor_inverted_index(network, trains):
         destination = train.get("destination", route[-1] if route else "")
 
         for s in route:
-            stn_trains_index.setdefault(s, []).append(train)
+            for variant in get_station_code_variants(s):
+                stn_trains_index.setdefault(variant, []).append(train)
 
         for i in range(len(route) - 1):
             u = route[i]
@@ -142,34 +217,122 @@ def build_corridor_inverted_index(network, trains):
 
 def get_corridor_trains_for_window(asset_id, m_start_dt, m_end_dt, corridor_index, maintenance_id="", stn_trains_index=None, train_map=None):
     """
-    Look up trains traversing a corridor and calculate individual conflict status & delay.
-    Seamlessly handles both single physical graph edges (e.g. NDLS-CNB) and two-junction sections (e.g. AK-PUNE).
+    Look up all trains traversing a corridor/section and calculate individual conflict status & delay.
+    Ensures complete parity with corridor search by evaluating every train that traverses both endpoints.
     """
     buffer = timedelta(minutes=20) # 20-minute safety buffer for signal clearance
     corridor_trains = []
-    
-    events = corridor_index.get(asset_id, [])
-    if not events:
-        # Check reverse format
-        parts = asset_id.split("-")
-        if len(parts) == 2:
-            alt_id = f"{parts[1]}-{parts[0]}"
-            events = corridor_index.get(alt_id, [])
+    base_date = m_start_dt.replace(hour=0, minute=0, second=0, microsecond=0)
 
-    # If direct edge events exist, process them
-    if events:
+    parts = asset_id.split("-")
+    if len(parts) == 2 and stn_trains_index and train_map:
+        raw_u, raw_v = parts[0].strip().upper(), parts[1].strip().upper()
+        u_variants = get_station_code_variants(raw_u)
+        v_variants = get_station_code_variants(raw_v)
+
+        u_ids = set()
+        for var in u_variants:
+            for t in stn_trains_index.get(var, []):
+                u_ids.add(t["id"])
+
+        v_ids = set()
+        for var in v_variants:
+            for t in stn_trains_index.get(var, []):
+                v_ids.add(t["id"])
+
+        common_ids = u_ids.intersection(v_ids)
+
+        for tid in common_ids:
+            t = train_map[tid]
+            r = t.get("route", [])
+            u_stn = next((s for s in r if s in u_variants), None)
+            v_stn = next((s for s in r if s in v_variants), None)
+            if not u_stn or not v_stn:
+                continue
+
+            u_idx = r.index(u_stn)
+            v_idx = r.index(v_stn)
+            if u_idx < v_idx:
+                start_stn, end_stn = u_stn, v_stn
+                direction = "forward"
+            else:
+                start_stn, end_stn = v_stn, u_stn
+                direction = "reverse"
+
+            h1, m1, s1 = extract_station_time(t, start_stn, default_hour=6)
+            h2, m2, s2 = extract_station_time(t, end_stn, default_hour=12)
+
+            start_cross = base_date.replace(hour=h1, minute=m1, second=s1)
+            end_cross = base_date.replace(hour=h2, minute=m2, second=s2)
+            if end_cross <= start_cross:
+                end_cross += timedelta(days=1)
+
+            latest_start = max(m_start_dt - buffer, start_cross)
+            earliest_end = min(m_end_dt + buffer, end_cross)
+            delta = (earliest_end - latest_start).total_seconds()
+            is_delayed = delta > 0
+
+            p_val = t.get("priority", "Medium")
+            priority_mult = 2.5 if p_val == "High" else (0.6 if p_val == "Low" else 1.0)
+
+            if is_delayed:
+                overlap_mins = max(15, int(delta / 60))
+                train_delay = int(overlap_mins * priority_mult + 20)
+                status_label = f"Delayed (+{train_delay}m)"
+                status_code = "delayed"
+            elif end_cross <= m_start_dt:
+                train_delay = 0
+                status_label = "On-Time (Clears Before Block)"
+                status_code = "before_block"
+            else:
+                train_delay = 0
+                status_label = "On-Time (Passes After Block)"
+                status_code = "after_block"
+
+            train_clean_name = t.get("train_name") or t.get("name", t["id"]).split(" #")[0]
+            train_num = str(t.get("train_number", t["id"].replace("TRN-", "")))
+
+            corridor_trains.append({
+                "train_id": t["id"],
+                "train_number": train_num,
+                "train_name": train_clean_name,
+                "name": t.get("name", f"{train_clean_name} #{train_num}"),
+                "type": t.get("type", "Express"),
+                "priority": p_val,
+                "delay_mins": train_delay,
+                "asset_id": asset_id,
+                "maintenance_id": maintenance_id,
+                "start_cross": start_cross.isoformat(),
+                "end_cross": end_cross.isoformat(),
+                "start_cross_time": start_cross.strftime("%H:%M"),
+                "end_cross_time": end_cross.strftime("%H:%M"),
+                "direction": direction,
+                "is_delayed": is_delayed,
+                "status_label": status_label,
+                "status_code": status_code,
+                "origin": t.get("origin", r[0] if r else ""),
+                "destination": t.get("destination", r[-1] if r else ""),
+                "route": r,
+                "status": "Delayed" if is_delayed else "On-Time"
+            })
+    else:
+        # Fallback to direct corridor_index events if any
+        events = corridor_index.get(asset_id, [])
+        if not events:
+            parts = asset_id.split("-")
+            if len(parts) == 2:
+                alt_id = f"{parts[1]}-{parts[0]}"
+                events = corridor_index.get(alt_id, [])
         for ev in events:
             latest_start = max(m_start_dt - buffer, ev["start_cross"])
             earliest_end = min(m_end_dt + buffer, ev["end_cross"])
             delta = (earliest_end - latest_start).total_seconds()
             is_delayed = delta > 0
 
-            # Calculate delay based on train priority
             p_val = ev["priority"]
             priority_mult = 2.5 if p_val == "High" else (0.6 if p_val == "Low" else 1.0)
-            
+
             if is_delayed:
-                # Overlap delay + holding penalty
                 overlap_mins = max(15, int(delta / 60))
                 train_delay = int(overlap_mins * priority_mult + 20)
                 status_label = f"Delayed (+{train_delay}m)"
@@ -205,89 +368,6 @@ def get_corridor_trains_for_window(asset_id, m_start_dt, m_end_dt, corridor_inde
                 "route": ev["route"],
                 "status": "Delayed" if is_delayed else "On-Time"
             })
-
-    # If no direct edge events found, evaluate as two-junction multi-hop corridor
-    elif stn_trains_index and train_map:
-        parts = asset_id.split("-")
-        if len(parts) == 2:
-            u, v = parts[0].strip().upper(), parts[1].strip().upper()
-            u_trains = stn_trains_index.get(u, [])
-            v_trains = stn_trains_index.get(v, [])
-            u_ids = set(t["id"] for t in u_trains)
-            v_ids = set(t["id"] for t in v_trains)
-            common_ids = u_ids.intersection(v_ids)
-            base_date = m_start_dt.replace(hour=0, minute=0, second=0, microsecond=0)
-
-            for tid in common_ids:
-                t = train_map[tid]
-                r = t.get("route", [])
-                if u not in r or v not in r:
-                    continue
-                u_idx = r.index(u)
-                v_idx = r.index(v)
-                if u_idx < v_idx:
-                    first_stn, second_stn = u, v
-                    direction = "forward"
-                else:
-                    first_stn, second_stn = v, u
-                    direction = "reverse"
-
-                h1, m1, s1 = extract_station_time(t, first_stn, default_hour=6)
-                h2, m2, s2 = extract_station_time(t, second_stn, default_hour=12)
-
-                start_cross = base_date.replace(hour=h1, minute=m1, second=s1)
-                end_cross = base_date.replace(hour=h2, minute=m2, second=s2)
-                if end_cross <= start_cross:
-                    end_cross += timedelta(days=1)
-
-                latest_start = max(m_start_dt - buffer, start_cross)
-                earliest_end = min(m_end_dt + buffer, end_cross)
-                delta = (earliest_end - latest_start).total_seconds()
-                is_delayed = delta > 0
-
-                p_val = t.get("priority", "Medium")
-                priority_mult = 2.5 if p_val == "High" else (0.6 if p_val == "Low" else 1.0)
-
-                if is_delayed:
-                    overlap_mins = max(15, int(delta / 60))
-                    train_delay = int(overlap_mins * priority_mult + 20)
-                    status_label = f"Delayed (+{train_delay}m)"
-                    status_code = "delayed"
-                elif end_cross <= m_start_dt:
-                    train_delay = 0
-                    status_label = "On-Time (Clears Before Block)"
-                    status_code = "before_block"
-                else:
-                    train_delay = 0
-                    status_label = "On-Time (Passes After Block)"
-                    status_code = "after_block"
-
-                train_clean_name = t.get("train_name") or t.get("name", t["id"]).split(" #")[0]
-                train_num = str(t.get("train_number", t["id"].replace("TRN-", "")))
-
-                corridor_trains.append({
-                    "train_id": t["id"],
-                    "train_number": train_num,
-                    "train_name": train_clean_name,
-                    "name": t.get("name", f"{train_clean_name} #{train_num}"),
-                    "type": t.get("type", "Express"),
-                    "priority": p_val,
-                    "delay_mins": train_delay,
-                    "asset_id": asset_id,
-                    "maintenance_id": maintenance_id,
-                    "start_cross": start_cross.isoformat(),
-                    "end_cross": end_cross.isoformat(),
-                    "start_cross_time": start_cross.strftime("%H:%M"),
-                    "end_cross_time": end_cross.strftime("%H:%M"),
-                    "direction": direction,
-                    "is_delayed": is_delayed,
-                    "status_label": status_label,
-                    "status_code": status_code,
-                    "origin": t.get("origin", r[0] if r else ""),
-                    "destination": t.get("destination", r[-1] if r else ""),
-                    "route": r,
-                    "status": "Delayed" if is_delayed else "On-Time"
-                })
 
     corridor_trains.sort(key=lambda x: x["start_cross"])
     return corridor_trains
@@ -688,7 +768,7 @@ def run_optimization(network, trains, maintenance_requests, weight_delay=0.35, w
     corridor_trains_by_asset = {}
     active_assets = set(m["asset_id"] for m in maintenance_requests)
     for aid in active_assets:
-        corridor_trains_by_asset[aid] = get_corridor_trains_for_window(
+        t_list = get_corridor_trains_for_window(
             aid,
             earliest_time,
             earliest_time + timedelta(hours=24),
@@ -697,6 +777,18 @@ def run_optimization(network, trains, maintenance_requests, weight_delay=0.35, w
             stn_trains_index,
             train_map
         )
+        corridor_trains_by_asset[aid] = t_list
+        parts = aid.split("-")
+        if len(parts) == 2:
+            rev_aid = f"{parts[1]}-{parts[0]}"
+            corridor_trains_by_asset[rev_aid] = t_list
+            u_vars = get_station_code_variants(parts[0])
+            v_vars = get_station_code_variants(parts[1])
+            for uv in u_vars:
+                for vv in v_vars:
+                    corridor_trains_by_asset[f"{uv}-{vv}"] = t_list
+                    corridor_trains_by_asset[f"{vv}-{uv}"] = t_list
+
 
     return {
         "status": "success",

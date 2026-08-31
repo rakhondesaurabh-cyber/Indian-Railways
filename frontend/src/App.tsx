@@ -884,9 +884,17 @@ function App() {
                                   }
                                 }}
                               >
-                                <span className="badge bg-secondary bg-opacity-25 text-dark border">
-                                  Track: {req.asset_id}
-                                </span>
+                                <div className="d-flex align-items-center gap-1 flex-wrap">
+                                  <span className="badge bg-secondary bg-opacity-25 text-dark border">
+                                    Track: {req.asset_id}
+                                  </span>
+                                  {(scheduledBlock?.corridor_trains?.length || corridorTrainsByAsset[req.asset_id]?.length) ? (
+                                    <span className="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25">
+                                      <TrainIcon size={10} className="me-1" />
+                                      {scheduledBlock?.corridor_trains?.length || corridorTrainsByAsset[req.asset_id]?.length} Trains on Corridor
+                                    </span>
+                                  ) : null}
+                                </div>
                                 <span className="d-flex align-items-center">
                                   <Clock size={12} className="me-1" /> {req.duration_mins / 60} hrs ({req.duration_mins}m)
                                 </span>
