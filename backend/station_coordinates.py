@@ -165,11 +165,35 @@ MAJOR_STATIONS = {
     "ROHA": {"name": "Roha", "lat": 18.4361, "lng": 73.1189, "zone": "CR", "is_junction": True},
 }
 
+import os
+import json
+
+GEO_FILE = os.path.join(os.path.dirname(__file__), "dataset", "all_station_coordinates.json")
+_cached_all_coords = None
+
 def get_station_coords(station_code: str):
-    """Retrieve coordinates if explicitly known."""
-    code = station_code.strip().upper()
+    """Retrieve coordinates if explicitly known from authentic DataMeet database or curated major stations."""
+    global _cached_all_coords
+    code = str(station_code).strip().upper()
+    if not code:
+        return None
+        
+    if _cached_all_coords is None:
+        if os.path.exists(GEO_FILE):
+            try:
+                with open(GEO_FILE, "r", encoding="utf-8") as f:
+                    _cached_all_coords = json.load(f)
+            except Exception:
+                _cached_all_coords = {}
+        else:
+            _cached_all_coords = {}
+
+    if code in _cached_all_coords:
+        return _cached_all_coords[code]
+        
     if code in MAJOR_STATIONS:
         return MAJOR_STATIONS[code]
+        
     return None
 
 def interpolate_station_coords(station_code: str, prev_coords: dict, next_coords: dict, fraction: float):
@@ -184,3 +208,4 @@ def interpolate_station_coords(station_code: str, prev_coords: dict, next_coords
         "zone": prev_coords.get("zone", "IR"),
         "is_junction": False
     }
+

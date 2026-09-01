@@ -1,1 +1,3827 @@
-{"nodes": [{"id": "DDU", "code": "DDU", "name": "Pt Deen Dayal Upadhyaya (MGS)", "lat": 25.2796, "lng": 83.1187, "zone": "ECR", "degree": 798, "is_junction": true, "train_count": 416}, {"id": "MAO", "code": "MAO", "name": "Madgaon Jn", "lat": 15.2736, "lng": 73.978, "zone": "KR", "degree": 361, "is_junction": true, "train_count": 194}, {"id": "MAS", "code": "MAS", "name": "Chennai Central", "lat": 13.0827, "lng": 80.2707, "zone": "SR", "degree": 535, "is_junction": true, "train_count": 322}, {"id": "LDH", "code": "LDH", "name": "Ludhiana Jn", "lat": 30.901, "lng": 75.8573, "zone": "NR", "degree": 740, "is_junction": true, "train_count": 385}, {"id": "TVC", "code": "TVC", "name": "Thiruvananthapuram Central", "lat": 8.4875, "lng": 76.9525, "zone": "SR", "degree": 304, "is_junction": true, "train_count": 171}, {"id": "JAT", "code": "JAT", "name": "Jammu Tawi", "lat": 32.706, "lng": 74.8795, "zone": "NR", "degree": 358, "is_junction": true, "train_count": 204}, {"id": "JP", "code": "JP", "name": "Jaipur Jn", "lat": 26.9196, "lng": 75.7878, "zone": "NWR", "degree": 773, "is_junction": true, "train_count": 421}, {"id": "DD", "code": "DD", "name": "Daund Jn", "lat": 18.4655, "lng": 74.5802, "zone": "CR", "degree": 459, "is_junction": true, "train_count": 242}, {"id": "GHY", "code": "GHY", "name": "Guwahati", "lat": 26.1818, "lng": 91.7516, "zone": "NFR", "degree": 407, "is_junction": true, "train_count": 232}, {"id": "ASR", "code": "ASR", "name": "Amritsar Jn", "lat": 31.634, "lng": 74.8723, "zone": "NR", "degree": 347, "is_junction": true, "train_count": 218}, {"id": "NZM", "code": "NZM", "name": "Hazrat Nizamuddin", "lat": 28.5888, "lng": 77.2534, "zone": "NR", "degree": 681, "is_junction": true, "train_count": 386}, {"id": "ADI", "code": "ADI", "name": "Ahmedabad Jn", "lat": 23.0225, "lng": 72.5714, "zone": "WR", "degree": 938, "is_junction": true, "train_count": 522}, {"id": "ERS", "code": "ERS", "name": "Ernakulam Jn (South)", "lat": 9.968, "lng": 76.2908, "zone": "SR", "degree": 408, "is_junction": true, "train_count": 236}, {"id": "UBL", "code": "UBL", "name": "SSS Hubballi Jn", "lat": 15.3524, "lng": 75.1437, "zone": "SWR", "degree": 414, "is_junction": true, "train_count": 237}, {"id": "PNBE", "code": "PNBE", "name": "Patna Jn", "lat": 25.6022, "lng": 85.1376, "zone": "ECR", "degree": 905, "is_junction": true, "train_count": 512}, {"id": "CSMT", "code": "CSMT", "name": "Chhatrapati Shivaji Maharaj Terminus", "lat": 18.9401, "lng": 72.8353, "zone": "CR", "degree": 199, "is_junction": true, "train_count": 111}, {"id": "CNB", "code": "CNB", "name": "Kanpur Central", "lat": 26.4537, "lng": 80.3507, "zone": "NCR", "degree": 1293, "is_junction": true, "train_count": 682}, {"id": "BRC", "code": "BRC", "name": "Vadodara Jn", "lat": 22.3107, "lng": 73.1812, "zone": "WR", "degree": 1347, "is_junction": true, "train_count": 701}, {"id": "ET", "code": "ET", "name": "Itarsi Jn", "lat": 22.6122, "lng": 77.76, "zone": "WCR", "degree": 1343, "is_junction": true, "train_count": 698}, {"id": "GTL", "code": "GTL", "name": "Guntakal Jn", "lat": 15.1667, "lng": 77.3667, "zone": "SCR", "degree": 488, "is_junction": true, "train_count": 257}, {"id": "NDLS", "code": "NDLS", "name": "New Delhi", "lat": 28.6143, "lng": 77.209, "zone": "NR", "degree": 803, "is_junction": true, "train_count": 494}, {"id": "ASN", "code": "ASN", "name": "Asansol Jn", "lat": 23.6871, "lng": 86.9746, "zone": "ER", "degree": 926, "is_junction": true, "train_count": 495}, {"id": "MDU", "code": "MDU", "name": "Madurai Jn", "lat": 9.9197, "lng": 78.1105, "zone": "SR", "degree": 365, "is_junction": true, "train_count": 199}, {"id": "GAYA", "code": "GAYA", "name": "Gaya Jn", "lat": 24.7955, "lng": 85.0002, "zone": "ECR", "degree": 587, "is_junction": true, "train_count": 320}, {"id": "HWH", "code": "HWH", "name": "Howrah Jn", "lat": 22.5839, "lng": 88.3433, "zone": "ER", "degree": 706, "is_junction": true, "train_count": 435}, {"id": "NGP", "code": "NGP", "name": "Nagpur Jn", "lat": 21.1458, "lng": 79.0882, "zone": "CR", "degree": 979, "is_junction": true, "train_count": 517}, {"id": "PUNE", "code": "PUNE", "name": "Pune Jn", "lat": 18.5284, "lng": 73.8744, "zone": "CR", "degree": 875, "is_junction": true, "train_count": 488}, {"id": "MB", "code": "MB", "name": "Moradabad Jn", "lat": 28.8386, "lng": 78.7733, "zone": "NR", "degree": 905, "is_junction": true, "train_count": 474}, {"id": "BSP", "code": "BSP", "name": "Bilaspur Jn", "lat": 22.0797, "lng": 82.1409, "zone": "SECR", "degree": 541, "is_junction": true, "train_count": 293}, {"id": "KYN", "code": "KYN", "name": "Kalyan Jn", "lat": 19.2437, "lng": 73.1355, "zone": "CR", "degree": 1161, "is_junction": true, "train_count": 583}, {"id": "PURI", "code": "PURI", "name": "Puri", "lat": 19.8135, "lng": 85.8312, "zone": "ECoR", "degree": 316, "is_junction": true, "train_count": 199}, {"id": "BPL", "code": "BPL", "name": "Bhopal Jn", "lat": 23.2599, "lng": 77.4126, "zone": "WCR", "degree": 931, "is_junction": true, "train_count": 484}, {"id": "RTM", "code": "RTM", "name": "Ratlam Jn", "lat": 23.3441, "lng": 75.0378, "zone": "WR", "degree": 761, "is_junction": true, "train_count": 397}, {"id": "BSB", "code": "BSB", "name": "Varanasi Jn", "lat": 25.3283, "lng": 82.9863, "zone": "NR", "degree": 897, "is_junction": true, "train_count": 486}, {"id": "SBC", "code": "SBC", "name": "KSR Bengaluru City", "lat": 12.9779, "lng": 77.5671, "zone": "SWR", "degree": 496, "is_junction": true, "train_count": 308}, {"id": "SDAH", "code": "SDAH", "name": "Sealdah", "lat": 22.5684, "lng": 88.3712, "zone": "ER", "degree": 218, "is_junction": true, "train_count": 135}, {"id": "GKP", "code": "GKP", "name": "Gorakhpur Jn", "lat": 26.7588, "lng": 83.382, "zone": "NER", "degree": 791, "is_junction": true, "train_count": 445}, {"id": "NJP", "code": "NJP", "name": "New Jalpaiguri", "lat": 26.6853, "lng": 88.4419, "zone": "NFR", "degree": 571, "is_junction": true, "train_count": 306}, {"id": "TPJ", "code": "TPJ", "name": "Tiruchchirappalli Jn", "lat": 10.7905, "lng": 78.6856, "zone": "SR", "degree": 454, "is_junction": true, "train_count": 251}, {"id": "R", "code": "R", "name": "Raipur Jn", "lat": 21.2514, "lng": 81.6296, "zone": "SECR", "degree": 673, "is_junction": true, "train_count": 357}, {"id": "JBP", "code": "JBP", "name": "Jabalpur Jn", "lat": 23.16, "lng": 79.95, "zone": "WCR", "degree": 801, "is_junction": true, "train_count": 437}, {"id": "MMCT", "code": "MMCT", "name": "Mumbai Central", "lat": 18.969, "lng": 72.8205, "zone": "WR", "degree": 55, "is_junction": true, "train_count": 33}, {"id": "BSL", "code": "BSL", "name": "Bhusaval Jn", "lat": 21.0455, "lng": 75.7885, "zone": "CR", "degree": 1262, "is_junction": true, "train_count": 655}, {"id": "LKO", "code": "LKO", "name": "Lucknow Charbagh", "lat": 26.8315, "lng": 80.9234, "zone": "NR", "degree": 1056, "is_junction": true, "train_count": 563}, {"id": "RNC", "code": "RNC", "name": "Ranchi Jn", "lat": 23.3512, "lng": 85.3346, "zone": "SER", "degree": 324, "is_junction": true, "train_count": 185}, {"id": "BZA", "code": "BZA", "name": "Vijayawada Jn", "lat": 16.5186, "lng": 80.62, "zone": "SCR", "degree": 1431, "is_junction": true, "train_count": 759}, {"id": "VSKP", "code": "VSKP", "name": "Visakhapatnam", "lat": 17.7215, "lng": 83.287, "zone": "ECoR", "degree": 760, "is_junction": true, "train_count": 424}, {"id": "DHN", "code": "DHN", "name": "Dhanbad Jn", "lat": 23.7917, "lng": 86.4304, "zone": "ECR", "degree": 517, "is_junction": true, "train_count": 276}, {"id": "KOTA", "code": "KOTA", "name": "Kota Jn", "lat": 25.2138, "lng": 75.8648, "zone": "WCR", "degree": 735, "is_junction": true, "train_count": 391}, {"id": "UMB", "code": "UMB", "name": "Ambala Cantt", "lat": 30.3323, "lng": 76.8288, "zone": "NR", "degree": 885, "is_junction": true, "train_count": 465}, {"id": "ST", "code": "ST", "name": "Surat", "lat": 21.2049, "lng": 72.8411, "zone": "WR", "degree": 1112, "is_junction": true, "train_count": 579}, {"id": "DLI", "code": "DLI", "name": "Old Delhi", "lat": 28.6617, "lng": 77.2281, "zone": "NR", "degree": 635, "is_junction": true, "train_count": 379}, {"id": "TATA", "code": "TATA", "name": "Tatanagar Jn", "lat": 22.7667, "lng": 86.2, "zone": "SER", "degree": 455, "is_junction": true, "train_count": 255}, {"id": "ED", "code": "ED", "name": "Erode Jn", "lat": 11.3364, "lng": 77.7275, "zone": "SR", "degree": 674, "is_junction": true, "train_count": 346}, {"id": "KGP", "code": "KGP", "name": "Kharagpur Jn", "lat": 22.3391, "lng": 87.3248, "zone": "SER", "degree": 842, "is_junction": true, "train_count": 439}, {"id": "SUR", "code": "SUR", "name": "Solapur", "lat": 17.6599, "lng": 75.9064, "zone": "CR", "degree": 426, "is_junction": true, "train_count": 237}, {"id": "CBE", "code": "CBE", "name": "Coimbatore Jn", "lat": 11.0018, "lng": 76.9628, "zone": "SR", "degree": 536, "is_junction": true, "train_count": 298}, {"id": "SC", "code": "SC", "name": "Secunderabad Jn", "lat": 17.433, "lng": 78.5046, "zone": "SCR", "degree": 599, "is_junction": true, "train_count": 340}, {"id": "BBS", "code": "BBS", "name": "Bhubaneswar", "lat": 20.2648, "lng": 85.8436, "zone": "ECoR", "degree": 917, "is_junction": true, "train_count": 490}], "edges": [{"id": "BZA-VSKP", "source": "BZA", "target": "VSKP", "distance_km": 350, "travel_time_mins": 340, "daily_trains": 11}, {"id": "DD-PUNE", "source": "DD", "target": "PUNE", "distance_km": 76, "travel_time_mins": 88, "daily_trains": 114}, {"id": "GTL-MAS", "source": "GTL", "target": "MAS", "distance_km": 451, "travel_time_mins": 480, "daily_trains": 1}, {"id": "BSB-KYN", "source": "BSB", "target": "KYN", "distance_km": 1605, "travel_time_mins": 1020, "daily_trains": 3}, {"id": "ET-JBP", "source": "ET", "target": "JBP", "distance_km": 245, "travel_time_mins": 195, "daily_trains": 124}, {"id": "CSMT-ET", "source": "CSMT", "target": "ET", "distance_km": 752, "travel_time_mins": 875, "daily_trains": 1}, {"id": "BPL-ET", "source": "BPL", "target": "ET", "distance_km": 98, "travel_time_mins": 160, "daily_trains": 163}, {"id": "CNB-LKO", "source": "CNB", "target": "LKO", "distance_km": 73, "travel_time_mins": 110, "daily_trains": 98}, {"id": "BPL-GKP", "source": "BPL", "target": "GKP", "distance_km": 857, "travel_time_mins": 960, "daily_trains": 1}, {"id": "BSL-ET", "source": "BSL", "target": "ET", "distance_km": 307, "travel_time_mins": 215, "daily_trains": 53}, {"id": "CSMT-DDU", "source": "CSMT", "target": "DDU", "distance_km": 1499, "travel_time_mins": 245, "daily_trains": 1}, {"id": "GKP-NGP", "source": "GKP", "target": "NGP", "distance_km": 1253, "travel_time_mins": 70, "daily_trains": 1}, {"id": "CSMT-KYN", "source": "CSMT", "target": "KYN", "distance_km": 53, "travel_time_mins": 295, "daily_trains": 3}, {"id": "BRC-PUNE", "source": "BRC", "target": "PUNE", "distance_km": 535, "travel_time_mins": 510, "daily_trains": 5}, {"id": "BRC-RTM", "source": "BRC", "target": "RTM", "distance_km": 262, "travel_time_mins": 220, "daily_trains": 88}, {"id": "BRC-NZM", "source": "BRC", "target": "NZM", "distance_km": 986, "travel_time_mins": 825, "daily_trains": 1}, {"id": "PUNE-RTM", "source": "PUNE", "target": "RTM", "distance_km": 797, "travel_time_mins": 800, "daily_trains": 1}, {"id": "NZM-RTM", "source": "NZM", "target": "RTM", "distance_km": 724, "travel_time_mins": 730, "daily_trains": 1}, {"id": "BRC-ST", "source": "BRC", "target": "ST", "distance_km": 129, "travel_time_mins": 100, "daily_trains": 172}, {"id": "BPL-GAYA", "source": "BPL", "target": "GAYA", "distance_km": 1015, "travel_time_mins": 1218, "daily_trains": 1}, {"id": "ET-GHY", "source": "ET", "target": "GHY", "distance_km": 1835, "travel_time_mins": 595, "daily_trains": 1}, {"id": "DDU-GAYA", "source": "DDU", "target": "GAYA", "distance_km": 203, "travel_time_mins": 155, "daily_trains": 16}, {"id": "ET-PUNE", "source": "ET", "target": "PUNE", "distance_km": 799, "travel_time_mins": 880, "daily_trains": 2}, {"id": "BRC-JBP", "source": "BRC", "target": "JBP", "distance_km": 885, "travel_time_mins": 900, "daily_trains": 1}, {"id": "BZA-MAS", "source": "BZA", "target": "MAS", "distance_km": 430, "travel_time_mins": 440, "daily_trains": 18}, {"id": "HWH-KGP", "source": "HWH", "target": "KGP", "distance_km": 115, "travel_time_mins": 113, "daily_trains": 77}, {"id": "BSP-R", "source": "BSP", "target": "R", "distance_km": 110, "travel_time_mins": 120, "daily_trains": 86}, {"id": "ET-NGP", "source": "ET", "target": "NGP", "distance_km": 297, "travel_time_mins": 325, "daily_trains": 87}, {"id": "BBS-RNC", "source": "BBS", "target": "RNC", "distance_km": 614, "travel_time_mins": 605, "daily_trains": 1}, {"id": "BBS-KGP", "source": "BBS", "target": "KGP", "distance_km": 323, "travel_time_mins": 270, "daily_trains": 4}, {"id": "BBS-VSKP", "source": "BBS", "target": "VSKP", "distance_km": 443, "travel_time_mins": 395, "daily_trains": 2}, {"id": "CBE-ERS", "source": "CBE", "target": "ERS", "distance_km": 206, "travel_time_mins": 255, "daily_trains": 2}, {"id": "BZA-SC", "source": "BZA", "target": "SC", "distance_km": 313, "travel_time_mins": 310, "daily_trains": 6}, {"id": "SC-SUR", "source": "SC", "target": "SUR", "distance_km": 333, "travel_time_mins": 440, "daily_trains": 1}, {"id": "PUNE-SUR", "source": "PUNE", "target": "SUR", "distance_km": 264, "travel_time_mins": 310, "daily_trains": 52}, {"id": "BSB-DDU", "source": "BSB", "target": "DDU", "distance_km": 17, "travel_time_mins": 75, "daily_trains": 83}, {"id": "KOTA-RTM", "source": "KOTA", "target": "RTM", "distance_km": 266, "travel_time_mins": 220, "daily_trains": 68}, {"id": "BRC-DDU", "source": "BRC", "target": "DDU", "distance_km": 1460, "travel_time_mins": 1290, "daily_trains": 1}, {"id": "JAT-PNBE", "source": "JAT", "target": "PNBE", "distance_km": 1529, "travel_time_mins": 440, "daily_trains": 2}, {"id": "ASN-PNBE", "source": "ASN", "target": "PNBE", "distance_km": 332, "travel_time_mins": 415, "daily_trains": 2}, {"id": "BSB-DHN", "source": "BSB", "target": "DHN", "distance_km": 419, "travel_time_mins": 475, "daily_trains": 1}, {"id": "BSB-LKO", "source": "BSB", "target": "LKO", "distance_km": 283, "travel_time_mins": 355, "daily_trains": 15}, {"id": "DHN-UMB", "source": "DHN", "target": "UMB", "distance_km": 1385, "travel_time_mins": 1662, "daily_trains": 1}, {"id": "CNB-PNBE", "source": "CNB", "target": "PNBE", "distance_km": 601, "travel_time_mins": 810, "daily_trains": 2}, {"id": "GKP-NDLS", "source": "GKP", "target": "NDLS", "distance_km": 790, "travel_time_mins": 930, "daily_trains": 1}, {"id": "CNB-ET", "source": "CNB", "target": "ET", "distance_km": 807, "travel_time_mins": 940, "daily_trains": 1}, {"id": "BSL-CNB", "source": "BSL", "target": "CNB", "distance_km": 1114, "travel_time_mins": 1140, "daily_trains": 1}, {"id": "ASN-DHN", "source": "ASN", "target": "DHN", "distance_km": 58, "travel_time_mins": 60, "daily_trains": 102}, {"id": "LDH-UMB", "source": "LDH", "target": "UMB", "distance_km": 114, "travel_time_mins": 112, "daily_trains": 133}, {"id": "DLI-MB", "source": "DLI", "target": "MB", "distance_km": 161, "travel_time_mins": 170, "daily_trains": 21}, {"id": "MB-NDLS", "source": "MB", "target": "NDLS", "distance_km": 164, "travel_time_mins": 270, "daily_trains": 2}, {"id": "DHN-MB", "source": "DHN", "target": "MB", "distance_km": 1045, "travel_time_mins": 1254, "daily_trains": 1}, {"id": "PNBE-UMB", "source": "PNBE", "target": "UMB", "distance_km": 1233, "travel_time_mins": 1479, "daily_trains": 1}, {"id": "BRC-GKP", "source": "BRC", "target": "GKP", "distance_km": 1464, "travel_time_mins": 1250, "daily_trains": 1}, {"id": "LKO-MB", "source": "LKO", "target": "MB", "distance_km": 326, "travel_time_mins": 330, "daily_trains": 23}, {"id": "DLI-GKP", "source": "DLI", "target": "GKP", "distance_km": 726, "travel_time_mins": 845, "daily_trains": 2}, {"id": "GKP-JAT", "source": "GKP", "target": "JAT", "distance_km": 1216, "travel_time_mins": 1430, "daily_trains": 3}, {"id": "ASR-MB", "source": "ASR", "target": "MB", "distance_km": 523, "travel_time_mins": 500, "daily_trains": 4}, {"id": "DHN-ED", "source": "DHN", "target": "ED", "distance_km": 2150, "travel_time_mins": 375, "daily_trains": 2}, {"id": "KGP-MAS", "source": "KGP", "target": "MAS", "distance_km": 1533, "travel_time_mins": 1839, "daily_trains": 3}, {"id": "DDU-DHN", "source": "DDU", "target": "DHN", "distance_km": 402, "travel_time_mins": 415, "daily_trains": 3}, {"id": "BPL-NGP", "source": "BPL", "target": "NGP", "distance_km": 395, "travel_time_mins": 420, "daily_trains": 37}, {"id": "JP-RTM", "source": "JP", "target": "RTM", "distance_km": 510, "travel_time_mins": 530, "daily_trains": 1}, {"id": "BZA-GHY", "source": "BZA", "target": "GHY", "distance_km": 2230, "travel_time_mins": 910, "daily_trains": 1}, {"id": "BBS-SC", "source": "BBS", "target": "SC", "distance_km": 1092, "travel_time_mins": 1195, "daily_trains": 4}, {"id": "BBS-BZA", "source": "BBS", "target": "BZA", "distance_km": 807, "travel_time_mins": 535, "daily_trains": 1}, {"id": "KYN-UBL", "source": "KYN", "target": "UBL", "distance_km": 696, "travel_time_mins": 917, "daily_trains": 1}, {"id": "KYN-PUNE", "source": "KYN", "target": "PUNE", "distance_km": 139, "travel_time_mins": 165, "daily_trains": 51}, {"id": "PUNE-UBL", "source": "PUNE", "target": "UBL", "distance_km": 558, "travel_time_mins": 730, "daily_trains": 1}, {"id": "BBS-PNBE", "source": "BBS", "target": "PNBE", "distance_km": 962, "travel_time_mins": 1154, "daily_trains": 2}, {"id": "BSP-PURI", "source": "BSP", "target": "PURI", "distance_km": 582, "travel_time_mins": 580, "daily_trains": 1}, {"id": "KGP-TATA", "source": "KGP", "target": "TATA", "distance_km": 135, "travel_time_mins": 115, "daily_trains": 63}, {"id": "NZM-R", "source": "NZM", "target": "R", "distance_km": 1240, "travel_time_mins": 1488, "daily_trains": 2}, {"id": "ADI-RTM", "source": "ADI", "target": "RTM", "distance_km": 350, "travel_time_mins": 350, "daily_trains": 4}, {"id": "ADI-BRC", "source": "ADI", "target": "BRC", "distance_km": 100, "travel_time_mins": 128, "daily_trains": 63}, {"id": "JP-RNC", "source": "JP", "target": "RNC", "distance_km": 1510, "travel_time_mins": 1812, "daily_trains": 1}, {"id": "DD-JP", "source": "DD", "target": "JP", "distance_km": 1374, "travel_time_mins": 1648, "daily_trains": 1}, {"id": "RTM-SUR", "source": "RTM", "target": "SUR", "distance_km": 1060, "travel_time_mins": 1025, "daily_trains": 1}, {"id": "JP-KOTA", "source": "JP", "target": "KOTA", "distance_km": 240, "travel_time_mins": 300, "daily_trains": 1}, {"id": "CSMT-MAO", "source": "CSMT", "target": "MAO", "distance_km": 765, "travel_time_mins": 918, "daily_trains": 1}, {"id": "ERS-MAO", "source": "ERS", "target": "MAO", "distance_km": 850, "travel_time_mins": 1020, "daily_trains": 6}, {"id": "CSMT-PUNE", "source": "CSMT", "target": "PUNE", "distance_km": 192, "travel_time_mins": 230, "daily_trains": 8}, {"id": "ED-KYN", "source": "ED", "target": "KYN", "distance_km": 1362, "travel_time_mins": 1122, "daily_trains": 1}, {"id": "CBE-PUNE", "source": "CBE", "target": "PUNE", "distance_km": 1325, "travel_time_mins": 1590, "daily_trains": 1}, {"id": "DD-SUR", "source": "DD", "target": "SUR", "distance_km": 187, "travel_time_mins": 215, "daily_trains": 40}, {"id": "BBS-CSMT", "source": "BBS", "target": "CSMT", "distance_km": 1932, "travel_time_mins": 2318, "daily_trains": 1}, {"id": "GKP-PUNE", "source": "GKP", "target": "PUNE", "distance_km": 1771, "travel_time_mins": 2125, "daily_trains": 4}, {"id": "KYN-MDU", "source": "KYN", "target": "MDU", "distance_km": 1665, "travel_time_mins": 1998, "daily_trains": 2}, {"id": "NDLS-NZM", "source": "NDLS", "target": "NZM", "distance_km": 7, "travel_time_mins": 26, "daily_trains": 93}, {"id": "ASR-CSMT", "source": "ASR", "target": "CSMT", "distance_km": 2046, "travel_time_mins": 2455, "daily_trains": 1}, {"id": "CSMT-LDH", "source": "CSMT", "target": "LDH", "distance_km": 1910, "travel_time_mins": 2292, "daily_trains": 1}, {"id": "BSL-KYN", "source": "BSL", "target": "KYN", "distance_km": 390, "travel_time_mins": 410, "daily_trains": 10}, {"id": "JAT-PUNE", "source": "JAT", "target": "PUNE", "distance_km": 2172, "travel_time_mins": 2606, "daily_trains": 2}, {"id": "JAT-LDH", "source": "JAT", "target": "LDH", "distance_km": 265, "travel_time_mins": 285, "daily_trains": 1}, {"id": "PUNE-ST", "source": "PUNE", "target": "ST", "distance_km": 406, "travel_time_mins": 437, "daily_trains": 1}, {"id": "ERS-PUNE", "source": "ERS", "target": "PUNE", "distance_km": 1435, "travel_time_mins": 1722, "daily_trains": 4}, {"id": "JP-NGP", "source": "JP", "target": "NGP", "distance_km": 1345, "travel_time_mins": 1614, "daily_trains": 2}, {"id": "CSMT-SBC", "source": "CSMT", "target": "SBC", "distance_km": 1153, "travel_time_mins": 1383, "daily_trains": 1}, {"id": "CNB-PUNE", "source": "CNB", "target": "PUNE", "distance_km": 1423, "travel_time_mins": 1707, "daily_trains": 2}, {"id": "SUR-UBL", "source": "SUR", "target": "UBL", "distance_km": 358, "travel_time_mins": 429, "daily_trains": 2}, {"id": "HWH-JBP", "source": "HWH", "target": "JBP", "distance_km": 1152, "travel_time_mins": 1382, "daily_trains": 2}, {"id": "ASN-JBP", "source": "ASN", "target": "JBP", "distance_km": 951, "travel_time_mins": 1141, "daily_trains": 1}, {"id": "JAT-JBP", "source": "JAT", "target": "JBP", "distance_km": 1505, "travel_time_mins": 1806, "daily_trains": 2}, {"id": "MAS-SBC", "source": "MAS", "target": "SBC", "distance_km": 362, "travel_time_mins": 290, "daily_trains": 10}, {"id": "NDLS-UMB", "source": "NDLS", "target": "UMB", "distance_km": 199, "travel_time_mins": 155, "daily_trains": 21}, {"id": "BPL-BSL", "source": "BPL", "target": "BSL", "distance_km": 398, "travel_time_mins": 375, "daily_trains": 18}, {"id": "CSMT-SUR", "source": "CSMT", "target": "SUR", "distance_km": 455, "travel_time_mins": 546, "daily_trains": 4}, {"id": "JBP-NZM", "source": "JBP", "target": "NZM", "distance_km": 909, "travel_time_mins": 1090, "daily_trains": 7}, {"id": "HWH-PUNE", "source": "HWH", "target": "PUNE", "distance_km": 2020, "travel_time_mins": 2424, "daily_trains": 2}, {"id": "KGP-NGP", "source": "KGP", "target": "NGP", "distance_km": 1015, "travel_time_mins": 985, "daily_trains": 2}, {"id": "NGP-PUNE", "source": "NGP", "target": "PUNE", "distance_km": 889, "travel_time_mins": 1066, "daily_trains": 3}, {"id": "CSMT-NGP", "source": "CSMT", "target": "NGP", "distance_km": 837, "travel_time_mins": 1004, "daily_trains": 1}, {"id": "BSL-JBP", "source": "BSL", "target": "JBP", "distance_km": 552, "travel_time_mins": 475, "daily_trains": 5}, {"id": "BSL-NZM", "source": "BSL", "target": "NZM", "distance_km": 1093, "travel_time_mins": 995, "daily_trains": 5}, {"id": "PNBE-PUNE", "source": "PNBE", "target": "PUNE", "distance_km": 1781, "travel_time_mins": 2137, "daily_trains": 1}, {"id": "BPL-NZM", "source": "BPL", "target": "NZM", "distance_km": 693, "travel_time_mins": 831, "daily_trains": 4}, {"id": "KYN-MAS", "source": "KYN", "target": "MAS", "distance_km": 1230, "travel_time_mins": 1476, "daily_trains": 4}, {"id": "GKP-JBP", "source": "GKP", "target": "JBP", "distance_km": 733, "travel_time_mins": 805, "daily_trains": 2}, {"id": "JBP-NDLS", "source": "JBP", "target": "NDLS", "distance_km": 1038, "travel_time_mins": 1245, "daily_trains": 1}, {"id": "BRC-KOTA", "source": "BRC", "target": "KOTA", "distance_km": 528, "travel_time_mins": 470, "daily_trains": 14}, {"id": "KOTA-NZM", "source": "KOTA", "target": "NZM", "distance_km": 457, "travel_time_mins": 393, "daily_trains": 28}, {"id": "BSL-NGP", "source": "BSL", "target": "NGP", "distance_km": 393, "travel_time_mins": 305, "daily_trains": 19}, {"id": "BSP-NGP", "source": "BSP", "target": "NGP", "distance_km": 411, "travel_time_mins": 360, "daily_trains": 5}, {"id": "BSP-TATA", "source": "BSP", "target": "TATA", "distance_km": 470, "travel_time_mins": 290, "daily_trains": 5}, {"id": "HWH-TATA", "source": "HWH", "target": "TATA", "distance_km": 249, "travel_time_mins": 245, "daily_trains": 5}, {"id": "LKO-NDLS", "source": "LKO", "target": "NDLS", "distance_km": 493, "travel_time_mins": 591, "daily_trains": 7}, {"id": "LKO-UMB", "source": "LKO", "target": "UMB", "distance_km": 599, "travel_time_mins": 718, "daily_trains": 1}, {"id": "BSB-JAT", "source": "BSB", "target": "JAT", "distance_km": 1261, "travel_time_mins": 1513, "daily_trains": 2}, {"id": "BSB-UMB", "source": "BSB", "target": "UMB", "distance_km": 883, "travel_time_mins": 905, "daily_trains": 1}, {"id": "HWH-NDLS", "source": "HWH", "target": "NDLS", "distance_km": 1447, "travel_time_mins": 1736, "daily_trains": 6}, {"id": "ASN-HWH", "source": "ASN", "target": "HWH", "distance_km": 200, "travel_time_mins": 130, "daily_trains": 16}, {"id": "ET-MAS", "source": "ET", "target": "MAS", "distance_km": 1391, "travel_time_mins": 1095, "daily_trains": 2}, {"id": "ET-NZM", "source": "ET", "target": "NZM", "distance_km": 784, "travel_time_mins": 575, "daily_trains": 3}, {"id": "BBS-PURI", "source": "BBS", "target": "PURI", "distance_km": 63, "travel_time_mins": 98, "daily_trains": 3}, {"id": "BRC-MAO", "source": "BRC", "target": "MAO", "distance_km": 1108, "travel_time_mins": 914, "daily_trains": 2}, {"id": "ADI-PUNE", "source": "ADI", "target": "PUNE", "distance_km": 635, "travel_time_mins": 520, "daily_trains": 2}, {"id": "DHN-HWH", "source": "DHN", "target": "HWH", "distance_km": 259, "travel_time_mins": 190, "daily_trains": 5}, {"id": "GAYA-HWH", "source": "GAYA", "target": "HWH", "distance_km": 458, "travel_time_mins": 430, "daily_trains": 4}, {"id": "DHN-GAYA", "source": "DHN", "target": "GAYA", "distance_km": 198, "travel_time_mins": 147, "daily_trains": 23}, {"id": "DDU-PNBE", "source": "DDU", "target": "PNBE", "distance_km": 212, "travel_time_mins": 245, "daily_trains": 14}, {"id": "ASN-LDH", "source": "ASN", "target": "LDH", "distance_km": 1556, "travel_time_mins": 237, "daily_trains": 1}, {"id": "ASN-SDAH", "source": "ASN", "target": "SDAH", "distance_km": 206, "travel_time_mins": 187, "daily_trains": 5}, {"id": "ASR-SDAH", "source": "ASR", "target": "SDAH", "distance_km": 1898, "travel_time_mins": 2277, "daily_trains": 3}, {"id": "CSMT-HWH", "source": "CSMT", "target": "HWH", "distance_km": 2176, "travel_time_mins": 2611, "daily_trains": 4}, {"id": "DDU-KYN", "source": "DDU", "target": "KYN", "distance_km": 1445, "travel_time_mins": 17, "daily_trains": 1}, {"id": "DLI-HWH", "source": "DLI", "target": "HWH", "distance_km": 1432, "travel_time_mins": 1225, "daily_trains": 1}, {"id": "CNB-DLI", "source": "CNB", "target": "DLI", "distance_km": 435, "travel_time_mins": 340, "daily_trains": 5}, {"id": "HWH-MB", "source": "HWH", "target": "MB", "distance_km": 1368, "travel_time_mins": 1641, "daily_trains": 1}, {"id": "DLI-SDAH", "source": "DLI", "target": "SDAH", "distance_km": 1448, "travel_time_mins": 1737, "daily_trains": 2}, {"id": "HWH-JAT", "source": "HWH", "target": "JAT", "distance_km": 2021, "travel_time_mins": 2425, "daily_trains": 2}, {"id": "BSB-HWH", "source": "BSB", "target": "HWH", "distance_km": 760, "travel_time_mins": 912, "daily_trains": 2}, {"id": "NJP-SDAH", "source": "NJP", "target": "SDAH", "distance_km": 567, "travel_time_mins": 680, "daily_trains": 2}, {"id": "GHY-HWH", "source": "GHY", "target": "HWH", "distance_km": 1020, "travel_time_mins": 1224, "daily_trains": 2}, {"id": "ASN-ASR", "source": "ASN", "target": "ASR", "distance_km": 1627, "travel_time_mins": 1952, "daily_trains": 1}, {"id": "ASR-BSB", "source": "ASR", "target": "BSB", "distance_km": 1150, "travel_time_mins": 1125, "daily_trains": 1}, {"id": "ASN-CSMT", "source": "ASN", "target": "CSMT", "distance_km": 2042, "travel_time_mins": 2450, "daily_trains": 1}, {"id": "ASN-KYN", "source": "ASN", "target": "KYN", "distance_km": 1988, "travel_time_mins": 2385, "daily_trains": 1}, {"id": "CNB-DDU", "source": "CNB", "target": "DDU", "distance_km": 348, "travel_time_mins": 275, "daily_trains": 5}, {"id": "ASN-LKO", "source": "ASN", "target": "LKO", "distance_km": 843, "travel_time_mins": 469, "daily_trains": 1}, {"id": "DLI-UMB", "source": "DLI", "target": "UMB", "distance_km": 197, "travel_time_mins": 170, "daily_trains": 6}, {"id": "DDU-SDAH", "source": "DDU", "target": "SDAH", "distance_km": 667, "travel_time_mins": 560, "daily_trains": 2}, {"id": "ASR-GAYA", "source": "ASR", "target": "GAYA", "distance_km": 1430, "travel_time_mins": 1150, "daily_trains": 1}, {"id": "GAYA-JBP", "source": "GAYA", "target": "JBP", "distance_km": 706, "travel_time_mins": 625, "daily_trains": 1}, {"id": "GAYA-MAS", "source": "GAYA", "target": "MAS", "distance_km": 2344, "travel_time_mins": 2812, "daily_trains": 1}, {"id": "CNB-NDLS", "source": "CNB", "target": "NDLS", "distance_km": 441, "travel_time_mins": 325, "daily_trains": 13}, {"id": "GAYA-NDLS", "source": "GAYA", "target": "NDLS", "distance_km": 989, "travel_time_mins": 1186, "daily_trains": 2}, {"id": "KOTA-NDLS", "source": "KOTA", "target": "NDLS", "distance_km": 1063, "travel_time_mins": 1275, "daily_trains": 3}, {"id": "MAO-RTM", "source": "MAO", "target": "RTM", "distance_km": 1370, "travel_time_mins": 1140, "daily_trains": 1}, {"id": "MAO-UMB", "source": "MAO", "target": "UMB", "distance_km": 2299, "travel_time_mins": 2758, "daily_trains": 1}, {"id": "CNB-JAT", "source": "CNB", "target": "JAT", "distance_km": 1026, "travel_time_mins": 1231, "daily_trains": 2}, {"id": "CNB-UMB", "source": "CNB", "target": "UMB", "distance_km": 648, "travel_time_mins": 718, "daily_trains": 1}, {"id": "ADI-JAT", "source": "ADI", "target": "JAT", "distance_km": 1657, "travel_time_mins": 1390, "daily_trains": 2}, {"id": "ASR-BRC", "source": "ASR", "target": "BRC", "distance_km": 1440, "travel_time_mins": 1160, "daily_trains": 2}, {"id": "NZM-PUNE", "source": "NZM", "target": "PUNE", "distance_km": 1520, "travel_time_mins": 1250, "daily_trains": 1}, {"id": "ASR-NDLS", "source": "ASR", "target": "NDLS", "distance_km": 448, "travel_time_mins": 537, "daily_trains": 2}, {"id": "GHY-TVC", "source": "GHY", "target": "TVC", "distance_km": 3552, "travel_time_mins": 4262, "daily_trains": 1}, {"id": "GHY-SBC", "source": "GHY", "target": "SBC", "distance_km": 2992, "travel_time_mins": 3590, "daily_trains": 1}, {"id": "GKP-TVC", "source": "GKP", "target": "TVC", "distance_km": 3253, "travel_time_mins": 3903, "daily_trains": 1}, {"id": "CNB-GKP", "source": "CNB", "target": "GKP", "distance_km": 349, "travel_time_mins": 392, "daily_trains": 4}, {"id": "CBE-GHY", "source": "CBE", "target": "GHY", "distance_km": 3552, "travel_time_mins": 4262, "daily_trains": 1}, {"id": "BZA-CBE", "source": "BZA", "target": "CBE", "distance_km": 921, "travel_time_mins": 880, "daily_trains": 1}, {"id": "GHY-KYN", "source": "GHY", "target": "KYN", "distance_km": 2550, "travel_time_mins": 1125, "daily_trains": 1}, {"id": "NDLS-NJP", "source": "NDLS", "target": "NJP", "distance_km": 1500, "travel_time_mins": 1800, "daily_trains": 2}, {"id": "BPL-CSMT", "source": "BPL", "target": "CSMT", "distance_km": 850, "travel_time_mins": 770, "daily_trains": 1}, {"id": "LKO-NGP", "source": "LKO", "target": "NGP", "distance_km": 1141, "travel_time_mins": 1135, "daily_trains": 1}, {"id": "JAT-R", "source": "JAT", "target": "R", "distance_km": 1831, "travel_time_mins": 1140, "daily_trains": 2}, {"id": "GKP-LKO", "source": "GKP", "target": "LKO", "distance_km": 270, "travel_time_mins": 295, "daily_trains": 6}, {"id": "GKP-SC", "source": "GKP", "target": "SC", "distance_km": 1829, "travel_time_mins": 2194, "daily_trains": 2}, {"id": "ET-GKP", "source": "ET", "target": "GKP", "distance_km": 946, "travel_time_mins": 975, "daily_trains": 1}, {"id": "GKP-KYN", "source": "GKP", "target": "KYN", "distance_km": 1643, "travel_time_mins": 1971, "daily_trains": 2}, {"id": "MAS-NDLS", "source": "MAS", "target": "NDLS", "distance_km": 2182, "travel_time_mins": 2618, "daily_trains": 4}, {"id": "ERS-NZM", "source": "ERS", "target": "NZM", "distance_km": 3066, "travel_time_mins": 3679, "daily_trains": 5}, {"id": "BZA-NDLS", "source": "BZA", "target": "NDLS", "distance_km": 1757, "travel_time_mins": 2108, "daily_trains": 1}, {"id": "MAS-TVC", "source": "MAS", "target": "TVC", "distance_km": 922, "travel_time_mins": 1106, "daily_trains": 8}, {"id": "CBE-ED", "source": "CBE", "target": "ED", "distance_km": 101, "travel_time_mins": 92, "daily_trains": 11}, {"id": "NDLS-TVC", "source": "NDLS", "target": "TVC", "distance_km": 3035, "travel_time_mins": 3642, "daily_trains": 2}, {"id": "NDLS-SBC", "source": "NDLS", "target": "SBC", "distance_km": 2406, "travel_time_mins": 2887, "daily_trains": 2}, {"id": "BPL-PUNE", "source": "BPL", "target": "PUNE", "distance_km": 895, "travel_time_mins": 940, "daily_trains": 3}, {"id": "NZM-UBL", "source": "NZM", "target": "UBL", "distance_km": 2141, "travel_time_mins": 795, "daily_trains": 2}, {"id": "NZM-TVC", "source": "NZM", "target": "TVC", "distance_km": 3013, "travel_time_mins": 3615, "daily_trains": 7}, {"id": "NGP-NZM", "source": "NGP", "target": "NZM", "distance_km": 1083, "travel_time_mins": 1000, "daily_trains": 2}, {"id": "CBE-NZM", "source": "CBE", "target": "NZM", "distance_km": 2675, "travel_time_mins": 3210, "daily_trains": 2}, {"id": "ED-NZM", "source": "ED", "target": "NZM", "distance_km": 2602, "travel_time_mins": 3122, "daily_trains": 1}, {"id": "NGP-SC", "source": "NGP", "target": "SC", "distance_km": 577, "travel_time_mins": 480, "daily_trains": 5}, {"id": "GTL-NZM", "source": "GTL", "target": "NZM", "distance_km": 2025, "travel_time_mins": 410, "daily_trains": 1}, {"id": "MDU-NZM", "source": "MDU", "target": "NZM", "distance_km": 2676, "travel_time_mins": 3211, "daily_trains": 2}, {"id": "BZA-NGP", "source": "BZA", "target": "NGP", "distance_km": 662, "travel_time_mins": 620, "daily_trains": 1}, {"id": "ADI-MAS", "source": "ADI", "target": "MAS", "distance_km": 1891, "travel_time_mins": 2269, "daily_trains": 1}, {"id": "ED-KGP", "source": "ED", "target": "KGP", "distance_km": 1873, "travel_time_mins": 390, "daily_trains": 2}, {"id": "HWH-TPJ", "source": "HWH", "target": "TPJ", "distance_km": 2025, "travel_time_mins": 2430, "daily_trains": 2}, {"id": "HWH-VSKP", "source": "HWH", "target": "VSKP", "distance_km": 882, "travel_time_mins": 805, "daily_trains": 1}, {"id": "CBE-MAS", "source": "CBE", "target": "MAS", "distance_km": 497, "travel_time_mins": 596, "daily_trains": 8}, {"id": "ERS-SBC", "source": "ERS", "target": "SBC", "distance_km": 587, "travel_time_mins": 704, "daily_trains": 3}, {"id": "CBE-SBC", "source": "CBE", "target": "SBC", "distance_km": 381, "travel_time_mins": 407, "daily_trains": 1}, {"id": "ED-MAS", "source": "ED", "target": "MAS", "distance_km": 396, "travel_time_mins": 335, "daily_trains": 3}, {"id": "MAS-TPJ", "source": "MAS", "target": "TPJ", "distance_km": 494, "travel_time_mins": 515, "daily_trains": 1}, {"id": "HWH-SC", "source": "HWH", "target": "SC", "distance_km": 1545, "travel_time_mins": 1854, "daily_trains": 2}, {"id": "BZA-KGP", "source": "BZA", "target": "KGP", "distance_km": 1116, "travel_time_mins": 1075, "daily_trains": 1}, {"id": "NDLS-SC", "source": "NDLS", "target": "SC", "distance_km": 1673, "travel_time_mins": 2007, "daily_trains": 1}, {"id": "SBC-UBL", "source": "SBC", "target": "UBL", "distance_km": 469, "travel_time_mins": 562, "daily_trains": 2}, {"id": "R-SC", "source": "R", "target": "SC", "distance_km": 578, "travel_time_mins": 693, "daily_trains": 1}, {"id": "SC-VSKP", "source": "SC", "target": "VSKP", "distance_km": 701, "travel_time_mins": 841, "daily_trains": 3}, {"id": "PNBE-SC", "source": "PNBE", "target": "SC", "distance_km": 1840, "travel_time_mins": 2208, "daily_trains": 1}, {"id": "NDLS-PURI", "source": "NDLS", "target": "PURI", "distance_km": 1862, "travel_time_mins": 2234, "daily_trains": 3}, {"id": "PURI-TATA", "source": "PURI", "target": "TATA", "distance_km": 515, "travel_time_mins": 497, "daily_trains": 1}, {"id": "NZM-VSKP", "source": "NZM", "target": "VSKP", "distance_km": 2095, "travel_time_mins": 2514, "daily_trains": 5}, {"id": "NGP-VSKP", "source": "NGP", "target": "VSKP", "distance_km": 1011, "travel_time_mins": 960, "daily_trains": 1}, {"id": "BBS-NDLS", "source": "BBS", "target": "NDLS", "distance_km": 1793, "travel_time_mins": 2151, "daily_trains": 2}, {"id": "BBS-CNB", "source": "BBS", "target": "CNB", "distance_km": 1354, "travel_time_mins": 1624, "daily_trains": 2}, {"id": "HWH-PURI", "source": "HWH", "target": "PURI", "distance_km": 502, "travel_time_mins": 602, "daily_trains": 7}, {"id": "NDLS-RNC", "source": "NDLS", "target": "RNC", "distance_km": 1305, "travel_time_mins": 1566, "daily_trains": 1}, {"id": "ADI-HWH", "source": "ADI", "target": "HWH", "distance_km": 2087, "travel_time_mins": 2504, "daily_trains": 2}, {"id": "KGP-PURI", "source": "KGP", "target": "PURI", "distance_km": 386, "travel_time_mins": 463, "daily_trains": 2}, {"id": "HWH-MAS", "source": "HWH", "target": "MAS", "distance_km": 1662, "travel_time_mins": 1994, "daily_trains": 4}, {"id": "KGP-VSKP", "source": "KGP", "target": "VSKP", "distance_km": 766, "travel_time_mins": 673, "daily_trains": 2}, {"id": "BBS-MAS", "source": "BBS", "target": "MAS", "distance_km": 1223, "travel_time_mins": 1135, "daily_trains": 1}, {"id": "ADI-PURI", "source": "ADI", "target": "PURI", "distance_km": 2130, "travel_time_mins": 2556, "daily_trains": 2}, {"id": "ADI-BSL", "source": "ADI", "target": "BSL", "distance_km": 564, "travel_time_mins": 570, "daily_trains": 3}, {"id": "BSP-PUNE", "source": "BSP", "target": "PUNE", "distance_km": 1301, "travel_time_mins": 1561, "daily_trains": 2}, {"id": "BSP-MAS", "source": "BSP", "target": "MAS", "distance_km": 1412, "travel_time_mins": 1694, "daily_trains": 2}, {"id": "MAS-R", "source": "MAS", "target": "R", "distance_km": 1301, "travel_time_mins": 1561, "daily_trains": 1}, {"id": "BPL-R", "source": "BPL", "target": "R", "distance_km": 862, "travel_time_mins": 1034, "daily_trains": 1}, {"id": "HWH-KYN", "source": "HWH", "target": "KYN", "distance_km": 1914, "travel_time_mins": 2296, "daily_trains": 1}, {"id": "BSL-KGP", "source": "BSL", "target": "KGP", "distance_km": 1408, "travel_time_mins": 1340, "daily_trains": 1}, {"id": "CSMT-TATA", "source": "CSMT", "target": "TATA", "distance_km": 1718, "travel_time_mins": 2061, "daily_trains": 1}, {"id": "BZA-HWH", "source": "BZA", "target": "HWH", "distance_km": 1232, "travel_time_mins": 1165, "daily_trains": 1}, {"id": "CSMT-KGP", "source": "CSMT", "target": "KGP", "distance_km": 1852, "travel_time_mins": 2222, "daily_trains": 1}, {"id": "CNB-RNC", "source": "CNB", "target": "RNC", "distance_km": 898, "travel_time_mins": 435, "daily_trains": 2}, {"id": "BBS-KYN", "source": "BBS", "target": "KYN", "distance_km": 1748, "travel_time_mins": 2097, "daily_trains": 1}, {"id": "ST-UMB", "source": "ST", "target": "UMB", "distance_km": 1380, "travel_time_mins": 1263, "daily_trains": 1}, {"id": "ADI-DLI", "source": "ADI", "target": "DLI", "distance_km": 933, "travel_time_mins": 1119, "daily_trains": 1}, {"id": "ADI-NZM", "source": "ADI", "target": "NZM", "distance_km": 1085, "travel_time_mins": 1302, "daily_trains": 3}, {"id": "MMCT-ST", "source": "MMCT", "target": "ST", "distance_km": 263, "travel_time_mins": 315, "daily_trains": 1}, {"id": "ADI-MMCT", "source": "ADI", "target": "MMCT", "distance_km": 491, "travel_time_mins": 589, "daily_trains": 4}, {"id": "CNB-HWH", "source": "CNB", "target": "HWH", "distance_km": 1008, "travel_time_mins": 905, "daily_trains": 1}, {"id": "JP-PUNE", "source": "JP", "target": "PUNE", "distance_km": 1302, "travel_time_mins": 1562, "daily_trains": 2}, {"id": "KOTA-PUNE", "source": "KOTA", "target": "PUNE", "distance_km": 1063, "travel_time_mins": 1005, "daily_trains": 1}, {"id": "JP-KYN", "source": "JP", "target": "KYN", "distance_km": 1163, "travel_time_mins": 1395, "daily_trains": 1}, {"id": "BRC-JP", "source": "BRC", "target": "JP", "distance_km": 767, "travel_time_mins": 654, "daily_trains": 3}, {"id": "ASN-DDU", "source": "ASN", "target": "DDU", "distance_km": 461, "travel_time_mins": 425, "daily_trains": 2}, {"id": "ADI-PNBE", "source": "ADI", "target": "PNBE", "distance_km": 1772, "travel_time_mins": 2126, "daily_trains": 3}, {"id": "JP-MMCT", "source": "JP", "target": "MMCT", "distance_km": 1159, "travel_time_mins": 1390, "daily_trains": 1}, {"id": "JP-MAS", "source": "JP", "target": "MAS", "distance_km": 2184, "travel_time_mins": 2620, "daily_trains": 2}, {"id": "BZA-JP", "source": "BZA", "target": "JP", "distance_km": 1758, "travel_time_mins": 2109, "daily_trains": 1}, {"id": "KOTA-MAS", "source": "KOTA", "target": "MAS", "distance_km": 1942, "travel_time_mins": 2330, "daily_trains": 1}, {"id": "CBE-JP", "source": "CBE", "target": "JP", "distance_km": 2680, "travel_time_mins": 3216, "daily_trains": 2}, {"id": "CBE-KOTA", "source": "CBE", "target": "KOTA", "distance_km": 2439, "travel_time_mins": 2926, "daily_trains": 1}, {"id": "KOTA-SBC", "source": "KOTA", "target": "SBC", "distance_km": 2101, "travel_time_mins": 820, "daily_trains": 1}, {"id": "GAYA-SDAH", "source": "GAYA", "target": "SDAH", "distance_km": 464, "travel_time_mins": 435, "daily_trains": 1}, {"id": "JP-SDAH", "source": "JP", "target": "SDAH", "distance_km": 1507, "travel_time_mins": 1808, "daily_trains": 1}, {"id": "ASR-HWH", "source": "ASR", "target": "HWH", "distance_km": 1910, "travel_time_mins": 2292, "daily_trains": 4}, {"id": "ASR-UMB", "source": "ASR", "target": "UMB", "distance_km": 250, "travel_time_mins": 275, "daily_trains": 2}, {"id": "BPL-HWH", "source": "BPL", "target": "HWH", "distance_km": 1459, "travel_time_mins": 1750, "daily_trains": 2}, {"id": "BSB-SDAH", "source": "BSB", "target": "SDAH", "distance_km": 871, "travel_time_mins": 1045, "daily_trains": 2}, {"id": "ASN-JAT", "source": "ASN", "target": "JAT", "distance_km": 1778, "travel_time_mins": 2133, "daily_trains": 1}, {"id": "ET-KYN", "source": "ET", "target": "KYN", "distance_km": 698, "travel_time_mins": 728, "daily_trains": 1}, {"id": "KOTA-PNBE", "source": "KOTA", "target": "PNBE", "distance_km": 1262, "travel_time_mins": 1514, "daily_trains": 4}, {"id": "DHN-TATA", "source": "DHN", "target": "TATA", "distance_km": 193, "travel_time_mins": 231, "daily_trains": 4}, {"id": "DHN-RNC", "source": "DHN", "target": "RNC", "distance_km": 176, "travel_time_mins": 310, "daily_trains": 1}, {"id": "DHN-PNBE", "source": "DHN", "target": "PNBE", "distance_km": 291, "travel_time_mins": 349, "daily_trains": 4}, {"id": "ASN-GKP", "source": "ASN", "target": "GKP", "distance_km": 644, "travel_time_mins": 772, "daily_trains": 2}, {"id": "ASN-TATA", "source": "ASN", "target": "TATA", "distance_km": 167, "travel_time_mins": 200, "daily_trains": 2}, {"id": "ASN-RNC", "source": "ASN", "target": "RNC", "distance_km": 430, "travel_time_mins": 516, "daily_trains": 1}, {"id": "ASR-DLI", "source": "ASR", "target": "DLI", "distance_km": 448, "travel_time_mins": 444, "daily_trains": 3}, {"id": "BSB-NDLS", "source": "BSB", "target": "NDLS", "distance_km": 794, "travel_time_mins": 840, "daily_trains": 1}, {"id": "DLI-NDLS", "source": "DLI", "target": "NDLS", "distance_km": 554, "travel_time_mins": 664, "daily_trains": 4}, {"id": "BSB-GAYA", "source": "BSB", "target": "GAYA", "distance_km": 2795, "travel_time_mins": 3354, "daily_trains": 1}, {"id": "GAYA-LKO", "source": "GAYA", "target": "LKO", "distance_km": 503, "travel_time_mins": 615, "daily_trains": 2}, {"id": "DLI-JAT", "source": "DLI", "target": "JAT", "distance_km": 829, "travel_time_mins": 994, "daily_trains": 1}, {"id": "LDH-NDLS", "source": "LDH", "target": "NDLS", "distance_km": 312, "travel_time_mins": 335, "daily_trains": 1}, {"id": "GKP-KGP", "source": "GKP", "target": "KGP", "distance_km": 937, "travel_time_mins": 1330, "daily_trains": 1}, {"id": "DDU-GKP", "source": "DDU", "target": "GKP", "distance_km": 329, "travel_time_mins": 495, "daily_trains": 1}, {"id": "GKP-RNC", "source": "GKP", "target": "RNC", "distance_km": 846, "travel_time_mins": 1015, "daily_trains": 2}, {"id": "BSB-GKP", "source": "BSB", "target": "GKP", "distance_km": 231, "travel_time_mins": 277, "daily_trains": 1}, {"id": "CNB-JBP", "source": "CNB", "target": "JBP", "distance_km": 511, "travel_time_mins": 613, "daily_trains": 1}, {"id": "GHY-PURI", "source": "GHY", "target": "PURI", "distance_km": 1522, "travel_time_mins": 1826, "daily_trains": 1}, {"id": "GHY-JAT", "source": "GHY", "target": "JAT", "distance_km": 2352, "travel_time_mins": 2822, "daily_trains": 4}, {"id": "GHY-LDH", "source": "GHY", "target": "LDH", "distance_km": 2081, "travel_time_mins": 2497, "daily_trains": 2}, {"id": "DLI-GHY", "source": "DLI", "target": "GHY", "distance_km": 975, "travel_time_mins": 1170, "daily_trains": 1}, {"id": "ASR-LKO", "source": "ASR", "target": "LKO", "distance_km": 849, "travel_time_mins": 895, "daily_trains": 1}, {"id": "JAT-MAS", "source": "JAT", "target": "MAS", "distance_km": 2798, "travel_time_mins": 3357, "daily_trains": 1}, {"id": "LKO-MAS", "source": "LKO", "target": "MAS", "distance_km": 2089, "travel_time_mins": 2506, "daily_trains": 1}, {"id": "ERS-TVC", "source": "ERS", "target": "TVC", "distance_km": 220, "travel_time_mins": 264, "daily_trains": 3}, {"id": "CSMT-TVC", "source": "CSMT", "target": "TVC", "distance_km": 1959, "travel_time_mins": 2350, "daily_trains": 1}, {"id": "MDU-TVC", "source": "MDU", "target": "TVC", "distance_km": 376, "travel_time_mins": 451, "daily_trains": 1}, {"id": "ED-SBC", "source": "ED", "target": "SBC", "distance_km": 331, "travel_time_mins": 310, "daily_trains": 1}, {"id": "ADI-CBE", "source": "ADI", "target": "CBE", "distance_km": 1989, "travel_time_mins": 2386, "daily_trains": 1}, {"id": "ED-TPJ", "source": "ED", "target": "TPJ", "distance_km": 141, "travel_time_mins": 165, "daily_trains": 1}, {"id": "DHN-SC", "source": "DHN", "target": "SC", "distance_km": 1541, "travel_time_mins": 1180, "daily_trains": 1}, {"id": "ET-SC", "source": "ET", "target": "SC", "distance_km": 1112, "travel_time_mins": 1220, "daily_trains": 1}, {"id": "CSMT-SC", "source": "CSMT", "target": "SC", "distance_km": 881, "travel_time_mins": 1057, "daily_trains": 2}, {"id": "BZA-UBL", "source": "BZA", "target": "UBL", "distance_km": 693, "travel_time_mins": 831, "daily_trains": 1}, {"id": "SC-TVC", "source": "SC", "target": "TVC", "distance_km": 1568, "travel_time_mins": 1881, "daily_trains": 1}, {"id": "MAS-UBL", "source": "MAS", "target": "UBL", "distance_km": 710, "travel_time_mins": 780, "daily_trains": 1}, {"id": "SC-UBL", "source": "SC", "target": "UBL", "distance_km": 661, "travel_time_mins": 793, "daily_trains": 1}, {"id": "BSB-SUR", "source": "BSB", "target": "SUR", "distance_km": 1675, "travel_time_mins": 1115, "daily_trains": 1}, {"id": "BZA-R", "source": "BZA", "target": "R", "distance_km": 905, "travel_time_mins": 220, "daily_trains": 1}, {"id": "NGP-PNBE", "source": "NGP", "target": "PNBE", "distance_km": 1256, "travel_time_mins": 1295, "daily_trains": 1}, {"id": "GTL-KGP", "source": "GTL", "target": "KGP", "distance_km": 1550, "travel_time_mins": 167, "daily_trains": 1}, {"id": "JAT-TATA", "source": "JAT", "target": "TATA", "distance_km": 2026, "travel_time_mins": 2431, "daily_trains": 2}, {"id": "ASR-TATA", "source": "ASR", "target": "TATA", "distance_km": 1749, "travel_time_mins": 2098, "daily_trains": 2}, {"id": "CNB-R", "source": "CNB", "target": "R", "distance_km": 849, "travel_time_mins": 1018, "daily_trains": 1}, {"id": "JP-R", "source": "JP", "target": "R", "distance_km": 1228, "travel_time_mins": 1330, "daily_trains": 2}, {"id": "BPL-BSP", "source": "BPL", "target": "BSP", "distance_km": 717, "travel_time_mins": 860, "daily_trains": 2}, {"id": "ASR-BSP", "source": "ASR", "target": "BSP", "distance_km": 2008, "travel_time_mins": 2409, "daily_trains": 1}, {"id": "LDH-R", "source": "LDH", "target": "R", "distance_km": 1763, "travel_time_mins": 600, "daily_trains": 2}, {"id": "PURI-R", "source": "PURI", "target": "R", "distance_km": 759, "travel_time_mins": 910, "daily_trains": 1}, {"id": "CNB-PURI", "source": "CNB", "target": "PURI", "distance_km": 1360, "travel_time_mins": 1632, "daily_trains": 1}, {"id": "PNBE-PURI", "source": "PNBE", "target": "PURI", "distance_km": 931, "travel_time_mins": 1117, "daily_trains": 2}, {"id": "BBS-SBC", "source": "BBS", "target": "SBC", "distance_km": 1546, "travel_time_mins": 1855, "daily_trains": 2}, {"id": "GAYA-KYN", "source": "GAYA", "target": "KYN", "distance_km": 1654, "travel_time_mins": 410, "daily_trains": 1}, {"id": "BSB-RNC", "source": "BSB", "target": "RNC", "distance_km": 572, "travel_time_mins": 686, "daily_trains": 1}, {"id": "HWH-RNC", "source": "HWH", "target": "RNC", "distance_km": 416, "travel_time_mins": 499, "daily_trains": 5}, {"id": "GAYA-RNC", "source": "GAYA", "target": "RNC", "distance_km": 319, "travel_time_mins": 925, "daily_trains": 2}, {"id": "KGP-RNC", "source": "KGP", "target": "RNC", "distance_km": 365, "travel_time_mins": 438, "daily_trains": 2}, {"id": "NJP-RNC", "source": "NJP", "target": "RNC", "distance_km": 838, "travel_time_mins": 1005, "daily_trains": 1}, {"id": "JAT-ST", "source": "JAT", "target": "ST", "distance_km": 1629, "travel_time_mins": 1954, "daily_trains": 1}, {"id": "ADI-BSB", "source": "ADI", "target": "BSB", "distance_km": 1601, "travel_time_mins": 1921, "daily_trains": 2}, {"id": "ADI-LKO", "source": "ADI", "target": "LKO", "distance_km": 1301, "travel_time_mins": 1561, "daily_trains": 1}, {"id": "ADI-ASN", "source": "ADI", "target": "ASN", "distance_km": 1887, "travel_time_mins": 2264, "daily_trains": 1}, {"id": "ADI-ET", "source": "ADI", "target": "ET", "distance_km": 871, "travel_time_mins": 925, "daily_trains": 1}, {"id": "ASN-BRC", "source": "ASN", "target": "BRC", "distance_km": 2232, "travel_time_mins": 2678, "daily_trains": 1}, {"id": "ASR-JP", "source": "ASR", "target": "JP", "distance_km": 872, "travel_time_mins": 1046, "daily_trains": 1}, {"id": "BPL-JP", "source": "BPL", "target": "JP", "distance_km": 790, "travel_time_mins": 948, "daily_trains": 2}, {"id": "JP-SC", "source": "JP", "target": "SC", "distance_km": 1731, "travel_time_mins": 2077, "daily_trains": 1}, {"id": "JAT-KOTA", "source": "JAT", "target": "KOTA", "distance_km": 1058, "travel_time_mins": 1269, "daily_trains": 3}, {"id": "BZA-UMB", "source": "BZA", "target": "UMB", "distance_km": 2008, "travel_time_mins": 695, "daily_trains": 1}, {"id": "JP-ST", "source": "JP", "target": "ST", "distance_km": 900, "travel_time_mins": 847, "daily_trains": 1}, {"id": "DDU-NDLS", "source": "DDU", "target": "NDLS", "distance_km": 788, "travel_time_mins": 710, "daily_trains": 1}, {"id": "UMB-VSKP", "source": "UMB", "target": "VSKP", "distance_km": 2320, "travel_time_mins": 2784, "daily_trains": 1}, {"id": "BBS-BPL", "source": "BBS", "target": "BPL", "distance_km": 1359, "travel_time_mins": 1385, "daily_trains": 1}, {"id": "BBS-BSL", "source": "BBS", "target": "BSL", "distance_km": 1368, "travel_time_mins": 1425, "daily_trains": 1}, {"id": "BRC-BSB", "source": "BRC", "target": "BSB", "distance_km": 1531, "travel_time_mins": 1837, "daily_trains": 1}, {"id": "BRC-MAS", "source": "BRC", "target": "MAS", "distance_km": 1626, "travel_time_mins": 1951, "daily_trains": 1}, {"id": "NDLS-RTM", "source": "NDLS", "target": "RTM", "distance_km": 731, "travel_time_mins": 535, "daily_trains": 1}, {"id": "ASR-BPL", "source": "ASR", "target": "BPL", "distance_km": 1148, "travel_time_mins": 1377, "daily_trains": 2}, {"id": "ED-ERS", "source": "ED", "target": "ERS", "distance_km": 293, "travel_time_mins": 80, "daily_trains": 1}, {"id": "CSMT-PNBE", "source": "CSMT", "target": "PNBE", "distance_km": 1710, "travel_time_mins": 105, "daily_trains": 2}, {"id": "KYN-PNBE", "source": "KYN", "target": "PNBE", "distance_km": 1656, "travel_time_mins": 1987, "daily_trains": 1}, {"id": "NDLS-PNBE", "source": "NDLS", "target": "PNBE", "distance_km": 995, "travel_time_mins": 1194, "daily_trains": 1}, {"id": "BSB-NZM", "source": "BSB", "target": "NZM", "distance_km": 781, "travel_time_mins": 937, "daily_trains": 1}, {"id": "BBS-TVC", "source": "BBS", "target": "TVC", "distance_km": 2094, "travel_time_mins": 665, "daily_trains": 1}, {"id": "DD-MAS", "source": "DD", "target": "MAS", "distance_km": 1204, "travel_time_mins": 1444, "daily_trains": 1}, {"id": "MAS-NJP", "source": "MAS", "target": "NJP", "distance_km": 2270, "travel_time_mins": 2724, "daily_trains": 2}, {"id": "R-TVC", "source": "R", "target": "TVC", "distance_km": 2248, "travel_time_mins": 600, "daily_trains": 2}, {"id": "TPJ-TVC", "source": "TPJ", "target": "TVC", "distance_km": 317, "travel_time_mins": 380, "daily_trains": 1}, {"id": "ERS-PNBE", "source": "ERS", "target": "PNBE", "distance_km": 2794, "travel_time_mins": 3352, "daily_trains": 2}, {"id": "CBE-PNBE", "source": "CBE", "target": "PNBE", "distance_km": 2581, "travel_time_mins": 3097, "daily_trains": 1}, {"id": "JBP-PNBE", "source": "JBP", "target": "PNBE", "distance_km": 720, "travel_time_mins": 830, "daily_trains": 1}, {"id": "DDU-ERS", "source": "DDU", "target": "ERS", "distance_km": 2837, "travel_time_mins": 3404, "daily_trains": 1}, {"id": "BSB-SBC", "source": "BSB", "target": "SBC", "distance_km": 2567, "travel_time_mins": 3080, "daily_trains": 1}, {"id": "BSB-MDU", "source": "BSB", "target": "MDU", "distance_km": 3108, "travel_time_mins": 3729, "daily_trains": 1}, {"id": "BSB-ET", "source": "BSB", "target": "ET", "distance_km": 760, "travel_time_mins": 770, "daily_trains": 1}, {"id": "PUNE-SC", "source": "PUNE", "target": "SC", "distance_km": 597, "travel_time_mins": 610, "daily_trains": 1}, {"id": "MAS-VSKP", "source": "MAS", "target": "VSKP", "distance_km": 804, "travel_time_mins": 964, "daily_trains": 5}, {"id": "BSP-ERS", "source": "BSP", "target": "ERS", "distance_km": 2154, "travel_time_mins": 2584, "daily_trains": 2}, {"id": "ERS-R", "source": "ERS", "target": "R", "distance_km": 2044, "travel_time_mins": 2452, "daily_trains": 1}, {"id": "KGP-SBC", "source": "KGP", "target": "SBC", "distance_km": 1857, "travel_time_mins": 430, "daily_trains": 2}, {"id": "PURI-ST", "source": "PURI", "target": "ST", "distance_km": 1754, "travel_time_mins": 2104, "daily_trains": 1}, {"id": "BSP-PNBE", "source": "BSP", "target": "PNBE", "distance_km": 969, "travel_time_mins": 1162, "daily_trains": 2}, {"id": "KGP-SC", "source": "KGP", "target": "SC", "distance_km": 1463, "travel_time_mins": 1755, "daily_trains": 1}, {"id": "MAS-PURI", "source": "MAS", "target": "PURI", "distance_km": 1248, "travel_time_mins": 1497, "daily_trains": 2}, {"id": "PURI-VSKP", "source": "PURI", "target": "VSKP", "distance_km": 468, "travel_time_mins": 440, "daily_trains": 1}, {"id": "NGP-R", "source": "NGP", "target": "R", "distance_km": 301, "travel_time_mins": 265, "daily_trains": 4}, {"id": "BBS-PUNE", "source": "BBS", "target": "PUNE", "distance_km": 1703, "travel_time_mins": 2043, "daily_trains": 2}, {"id": "PUNE-VSKP", "source": "PUNE", "target": "VSKP", "distance_km": 1260, "travel_time_mins": 1350, "daily_trains": 1}, {"id": "BBS-SUR", "source": "BBS", "target": "SUR", "distance_km": 1438, "travel_time_mins": 1725, "daily_trains": 1}, {"id": "NGP-TATA", "source": "NGP", "target": "TATA", "distance_km": 877, "travel_time_mins": 800, "daily_trains": 1}, {"id": "BRC-PURI", "source": "BRC", "target": "PURI", "distance_km": 1868, "travel_time_mins": 2241, "daily_trains": 1}, {"id": "BRC-DD", "source": "BRC", "target": "DD", "distance_km": 611, "travel_time_mins": 615, "daily_trains": 1}, {"id": "BSB-CNB", "source": "BSB", "target": "CNB", "distance_km": 357, "travel_time_mins": 428, "daily_trains": 2}, {"id": "ADI-JP", "source": "ADI", "target": "JP", "distance_km": 631, "travel_time_mins": 757, "daily_trains": 2}, {"id": "GTL-SBC", "source": "GTL", "target": "SBC", "distance_km": 469, "travel_time_mins": 562, "daily_trains": 1}, {"id": "BSL-ST", "source": "BSL", "target": "ST", "distance_km": 336, "travel_time_mins": 403, "daily_trains": 1}, {"id": "BPL-RTM", "source": "BPL", "target": "RTM", "distance_km": 280, "travel_time_mins": 336, "daily_trains": 1}, {"id": "ASR-LDH", "source": "ASR", "target": "LDH", "distance_km": 135, "travel_time_mins": 230, "daily_trains": 1}], "total_stations": 59, "total_edges": 396, "total_trains": 9264, "mode": "major"}
+{
+  "nodes": [
+    {
+      "id": "DDU",
+      "code": "DDU",
+      "name": "Pt Deen Dayal Upadhyaya",
+      "lat": 25.2796,
+      "lng": 83.1187,
+      "zone": "ECR",
+      "degree": 798,
+      "is_junction": true,
+      "train_count": 416
+    },
+    {
+      "id": "MAO",
+      "code": "MAO",
+      "name": "Madgaon Jn",
+      "lat": 15.2736,
+      "lng": 73.978,
+      "zone": "KR",
+      "degree": 361,
+      "is_junction": true,
+      "train_count": 194
+    },
+    {
+      "id": "MAS",
+      "code": "MAS",
+      "name": "Chennai Central",
+      "lat": 13.0827,
+      "lng": 80.2707,
+      "zone": "SR",
+      "degree": 535,
+      "is_junction": true,
+      "train_count": 322
+    },
+    {
+      "id": "LDH",
+      "code": "LDH",
+      "name": "Ludhiana Jn",
+      "lat": 30.901,
+      "lng": 75.8573,
+      "zone": "NR",
+      "degree": 740,
+      "is_junction": true,
+      "train_count": 385
+    },
+    {
+      "id": "TVC",
+      "code": "TVC",
+      "name": "Thiruvananthapuram Central",
+      "lat": 8.4875,
+      "lng": 76.9525,
+      "zone": "SR",
+      "degree": 304,
+      "is_junction": true,
+      "train_count": 171
+    },
+    {
+      "id": "JAT",
+      "code": "JAT",
+      "name": "Jammu Tawi",
+      "lat": 32.706,
+      "lng": 74.8795,
+      "zone": "NR",
+      "degree": 358,
+      "is_junction": true,
+      "train_count": 204
+    },
+    {
+      "id": "JP",
+      "code": "JP",
+      "name": "Jaipur Jn",
+      "lat": 26.9196,
+      "lng": 75.7878,
+      "zone": "NWR",
+      "degree": 773,
+      "is_junction": true,
+      "train_count": 421
+    },
+    {
+      "id": "DD",
+      "code": "DD",
+      "name": "Daund Jn",
+      "lat": 18.4655,
+      "lng": 74.5802,
+      "zone": "CR",
+      "degree": 459,
+      "is_junction": true,
+      "train_count": 242
+    },
+    {
+      "id": "GHY",
+      "code": "GHY",
+      "name": "Guwahati",
+      "lat": 26.1818,
+      "lng": 91.7516,
+      "zone": "NFR",
+      "degree": 407,
+      "is_junction": true,
+      "train_count": 232
+    },
+    {
+      "id": "ASR",
+      "code": "ASR",
+      "name": "Amritsar Jn",
+      "lat": 31.634,
+      "lng": 74.8723,
+      "zone": "NR",
+      "degree": 347,
+      "is_junction": true,
+      "train_count": 218
+    },
+    {
+      "id": "NZM",
+      "code": "NZM",
+      "name": "Hazrat Nizamuddin",
+      "lat": 28.5888,
+      "lng": 77.2534,
+      "zone": "NR",
+      "degree": 681,
+      "is_junction": true,
+      "train_count": 386
+    },
+    {
+      "id": "ADI",
+      "code": "ADI",
+      "name": "Ahmedabad Jn",
+      "lat": 23.0225,
+      "lng": 72.5714,
+      "zone": "WR",
+      "degree": 938,
+      "is_junction": true,
+      "train_count": 522
+    },
+    {
+      "id": "ERS",
+      "code": "ERS",
+      "name": "Ernakulam Jn",
+      "lat": 9.968,
+      "lng": 76.2908,
+      "zone": "SR",
+      "degree": 408,
+      "is_junction": true,
+      "train_count": 236
+    },
+    {
+      "id": "UBL",
+      "code": "UBL",
+      "name": "SSS Hubballi Jn",
+      "lat": 15.3524,
+      "lng": 75.1437,
+      "zone": "SWR",
+      "degree": 414,
+      "is_junction": true,
+      "train_count": 237
+    },
+    {
+      "id": "PNBE",
+      "code": "PNBE",
+      "name": "Patna Jn",
+      "lat": 25.6022,
+      "lng": 85.1376,
+      "zone": "ECR",
+      "degree": 905,
+      "is_junction": true,
+      "train_count": 512
+    },
+    {
+      "id": "CSMT",
+      "code": "CSMT",
+      "name": "Chhatrapati Shivaji Maharaj Terminus",
+      "lat": 18.9401,
+      "lng": 72.8353,
+      "zone": "CR",
+      "degree": 199,
+      "is_junction": true,
+      "train_count": 111
+    },
+    {
+      "id": "CNB",
+      "code": "CNB",
+      "name": "Kanpur Central",
+      "lat": 26.4537,
+      "lng": 80.3507,
+      "zone": "NCR",
+      "degree": 1293,
+      "is_junction": true,
+      "train_count": 682
+    },
+    {
+      "id": "BRC",
+      "code": "BRC",
+      "name": "Vadodara Jn",
+      "lat": 22.3107,
+      "lng": 73.1812,
+      "zone": "WR",
+      "degree": 1347,
+      "is_junction": true,
+      "train_count": 701
+    },
+    {
+      "id": "ET",
+      "code": "ET",
+      "name": "Itarsi Jn",
+      "lat": 22.6122,
+      "lng": 77.76,
+      "zone": "WCR",
+      "degree": 1343,
+      "is_junction": true,
+      "train_count": 698
+    },
+    {
+      "id": "GTL",
+      "code": "GTL",
+      "name": "GUNTAKAL JN",
+      "lat": 15.17556,
+      "lng": 77.36661,
+      "zone": "SCR",
+      "degree": 488,
+      "is_junction": true,
+      "train_count": 257
+    },
+    {
+      "id": "NDLS",
+      "code": "NDLS",
+      "name": "New Delhi",
+      "lat": 28.6143,
+      "lng": 77.209,
+      "zone": "NR",
+      "degree": 803,
+      "is_junction": true,
+      "train_count": 494
+    },
+    {
+      "id": "ASN",
+      "code": "ASN",
+      "name": "Asansol Jn",
+      "lat": 23.6871,
+      "lng": 86.9746,
+      "zone": "ER",
+      "degree": 926,
+      "is_junction": true,
+      "train_count": 495
+    },
+    {
+      "id": "MDU",
+      "code": "MDU",
+      "name": "Madurai Jn",
+      "lat": 9.9197,
+      "lng": 78.1105,
+      "zone": "SR",
+      "degree": 365,
+      "is_junction": true,
+      "train_count": 199
+    },
+    {
+      "id": "GAYA",
+      "code": "GAYA",
+      "name": "Gaya Jn",
+      "lat": 24.7955,
+      "lng": 85.0002,
+      "zone": "ECR",
+      "degree": 587,
+      "is_junction": true,
+      "train_count": 320
+    },
+    {
+      "id": "HWH",
+      "code": "HWH",
+      "name": "Howrah Jn",
+      "lat": 22.5839,
+      "lng": 88.3433,
+      "zone": "ER",
+      "degree": 706,
+      "is_junction": true,
+      "train_count": 435
+    },
+    {
+      "id": "NGP",
+      "code": "NGP",
+      "name": "Nagpur Jn",
+      "lat": 21.1458,
+      "lng": 79.0882,
+      "zone": "CR",
+      "degree": 979,
+      "is_junction": true,
+      "train_count": 517
+    },
+    {
+      "id": "PUNE",
+      "code": "PUNE",
+      "name": "Pune Jn",
+      "lat": 18.5284,
+      "lng": 73.8744,
+      "zone": "CR",
+      "degree": 875,
+      "is_junction": true,
+      "train_count": 488
+    },
+    {
+      "id": "MB",
+      "code": "MB",
+      "name": "Moradabad Jn",
+      "lat": 28.8386,
+      "lng": 78.7733,
+      "zone": "NR",
+      "degree": 905,
+      "is_junction": true,
+      "train_count": 474
+    },
+    {
+      "id": "BSP",
+      "code": "BSP",
+      "name": "Bilaspur Jn",
+      "lat": 22.0797,
+      "lng": 82.1409,
+      "zone": "SECR",
+      "degree": 541,
+      "is_junction": true,
+      "train_count": 293
+    },
+    {
+      "id": "KYN",
+      "code": "KYN",
+      "name": "Kalyan Jn",
+      "lat": 19.2364,
+      "lng": 73.1306,
+      "zone": "CR",
+      "degree": 1161,
+      "is_junction": true,
+      "train_count": 583
+    },
+    {
+      "id": "PURI",
+      "code": "PURI",
+      "name": "Puri",
+      "lat": 19.8135,
+      "lng": 85.8312,
+      "zone": "ECoR",
+      "degree": 316,
+      "is_junction": true,
+      "train_count": 199
+    },
+    {
+      "id": "BPL",
+      "code": "BPL",
+      "name": "Bhopal Jn",
+      "lat": 23.2599,
+      "lng": 77.4126,
+      "zone": "WCR",
+      "degree": 931,
+      "is_junction": true,
+      "train_count": 484
+    },
+    {
+      "id": "RTM",
+      "code": "RTM",
+      "name": "Ratlam Jn",
+      "lat": 23.3441,
+      "lng": 75.0378,
+      "zone": "WR",
+      "degree": 761,
+      "is_junction": true,
+      "train_count": 397
+    },
+    {
+      "id": "BSB",
+      "code": "BSB",
+      "name": "Varanasi Jn",
+      "lat": 25.3283,
+      "lng": 82.9863,
+      "zone": "NR",
+      "degree": 897,
+      "is_junction": true,
+      "train_count": 486
+    },
+    {
+      "id": "SBC",
+      "code": "SBC",
+      "name": "KSR Bengaluru",
+      "lat": 12.9779,
+      "lng": 77.5671,
+      "zone": "SWR",
+      "degree": 496,
+      "is_junction": true,
+      "train_count": 308
+    },
+    {
+      "id": "SDAH",
+      "code": "SDAH",
+      "name": "Sealdah",
+      "lat": 22.5684,
+      "lng": 88.3712,
+      "zone": "ER",
+      "degree": 218,
+      "is_junction": true,
+      "train_count": 135
+    },
+    {
+      "id": "GKP",
+      "code": "GKP",
+      "name": "Gorakhpur Jn",
+      "lat": 26.7588,
+      "lng": 83.382,
+      "zone": "NER",
+      "degree": 791,
+      "is_junction": true,
+      "train_count": 445
+    },
+    {
+      "id": "NJP",
+      "code": "NJP",
+      "name": "New Jalpaiguri",
+      "lat": 26.6853,
+      "lng": 88.4419,
+      "zone": "NFR",
+      "degree": 571,
+      "is_junction": true,
+      "train_count": 306
+    },
+    {
+      "id": "TPJ",
+      "code": "TPJ",
+      "name": "Tiruchchirappalli Jn",
+      "lat": 10.7905,
+      "lng": 78.6856,
+      "zone": "SR",
+      "degree": 454,
+      "is_junction": true,
+      "train_count": 251
+    },
+    {
+      "id": "R",
+      "code": "R",
+      "name": "Raipur Jn",
+      "lat": 21.2514,
+      "lng": 81.6296,
+      "zone": "SECR",
+      "degree": 673,
+      "is_junction": true,
+      "train_count": 357
+    },
+    {
+      "id": "JBP",
+      "code": "JBP",
+      "name": "Jabalpur Jn",
+      "lat": 23.16,
+      "lng": 79.95,
+      "zone": "WCR",
+      "degree": 801,
+      "is_junction": true,
+      "train_count": 437
+    },
+    {
+      "id": "MMCT",
+      "code": "MMCT",
+      "name": "Mumbai Central",
+      "lat": 18.969,
+      "lng": 72.8205,
+      "zone": "WR",
+      "degree": 55,
+      "is_junction": true,
+      "train_count": 33
+    },
+    {
+      "id": "BSL",
+      "code": "BSL",
+      "name": "Bhusaval Jn",
+      "lat": 21.0455,
+      "lng": 75.7885,
+      "zone": "CR",
+      "degree": 1262,
+      "is_junction": true,
+      "train_count": 655
+    },
+    {
+      "id": "LKO",
+      "code": "LKO",
+      "name": "Lucknow Charbagh",
+      "lat": 26.8315,
+      "lng": 80.9234,
+      "zone": "NR",
+      "degree": 1056,
+      "is_junction": true,
+      "train_count": 563
+    },
+    {
+      "id": "RNC",
+      "code": "RNC",
+      "name": "Ranchi Jn",
+      "lat": 23.3512,
+      "lng": 85.3346,
+      "zone": "SER",
+      "degree": 324,
+      "is_junction": true,
+      "train_count": 185
+    },
+    {
+      "id": "BZA",
+      "code": "BZA",
+      "name": "Vijayawada Jn",
+      "lat": 16.5186,
+      "lng": 80.62,
+      "zone": "SCR",
+      "degree": 1431,
+      "is_junction": true,
+      "train_count": 759
+    },
+    {
+      "id": "VSKP",
+      "code": "VSKP",
+      "name": "Visakhapatnam",
+      "lat": 17.7215,
+      "lng": 83.287,
+      "zone": "ECoR",
+      "degree": 760,
+      "is_junction": true,
+      "train_count": 424
+    },
+    {
+      "id": "DHN",
+      "code": "DHN",
+      "name": "Dhanbad Jn",
+      "lat": 23.7917,
+      "lng": 86.4304,
+      "zone": "ECR",
+      "degree": 517,
+      "is_junction": true,
+      "train_count": 276
+    },
+    {
+      "id": "KOTA",
+      "code": "KOTA",
+      "name": "Kota Jn",
+      "lat": 25.2138,
+      "lng": 75.8648,
+      "zone": "WCR",
+      "degree": 735,
+      "is_junction": true,
+      "train_count": 391
+    },
+    {
+      "id": "UMB",
+      "code": "UMB",
+      "name": "Ambala Cantt",
+      "lat": 30.3323,
+      "lng": 76.8288,
+      "zone": "NR",
+      "degree": 885,
+      "is_junction": true,
+      "train_count": 465
+    },
+    {
+      "id": "ST",
+      "code": "ST",
+      "name": "Surat",
+      "lat": 21.2049,
+      "lng": 72.8411,
+      "zone": "WR",
+      "degree": 1112,
+      "is_junction": true,
+      "train_count": 579
+    },
+    {
+      "id": "DLI",
+      "code": "DLI",
+      "name": "Old Delhi",
+      "lat": 28.6617,
+      "lng": 77.2281,
+      "zone": "NR",
+      "degree": 635,
+      "is_junction": true,
+      "train_count": 379
+    },
+    {
+      "id": "TATA",
+      "code": "TATA",
+      "name": "Tatanagar Jn",
+      "lat": 22.7667,
+      "lng": 86.2,
+      "zone": "SER",
+      "degree": 455,
+      "is_junction": true,
+      "train_count": 255
+    },
+    {
+      "id": "ED",
+      "code": "ED",
+      "name": "Erode Jn",
+      "lat": 11.3364,
+      "lng": 77.7275,
+      "zone": "SR",
+      "degree": 674,
+      "is_junction": true,
+      "train_count": 346
+    },
+    {
+      "id": "KGP",
+      "code": "KGP",
+      "name": "Kharagpur Jn",
+      "lat": 22.3391,
+      "lng": 87.3248,
+      "zone": "SER",
+      "degree": 842,
+      "is_junction": true,
+      "train_count": 439
+    },
+    {
+      "id": "SUR",
+      "code": "SUR",
+      "name": "Solapur",
+      "lat": 17.6599,
+      "lng": 75.9064,
+      "zone": "CR",
+      "degree": 426,
+      "is_junction": true,
+      "train_count": 237
+    },
+    {
+      "id": "CBE",
+      "code": "CBE",
+      "name": "Coimbatore Jn",
+      "lat": 11.0018,
+      "lng": 76.9628,
+      "zone": "SR",
+      "degree": 536,
+      "is_junction": true,
+      "train_count": 298
+    },
+    {
+      "id": "SC",
+      "code": "SC",
+      "name": "Secunderabad Jn",
+      "lat": 17.433,
+      "lng": 78.5046,
+      "zone": "SCR",
+      "degree": 599,
+      "is_junction": true,
+      "train_count": 340
+    },
+    {
+      "id": "BBS",
+      "code": "BBS",
+      "name": "Bhubaneswar",
+      "lat": 20.2648,
+      "lng": 85.8436,
+      "zone": "ECoR",
+      "degree": 917,
+      "is_junction": true,
+      "train_count": 490
+    }
+  ],
+  "edges": [
+    {
+      "id": "BZA-VSKP",
+      "source": "BZA",
+      "target": "VSKP",
+      "distance_km": 350,
+      "travel_time_mins": 340,
+      "daily_trains": 11
+    },
+    {
+      "id": "DD-PUNE",
+      "source": "DD",
+      "target": "PUNE",
+      "distance_km": 76,
+      "travel_time_mins": 88,
+      "daily_trains": 114
+    },
+    {
+      "id": "GTL-MAS",
+      "source": "GTL",
+      "target": "MAS",
+      "distance_km": 451,
+      "travel_time_mins": 480,
+      "daily_trains": 1
+    },
+    {
+      "id": "BSB-KYN",
+      "source": "BSB",
+      "target": "KYN",
+      "distance_km": 1605,
+      "travel_time_mins": 1020,
+      "daily_trains": 3
+    },
+    {
+      "id": "ET-JBP",
+      "source": "ET",
+      "target": "JBP",
+      "distance_km": 245,
+      "travel_time_mins": 195,
+      "daily_trains": 124
+    },
+    {
+      "id": "CSMT-ET",
+      "source": "CSMT",
+      "target": "ET",
+      "distance_km": 752,
+      "travel_time_mins": 875,
+      "daily_trains": 1
+    },
+    {
+      "id": "BPL-ET",
+      "source": "BPL",
+      "target": "ET",
+      "distance_km": 98,
+      "travel_time_mins": 160,
+      "daily_trains": 163
+    },
+    {
+      "id": "CNB-LKO",
+      "source": "CNB",
+      "target": "LKO",
+      "distance_km": 73,
+      "travel_time_mins": 110,
+      "daily_trains": 98
+    },
+    {
+      "id": "BPL-GKP",
+      "source": "BPL",
+      "target": "GKP",
+      "distance_km": 857,
+      "travel_time_mins": 960,
+      "daily_trains": 1
+    },
+    {
+      "id": "BSL-ET",
+      "source": "BSL",
+      "target": "ET",
+      "distance_km": 307,
+      "travel_time_mins": 215,
+      "daily_trains": 53
+    },
+    {
+      "id": "CSMT-DDU",
+      "source": "CSMT",
+      "target": "DDU",
+      "distance_km": 1499,
+      "travel_time_mins": 245,
+      "daily_trains": 1
+    },
+    {
+      "id": "GKP-NGP",
+      "source": "GKP",
+      "target": "NGP",
+      "distance_km": 1253,
+      "travel_time_mins": 70,
+      "daily_trains": 1
+    },
+    {
+      "id": "CSMT-KYN",
+      "source": "CSMT",
+      "target": "KYN",
+      "distance_km": 53,
+      "travel_time_mins": 295,
+      "daily_trains": 3
+    },
+    {
+      "id": "BRC-PUNE",
+      "source": "BRC",
+      "target": "PUNE",
+      "distance_km": 535,
+      "travel_time_mins": 510,
+      "daily_trains": 5
+    },
+    {
+      "id": "BRC-RTM",
+      "source": "BRC",
+      "target": "RTM",
+      "distance_km": 262,
+      "travel_time_mins": 220,
+      "daily_trains": 88
+    },
+    {
+      "id": "BRC-NZM",
+      "source": "BRC",
+      "target": "NZM",
+      "distance_km": 986,
+      "travel_time_mins": 825,
+      "daily_trains": 1
+    },
+    {
+      "id": "PUNE-RTM",
+      "source": "PUNE",
+      "target": "RTM",
+      "distance_km": 797,
+      "travel_time_mins": 800,
+      "daily_trains": 1
+    },
+    {
+      "id": "NZM-RTM",
+      "source": "NZM",
+      "target": "RTM",
+      "distance_km": 724,
+      "travel_time_mins": 730,
+      "daily_trains": 1
+    },
+    {
+      "id": "BRC-ST",
+      "source": "BRC",
+      "target": "ST",
+      "distance_km": 129,
+      "travel_time_mins": 100,
+      "daily_trains": 172
+    },
+    {
+      "id": "BPL-GAYA",
+      "source": "BPL",
+      "target": "GAYA",
+      "distance_km": 1015,
+      "travel_time_mins": 1218,
+      "daily_trains": 1
+    },
+    {
+      "id": "ET-GHY",
+      "source": "ET",
+      "target": "GHY",
+      "distance_km": 1835,
+      "travel_time_mins": 595,
+      "daily_trains": 1
+    },
+    {
+      "id": "DDU-GAYA",
+      "source": "DDU",
+      "target": "GAYA",
+      "distance_km": 203,
+      "travel_time_mins": 155,
+      "daily_trains": 16
+    },
+    {
+      "id": "ET-PUNE",
+      "source": "ET",
+      "target": "PUNE",
+      "distance_km": 799,
+      "travel_time_mins": 880,
+      "daily_trains": 2
+    },
+    {
+      "id": "BRC-JBP",
+      "source": "BRC",
+      "target": "JBP",
+      "distance_km": 885,
+      "travel_time_mins": 900,
+      "daily_trains": 1
+    },
+    {
+      "id": "BZA-MAS",
+      "source": "BZA",
+      "target": "MAS",
+      "distance_km": 430,
+      "travel_time_mins": 440,
+      "daily_trains": 18
+    },
+    {
+      "id": "HWH-KGP",
+      "source": "HWH",
+      "target": "KGP",
+      "distance_km": 115,
+      "travel_time_mins": 113,
+      "daily_trains": 77
+    },
+    {
+      "id": "BSP-R",
+      "source": "BSP",
+      "target": "R",
+      "distance_km": 110,
+      "travel_time_mins": 120,
+      "daily_trains": 86
+    },
+    {
+      "id": "ET-NGP",
+      "source": "ET",
+      "target": "NGP",
+      "distance_km": 297,
+      "travel_time_mins": 325,
+      "daily_trains": 87
+    },
+    {
+      "id": "BBS-RNC",
+      "source": "BBS",
+      "target": "RNC",
+      "distance_km": 614,
+      "travel_time_mins": 605,
+      "daily_trains": 1
+    },
+    {
+      "id": "BBS-KGP",
+      "source": "BBS",
+      "target": "KGP",
+      "distance_km": 323,
+      "travel_time_mins": 270,
+      "daily_trains": 4
+    },
+    {
+      "id": "BBS-VSKP",
+      "source": "BBS",
+      "target": "VSKP",
+      "distance_km": 443,
+      "travel_time_mins": 395,
+      "daily_trains": 2
+    },
+    {
+      "id": "CBE-ERS",
+      "source": "CBE",
+      "target": "ERS",
+      "distance_km": 206,
+      "travel_time_mins": 255,
+      "daily_trains": 2
+    },
+    {
+      "id": "BZA-SC",
+      "source": "BZA",
+      "target": "SC",
+      "distance_km": 313,
+      "travel_time_mins": 310,
+      "daily_trains": 6
+    },
+    {
+      "id": "SC-SUR",
+      "source": "SC",
+      "target": "SUR",
+      "distance_km": 333,
+      "travel_time_mins": 440,
+      "daily_trains": 1
+    },
+    {
+      "id": "PUNE-SUR",
+      "source": "PUNE",
+      "target": "SUR",
+      "distance_km": 264,
+      "travel_time_mins": 310,
+      "daily_trains": 52
+    },
+    {
+      "id": "BSB-DDU",
+      "source": "BSB",
+      "target": "DDU",
+      "distance_km": 17,
+      "travel_time_mins": 75,
+      "daily_trains": 83
+    },
+    {
+      "id": "KOTA-RTM",
+      "source": "KOTA",
+      "target": "RTM",
+      "distance_km": 266,
+      "travel_time_mins": 220,
+      "daily_trains": 68
+    },
+    {
+      "id": "BRC-DDU",
+      "source": "BRC",
+      "target": "DDU",
+      "distance_km": 1460,
+      "travel_time_mins": 1290,
+      "daily_trains": 1
+    },
+    {
+      "id": "JAT-PNBE",
+      "source": "JAT",
+      "target": "PNBE",
+      "distance_km": 1529,
+      "travel_time_mins": 440,
+      "daily_trains": 2
+    },
+    {
+      "id": "ASN-PNBE",
+      "source": "ASN",
+      "target": "PNBE",
+      "distance_km": 332,
+      "travel_time_mins": 415,
+      "daily_trains": 2
+    },
+    {
+      "id": "BSB-DHN",
+      "source": "BSB",
+      "target": "DHN",
+      "distance_km": 419,
+      "travel_time_mins": 475,
+      "daily_trains": 1
+    },
+    {
+      "id": "BSB-LKO",
+      "source": "BSB",
+      "target": "LKO",
+      "distance_km": 283,
+      "travel_time_mins": 355,
+      "daily_trains": 15
+    },
+    {
+      "id": "DHN-UMB",
+      "source": "DHN",
+      "target": "UMB",
+      "distance_km": 1385,
+      "travel_time_mins": 1662,
+      "daily_trains": 1
+    },
+    {
+      "id": "CNB-PNBE",
+      "source": "CNB",
+      "target": "PNBE",
+      "distance_km": 601,
+      "travel_time_mins": 810,
+      "daily_trains": 2
+    },
+    {
+      "id": "GKP-NDLS",
+      "source": "GKP",
+      "target": "NDLS",
+      "distance_km": 790,
+      "travel_time_mins": 930,
+      "daily_trains": 1
+    },
+    {
+      "id": "CNB-ET",
+      "source": "CNB",
+      "target": "ET",
+      "distance_km": 807,
+      "travel_time_mins": 940,
+      "daily_trains": 1
+    },
+    {
+      "id": "BSL-CNB",
+      "source": "BSL",
+      "target": "CNB",
+      "distance_km": 1114,
+      "travel_time_mins": 1140,
+      "daily_trains": 1
+    },
+    {
+      "id": "ASN-DHN",
+      "source": "ASN",
+      "target": "DHN",
+      "distance_km": 58,
+      "travel_time_mins": 60,
+      "daily_trains": 102
+    },
+    {
+      "id": "LDH-UMB",
+      "source": "LDH",
+      "target": "UMB",
+      "distance_km": 114,
+      "travel_time_mins": 112,
+      "daily_trains": 133
+    },
+    {
+      "id": "DLI-MB",
+      "source": "DLI",
+      "target": "MB",
+      "distance_km": 161,
+      "travel_time_mins": 170,
+      "daily_trains": 21
+    },
+    {
+      "id": "MB-NDLS",
+      "source": "MB",
+      "target": "NDLS",
+      "distance_km": 164,
+      "travel_time_mins": 270,
+      "daily_trains": 2
+    },
+    {
+      "id": "DHN-MB",
+      "source": "DHN",
+      "target": "MB",
+      "distance_km": 1045,
+      "travel_time_mins": 1254,
+      "daily_trains": 1
+    },
+    {
+      "id": "PNBE-UMB",
+      "source": "PNBE",
+      "target": "UMB",
+      "distance_km": 1233,
+      "travel_time_mins": 1479,
+      "daily_trains": 1
+    },
+    {
+      "id": "BRC-GKP",
+      "source": "BRC",
+      "target": "GKP",
+      "distance_km": 1464,
+      "travel_time_mins": 1250,
+      "daily_trains": 1
+    },
+    {
+      "id": "LKO-MB",
+      "source": "LKO",
+      "target": "MB",
+      "distance_km": 326,
+      "travel_time_mins": 330,
+      "daily_trains": 23
+    },
+    {
+      "id": "DLI-GKP",
+      "source": "DLI",
+      "target": "GKP",
+      "distance_km": 726,
+      "travel_time_mins": 845,
+      "daily_trains": 2
+    },
+    {
+      "id": "GKP-JAT",
+      "source": "GKP",
+      "target": "JAT",
+      "distance_km": 1216,
+      "travel_time_mins": 1430,
+      "daily_trains": 3
+    },
+    {
+      "id": "ASR-MB",
+      "source": "ASR",
+      "target": "MB",
+      "distance_km": 523,
+      "travel_time_mins": 500,
+      "daily_trains": 4
+    },
+    {
+      "id": "DHN-ED",
+      "source": "DHN",
+      "target": "ED",
+      "distance_km": 2150,
+      "travel_time_mins": 375,
+      "daily_trains": 2
+    },
+    {
+      "id": "KGP-MAS",
+      "source": "KGP",
+      "target": "MAS",
+      "distance_km": 1533,
+      "travel_time_mins": 1839,
+      "daily_trains": 3
+    },
+    {
+      "id": "DDU-DHN",
+      "source": "DDU",
+      "target": "DHN",
+      "distance_km": 402,
+      "travel_time_mins": 415,
+      "daily_trains": 3
+    },
+    {
+      "id": "BPL-NGP",
+      "source": "BPL",
+      "target": "NGP",
+      "distance_km": 395,
+      "travel_time_mins": 420,
+      "daily_trains": 37
+    },
+    {
+      "id": "JP-RTM",
+      "source": "JP",
+      "target": "RTM",
+      "distance_km": 510,
+      "travel_time_mins": 530,
+      "daily_trains": 1
+    },
+    {
+      "id": "BZA-GHY",
+      "source": "BZA",
+      "target": "GHY",
+      "distance_km": 2230,
+      "travel_time_mins": 910,
+      "daily_trains": 1
+    },
+    {
+      "id": "BBS-SC",
+      "source": "BBS",
+      "target": "SC",
+      "distance_km": 1092,
+      "travel_time_mins": 1195,
+      "daily_trains": 4
+    },
+    {
+      "id": "BBS-BZA",
+      "source": "BBS",
+      "target": "BZA",
+      "distance_km": 807,
+      "travel_time_mins": 535,
+      "daily_trains": 1
+    },
+    {
+      "id": "KYN-UBL",
+      "source": "KYN",
+      "target": "UBL",
+      "distance_km": 696,
+      "travel_time_mins": 917,
+      "daily_trains": 1
+    },
+    {
+      "id": "KYN-PUNE",
+      "source": "KYN",
+      "target": "PUNE",
+      "distance_km": 139,
+      "travel_time_mins": 165,
+      "daily_trains": 51
+    },
+    {
+      "id": "PUNE-UBL",
+      "source": "PUNE",
+      "target": "UBL",
+      "distance_km": 558,
+      "travel_time_mins": 730,
+      "daily_trains": 1
+    },
+    {
+      "id": "BBS-PNBE",
+      "source": "BBS",
+      "target": "PNBE",
+      "distance_km": 962,
+      "travel_time_mins": 1154,
+      "daily_trains": 2
+    },
+    {
+      "id": "BSP-PURI",
+      "source": "BSP",
+      "target": "PURI",
+      "distance_km": 582,
+      "travel_time_mins": 580,
+      "daily_trains": 1
+    },
+    {
+      "id": "KGP-TATA",
+      "source": "KGP",
+      "target": "TATA",
+      "distance_km": 135,
+      "travel_time_mins": 115,
+      "daily_trains": 63
+    },
+    {
+      "id": "NZM-R",
+      "source": "NZM",
+      "target": "R",
+      "distance_km": 1240,
+      "travel_time_mins": 1488,
+      "daily_trains": 2
+    },
+    {
+      "id": "ADI-RTM",
+      "source": "ADI",
+      "target": "RTM",
+      "distance_km": 350,
+      "travel_time_mins": 350,
+      "daily_trains": 4
+    },
+    {
+      "id": "ADI-BRC",
+      "source": "ADI",
+      "target": "BRC",
+      "distance_km": 100,
+      "travel_time_mins": 128,
+      "daily_trains": 63
+    },
+    {
+      "id": "JP-RNC",
+      "source": "JP",
+      "target": "RNC",
+      "distance_km": 1510,
+      "travel_time_mins": 1812,
+      "daily_trains": 1
+    },
+    {
+      "id": "DD-JP",
+      "source": "DD",
+      "target": "JP",
+      "distance_km": 1374,
+      "travel_time_mins": 1648,
+      "daily_trains": 1
+    },
+    {
+      "id": "RTM-SUR",
+      "source": "RTM",
+      "target": "SUR",
+      "distance_km": 1060,
+      "travel_time_mins": 1025,
+      "daily_trains": 1
+    },
+    {
+      "id": "JP-KOTA",
+      "source": "JP",
+      "target": "KOTA",
+      "distance_km": 240,
+      "travel_time_mins": 300,
+      "daily_trains": 1
+    },
+    {
+      "id": "CSMT-MAO",
+      "source": "CSMT",
+      "target": "MAO",
+      "distance_km": 765,
+      "travel_time_mins": 918,
+      "daily_trains": 1
+    },
+    {
+      "id": "ERS-MAO",
+      "source": "ERS",
+      "target": "MAO",
+      "distance_km": 850,
+      "travel_time_mins": 1020,
+      "daily_trains": 6
+    },
+    {
+      "id": "CSMT-PUNE",
+      "source": "CSMT",
+      "target": "PUNE",
+      "distance_km": 192,
+      "travel_time_mins": 230,
+      "daily_trains": 8
+    },
+    {
+      "id": "ED-KYN",
+      "source": "ED",
+      "target": "KYN",
+      "distance_km": 1362,
+      "travel_time_mins": 1122,
+      "daily_trains": 1
+    },
+    {
+      "id": "CBE-PUNE",
+      "source": "CBE",
+      "target": "PUNE",
+      "distance_km": 1325,
+      "travel_time_mins": 1590,
+      "daily_trains": 1
+    },
+    {
+      "id": "DD-SUR",
+      "source": "DD",
+      "target": "SUR",
+      "distance_km": 187,
+      "travel_time_mins": 215,
+      "daily_trains": 40
+    },
+    {
+      "id": "BBS-CSMT",
+      "source": "BBS",
+      "target": "CSMT",
+      "distance_km": 1932,
+      "travel_time_mins": 2318,
+      "daily_trains": 1
+    },
+    {
+      "id": "GKP-PUNE",
+      "source": "GKP",
+      "target": "PUNE",
+      "distance_km": 1771,
+      "travel_time_mins": 2125,
+      "daily_trains": 4
+    },
+    {
+      "id": "KYN-MDU",
+      "source": "KYN",
+      "target": "MDU",
+      "distance_km": 1665,
+      "travel_time_mins": 1998,
+      "daily_trains": 2
+    },
+    {
+      "id": "NDLS-NZM",
+      "source": "NDLS",
+      "target": "NZM",
+      "distance_km": 7,
+      "travel_time_mins": 26,
+      "daily_trains": 93
+    },
+    {
+      "id": "ASR-CSMT",
+      "source": "ASR",
+      "target": "CSMT",
+      "distance_km": 2046,
+      "travel_time_mins": 2455,
+      "daily_trains": 1
+    },
+    {
+      "id": "CSMT-LDH",
+      "source": "CSMT",
+      "target": "LDH",
+      "distance_km": 1910,
+      "travel_time_mins": 2292,
+      "daily_trains": 1
+    },
+    {
+      "id": "BSL-KYN",
+      "source": "BSL",
+      "target": "KYN",
+      "distance_km": 390,
+      "travel_time_mins": 410,
+      "daily_trains": 10
+    },
+    {
+      "id": "JAT-PUNE",
+      "source": "JAT",
+      "target": "PUNE",
+      "distance_km": 2172,
+      "travel_time_mins": 2606,
+      "daily_trains": 2
+    },
+    {
+      "id": "JAT-LDH",
+      "source": "JAT",
+      "target": "LDH",
+      "distance_km": 265,
+      "travel_time_mins": 285,
+      "daily_trains": 1
+    },
+    {
+      "id": "PUNE-ST",
+      "source": "PUNE",
+      "target": "ST",
+      "distance_km": 406,
+      "travel_time_mins": 437,
+      "daily_trains": 1
+    },
+    {
+      "id": "ERS-PUNE",
+      "source": "ERS",
+      "target": "PUNE",
+      "distance_km": 1435,
+      "travel_time_mins": 1722,
+      "daily_trains": 4
+    },
+    {
+      "id": "JP-NGP",
+      "source": "JP",
+      "target": "NGP",
+      "distance_km": 1345,
+      "travel_time_mins": 1614,
+      "daily_trains": 2
+    },
+    {
+      "id": "CSMT-SBC",
+      "source": "CSMT",
+      "target": "SBC",
+      "distance_km": 1153,
+      "travel_time_mins": 1383,
+      "daily_trains": 1
+    },
+    {
+      "id": "CNB-PUNE",
+      "source": "CNB",
+      "target": "PUNE",
+      "distance_km": 1423,
+      "travel_time_mins": 1707,
+      "daily_trains": 2
+    },
+    {
+      "id": "SUR-UBL",
+      "source": "SUR",
+      "target": "UBL",
+      "distance_km": 358,
+      "travel_time_mins": 429,
+      "daily_trains": 2
+    },
+    {
+      "id": "HWH-JBP",
+      "source": "HWH",
+      "target": "JBP",
+      "distance_km": 1152,
+      "travel_time_mins": 1382,
+      "daily_trains": 2
+    },
+    {
+      "id": "ASN-JBP",
+      "source": "ASN",
+      "target": "JBP",
+      "distance_km": 951,
+      "travel_time_mins": 1141,
+      "daily_trains": 1
+    },
+    {
+      "id": "JAT-JBP",
+      "source": "JAT",
+      "target": "JBP",
+      "distance_km": 1505,
+      "travel_time_mins": 1806,
+      "daily_trains": 2
+    },
+    {
+      "id": "MAS-SBC",
+      "source": "MAS",
+      "target": "SBC",
+      "distance_km": 362,
+      "travel_time_mins": 290,
+      "daily_trains": 10
+    },
+    {
+      "id": "NDLS-UMB",
+      "source": "NDLS",
+      "target": "UMB",
+      "distance_km": 199,
+      "travel_time_mins": 155,
+      "daily_trains": 21
+    },
+    {
+      "id": "BPL-BSL",
+      "source": "BPL",
+      "target": "BSL",
+      "distance_km": 398,
+      "travel_time_mins": 375,
+      "daily_trains": 18
+    },
+    {
+      "id": "CSMT-SUR",
+      "source": "CSMT",
+      "target": "SUR",
+      "distance_km": 455,
+      "travel_time_mins": 546,
+      "daily_trains": 4
+    },
+    {
+      "id": "JBP-NZM",
+      "source": "JBP",
+      "target": "NZM",
+      "distance_km": 909,
+      "travel_time_mins": 1090,
+      "daily_trains": 7
+    },
+    {
+      "id": "HWH-PUNE",
+      "source": "HWH",
+      "target": "PUNE",
+      "distance_km": 2020,
+      "travel_time_mins": 2424,
+      "daily_trains": 2
+    },
+    {
+      "id": "KGP-NGP",
+      "source": "KGP",
+      "target": "NGP",
+      "distance_km": 1015,
+      "travel_time_mins": 985,
+      "daily_trains": 2
+    },
+    {
+      "id": "NGP-PUNE",
+      "source": "NGP",
+      "target": "PUNE",
+      "distance_km": 889,
+      "travel_time_mins": 1066,
+      "daily_trains": 3
+    },
+    {
+      "id": "CSMT-NGP",
+      "source": "CSMT",
+      "target": "NGP",
+      "distance_km": 837,
+      "travel_time_mins": 1004,
+      "daily_trains": 1
+    },
+    {
+      "id": "BSL-JBP",
+      "source": "BSL",
+      "target": "JBP",
+      "distance_km": 552,
+      "travel_time_mins": 475,
+      "daily_trains": 5
+    },
+    {
+      "id": "BSL-NZM",
+      "source": "BSL",
+      "target": "NZM",
+      "distance_km": 1093,
+      "travel_time_mins": 995,
+      "daily_trains": 5
+    },
+    {
+      "id": "PNBE-PUNE",
+      "source": "PNBE",
+      "target": "PUNE",
+      "distance_km": 1781,
+      "travel_time_mins": 2137,
+      "daily_trains": 1
+    },
+    {
+      "id": "BPL-NZM",
+      "source": "BPL",
+      "target": "NZM",
+      "distance_km": 693,
+      "travel_time_mins": 831,
+      "daily_trains": 4
+    },
+    {
+      "id": "KYN-MAS",
+      "source": "KYN",
+      "target": "MAS",
+      "distance_km": 1230,
+      "travel_time_mins": 1476,
+      "daily_trains": 4
+    },
+    {
+      "id": "GKP-JBP",
+      "source": "GKP",
+      "target": "JBP",
+      "distance_km": 733,
+      "travel_time_mins": 805,
+      "daily_trains": 2
+    },
+    {
+      "id": "JBP-NDLS",
+      "source": "JBP",
+      "target": "NDLS",
+      "distance_km": 1038,
+      "travel_time_mins": 1245,
+      "daily_trains": 1
+    },
+    {
+      "id": "BRC-KOTA",
+      "source": "BRC",
+      "target": "KOTA",
+      "distance_km": 528,
+      "travel_time_mins": 470,
+      "daily_trains": 14
+    },
+    {
+      "id": "KOTA-NZM",
+      "source": "KOTA",
+      "target": "NZM",
+      "distance_km": 457,
+      "travel_time_mins": 393,
+      "daily_trains": 28
+    },
+    {
+      "id": "BSL-NGP",
+      "source": "BSL",
+      "target": "NGP",
+      "distance_km": 393,
+      "travel_time_mins": 305,
+      "daily_trains": 19
+    },
+    {
+      "id": "BSP-NGP",
+      "source": "BSP",
+      "target": "NGP",
+      "distance_km": 411,
+      "travel_time_mins": 360,
+      "daily_trains": 5
+    },
+    {
+      "id": "BSP-TATA",
+      "source": "BSP",
+      "target": "TATA",
+      "distance_km": 470,
+      "travel_time_mins": 290,
+      "daily_trains": 5
+    },
+    {
+      "id": "HWH-TATA",
+      "source": "HWH",
+      "target": "TATA",
+      "distance_km": 249,
+      "travel_time_mins": 245,
+      "daily_trains": 5
+    },
+    {
+      "id": "LKO-NDLS",
+      "source": "LKO",
+      "target": "NDLS",
+      "distance_km": 493,
+      "travel_time_mins": 591,
+      "daily_trains": 7
+    },
+    {
+      "id": "LKO-UMB",
+      "source": "LKO",
+      "target": "UMB",
+      "distance_km": 599,
+      "travel_time_mins": 718,
+      "daily_trains": 1
+    },
+    {
+      "id": "BSB-JAT",
+      "source": "BSB",
+      "target": "JAT",
+      "distance_km": 1261,
+      "travel_time_mins": 1513,
+      "daily_trains": 2
+    },
+    {
+      "id": "BSB-UMB",
+      "source": "BSB",
+      "target": "UMB",
+      "distance_km": 883,
+      "travel_time_mins": 905,
+      "daily_trains": 1
+    },
+    {
+      "id": "HWH-NDLS",
+      "source": "HWH",
+      "target": "NDLS",
+      "distance_km": 1447,
+      "travel_time_mins": 1736,
+      "daily_trains": 6
+    },
+    {
+      "id": "ASN-HWH",
+      "source": "ASN",
+      "target": "HWH",
+      "distance_km": 200,
+      "travel_time_mins": 130,
+      "daily_trains": 16
+    },
+    {
+      "id": "ET-MAS",
+      "source": "ET",
+      "target": "MAS",
+      "distance_km": 1391,
+      "travel_time_mins": 1095,
+      "daily_trains": 2
+    },
+    {
+      "id": "ET-NZM",
+      "source": "ET",
+      "target": "NZM",
+      "distance_km": 784,
+      "travel_time_mins": 575,
+      "daily_trains": 3
+    },
+    {
+      "id": "BBS-PURI",
+      "source": "BBS",
+      "target": "PURI",
+      "distance_km": 63,
+      "travel_time_mins": 98,
+      "daily_trains": 3
+    },
+    {
+      "id": "BRC-MAO",
+      "source": "BRC",
+      "target": "MAO",
+      "distance_km": 1108,
+      "travel_time_mins": 914,
+      "daily_trains": 2
+    },
+    {
+      "id": "ADI-PUNE",
+      "source": "ADI",
+      "target": "PUNE",
+      "distance_km": 635,
+      "travel_time_mins": 520,
+      "daily_trains": 2
+    },
+    {
+      "id": "DHN-HWH",
+      "source": "DHN",
+      "target": "HWH",
+      "distance_km": 259,
+      "travel_time_mins": 190,
+      "daily_trains": 5
+    },
+    {
+      "id": "GAYA-HWH",
+      "source": "GAYA",
+      "target": "HWH",
+      "distance_km": 458,
+      "travel_time_mins": 430,
+      "daily_trains": 4
+    },
+    {
+      "id": "DHN-GAYA",
+      "source": "DHN",
+      "target": "GAYA",
+      "distance_km": 198,
+      "travel_time_mins": 147,
+      "daily_trains": 23
+    },
+    {
+      "id": "DDU-PNBE",
+      "source": "DDU",
+      "target": "PNBE",
+      "distance_km": 212,
+      "travel_time_mins": 245,
+      "daily_trains": 14
+    },
+    {
+      "id": "ASN-LDH",
+      "source": "ASN",
+      "target": "LDH",
+      "distance_km": 1556,
+      "travel_time_mins": 237,
+      "daily_trains": 1
+    },
+    {
+      "id": "ASN-SDAH",
+      "source": "ASN",
+      "target": "SDAH",
+      "distance_km": 206,
+      "travel_time_mins": 187,
+      "daily_trains": 5
+    },
+    {
+      "id": "ASR-SDAH",
+      "source": "ASR",
+      "target": "SDAH",
+      "distance_km": 1898,
+      "travel_time_mins": 2277,
+      "daily_trains": 3
+    },
+    {
+      "id": "CSMT-HWH",
+      "source": "CSMT",
+      "target": "HWH",
+      "distance_km": 2176,
+      "travel_time_mins": 2611,
+      "daily_trains": 4
+    },
+    {
+      "id": "DDU-KYN",
+      "source": "DDU",
+      "target": "KYN",
+      "distance_km": 1445,
+      "travel_time_mins": 17,
+      "daily_trains": 1
+    },
+    {
+      "id": "DLI-HWH",
+      "source": "DLI",
+      "target": "HWH",
+      "distance_km": 1432,
+      "travel_time_mins": 1225,
+      "daily_trains": 1
+    },
+    {
+      "id": "CNB-DLI",
+      "source": "CNB",
+      "target": "DLI",
+      "distance_km": 435,
+      "travel_time_mins": 340,
+      "daily_trains": 5
+    },
+    {
+      "id": "HWH-MB",
+      "source": "HWH",
+      "target": "MB",
+      "distance_km": 1368,
+      "travel_time_mins": 1641,
+      "daily_trains": 1
+    },
+    {
+      "id": "DLI-SDAH",
+      "source": "DLI",
+      "target": "SDAH",
+      "distance_km": 1448,
+      "travel_time_mins": 1737,
+      "daily_trains": 2
+    },
+    {
+      "id": "HWH-JAT",
+      "source": "HWH",
+      "target": "JAT",
+      "distance_km": 2021,
+      "travel_time_mins": 2425,
+      "daily_trains": 2
+    },
+    {
+      "id": "BSB-HWH",
+      "source": "BSB",
+      "target": "HWH",
+      "distance_km": 760,
+      "travel_time_mins": 912,
+      "daily_trains": 2
+    },
+    {
+      "id": "NJP-SDAH",
+      "source": "NJP",
+      "target": "SDAH",
+      "distance_km": 567,
+      "travel_time_mins": 680,
+      "daily_trains": 2
+    },
+    {
+      "id": "GHY-HWH",
+      "source": "GHY",
+      "target": "HWH",
+      "distance_km": 1020,
+      "travel_time_mins": 1224,
+      "daily_trains": 2
+    },
+    {
+      "id": "ASN-ASR",
+      "source": "ASN",
+      "target": "ASR",
+      "distance_km": 1627,
+      "travel_time_mins": 1952,
+      "daily_trains": 1
+    },
+    {
+      "id": "ASR-BSB",
+      "source": "ASR",
+      "target": "BSB",
+      "distance_km": 1150,
+      "travel_time_mins": 1125,
+      "daily_trains": 1
+    },
+    {
+      "id": "ASN-CSMT",
+      "source": "ASN",
+      "target": "CSMT",
+      "distance_km": 2042,
+      "travel_time_mins": 2450,
+      "daily_trains": 1
+    },
+    {
+      "id": "ASN-KYN",
+      "source": "ASN",
+      "target": "KYN",
+      "distance_km": 1988,
+      "travel_time_mins": 2385,
+      "daily_trains": 1
+    },
+    {
+      "id": "CNB-DDU",
+      "source": "CNB",
+      "target": "DDU",
+      "distance_km": 348,
+      "travel_time_mins": 275,
+      "daily_trains": 5
+    },
+    {
+      "id": "ASN-LKO",
+      "source": "ASN",
+      "target": "LKO",
+      "distance_km": 843,
+      "travel_time_mins": 469,
+      "daily_trains": 1
+    },
+    {
+      "id": "DLI-UMB",
+      "source": "DLI",
+      "target": "UMB",
+      "distance_km": 197,
+      "travel_time_mins": 170,
+      "daily_trains": 6
+    },
+    {
+      "id": "DDU-SDAH",
+      "source": "DDU",
+      "target": "SDAH",
+      "distance_km": 667,
+      "travel_time_mins": 560,
+      "daily_trains": 2
+    },
+    {
+      "id": "ASR-GAYA",
+      "source": "ASR",
+      "target": "GAYA",
+      "distance_km": 1430,
+      "travel_time_mins": 1150,
+      "daily_trains": 1
+    },
+    {
+      "id": "GAYA-JBP",
+      "source": "GAYA",
+      "target": "JBP",
+      "distance_km": 706,
+      "travel_time_mins": 625,
+      "daily_trains": 1
+    },
+    {
+      "id": "GAYA-MAS",
+      "source": "GAYA",
+      "target": "MAS",
+      "distance_km": 2344,
+      "travel_time_mins": 2812,
+      "daily_trains": 1
+    },
+    {
+      "id": "CNB-NDLS",
+      "source": "CNB",
+      "target": "NDLS",
+      "distance_km": 441,
+      "travel_time_mins": 325,
+      "daily_trains": 13
+    },
+    {
+      "id": "GAYA-NDLS",
+      "source": "GAYA",
+      "target": "NDLS",
+      "distance_km": 989,
+      "travel_time_mins": 1186,
+      "daily_trains": 2
+    },
+    {
+      "id": "KOTA-NDLS",
+      "source": "KOTA",
+      "target": "NDLS",
+      "distance_km": 1063,
+      "travel_time_mins": 1275,
+      "daily_trains": 3
+    },
+    {
+      "id": "MAO-RTM",
+      "source": "MAO",
+      "target": "RTM",
+      "distance_km": 1370,
+      "travel_time_mins": 1140,
+      "daily_trains": 1
+    },
+    {
+      "id": "MAO-UMB",
+      "source": "MAO",
+      "target": "UMB",
+      "distance_km": 2299,
+      "travel_time_mins": 2758,
+      "daily_trains": 1
+    },
+    {
+      "id": "CNB-JAT",
+      "source": "CNB",
+      "target": "JAT",
+      "distance_km": 1026,
+      "travel_time_mins": 1231,
+      "daily_trains": 2
+    },
+    {
+      "id": "CNB-UMB",
+      "source": "CNB",
+      "target": "UMB",
+      "distance_km": 648,
+      "travel_time_mins": 718,
+      "daily_trains": 1
+    },
+    {
+      "id": "ADI-JAT",
+      "source": "ADI",
+      "target": "JAT",
+      "distance_km": 1657,
+      "travel_time_mins": 1390,
+      "daily_trains": 2
+    },
+    {
+      "id": "ASR-BRC",
+      "source": "ASR",
+      "target": "BRC",
+      "distance_km": 1440,
+      "travel_time_mins": 1160,
+      "daily_trains": 2
+    },
+    {
+      "id": "NZM-PUNE",
+      "source": "NZM",
+      "target": "PUNE",
+      "distance_km": 1520,
+      "travel_time_mins": 1250,
+      "daily_trains": 1
+    },
+    {
+      "id": "ASR-NDLS",
+      "source": "ASR",
+      "target": "NDLS",
+      "distance_km": 448,
+      "travel_time_mins": 537,
+      "daily_trains": 2
+    },
+    {
+      "id": "GHY-TVC",
+      "source": "GHY",
+      "target": "TVC",
+      "distance_km": 3552,
+      "travel_time_mins": 4262,
+      "daily_trains": 1
+    },
+    {
+      "id": "GHY-SBC",
+      "source": "GHY",
+      "target": "SBC",
+      "distance_km": 2992,
+      "travel_time_mins": 3590,
+      "daily_trains": 1
+    },
+    {
+      "id": "GKP-TVC",
+      "source": "GKP",
+      "target": "TVC",
+      "distance_km": 3253,
+      "travel_time_mins": 3903,
+      "daily_trains": 1
+    },
+    {
+      "id": "CNB-GKP",
+      "source": "CNB",
+      "target": "GKP",
+      "distance_km": 349,
+      "travel_time_mins": 392,
+      "daily_trains": 4
+    },
+    {
+      "id": "CBE-GHY",
+      "source": "CBE",
+      "target": "GHY",
+      "distance_km": 3552,
+      "travel_time_mins": 4262,
+      "daily_trains": 1
+    },
+    {
+      "id": "BZA-CBE",
+      "source": "BZA",
+      "target": "CBE",
+      "distance_km": 921,
+      "travel_time_mins": 880,
+      "daily_trains": 1
+    },
+    {
+      "id": "GHY-KYN",
+      "source": "GHY",
+      "target": "KYN",
+      "distance_km": 2550,
+      "travel_time_mins": 1125,
+      "daily_trains": 1
+    },
+    {
+      "id": "NDLS-NJP",
+      "source": "NDLS",
+      "target": "NJP",
+      "distance_km": 1500,
+      "travel_time_mins": 1800,
+      "daily_trains": 2
+    },
+    {
+      "id": "BPL-CSMT",
+      "source": "BPL",
+      "target": "CSMT",
+      "distance_km": 850,
+      "travel_time_mins": 770,
+      "daily_trains": 1
+    },
+    {
+      "id": "LKO-NGP",
+      "source": "LKO",
+      "target": "NGP",
+      "distance_km": 1141,
+      "travel_time_mins": 1135,
+      "daily_trains": 1
+    },
+    {
+      "id": "JAT-R",
+      "source": "JAT",
+      "target": "R",
+      "distance_km": 1831,
+      "travel_time_mins": 1140,
+      "daily_trains": 2
+    },
+    {
+      "id": "GKP-LKO",
+      "source": "GKP",
+      "target": "LKO",
+      "distance_km": 270,
+      "travel_time_mins": 295,
+      "daily_trains": 6
+    },
+    {
+      "id": "GKP-SC",
+      "source": "GKP",
+      "target": "SC",
+      "distance_km": 1829,
+      "travel_time_mins": 2194,
+      "daily_trains": 2
+    },
+    {
+      "id": "ET-GKP",
+      "source": "ET",
+      "target": "GKP",
+      "distance_km": 946,
+      "travel_time_mins": 975,
+      "daily_trains": 1
+    },
+    {
+      "id": "GKP-KYN",
+      "source": "GKP",
+      "target": "KYN",
+      "distance_km": 1643,
+      "travel_time_mins": 1971,
+      "daily_trains": 2
+    },
+    {
+      "id": "MAS-NDLS",
+      "source": "MAS",
+      "target": "NDLS",
+      "distance_km": 2182,
+      "travel_time_mins": 2618,
+      "daily_trains": 4
+    },
+    {
+      "id": "ERS-NZM",
+      "source": "ERS",
+      "target": "NZM",
+      "distance_km": 3066,
+      "travel_time_mins": 3679,
+      "daily_trains": 5
+    },
+    {
+      "id": "BZA-NDLS",
+      "source": "BZA",
+      "target": "NDLS",
+      "distance_km": 1757,
+      "travel_time_mins": 2108,
+      "daily_trains": 1
+    },
+    {
+      "id": "MAS-TVC",
+      "source": "MAS",
+      "target": "TVC",
+      "distance_km": 922,
+      "travel_time_mins": 1106,
+      "daily_trains": 8
+    },
+    {
+      "id": "CBE-ED",
+      "source": "CBE",
+      "target": "ED",
+      "distance_km": 101,
+      "travel_time_mins": 92,
+      "daily_trains": 11
+    },
+    {
+      "id": "NDLS-TVC",
+      "source": "NDLS",
+      "target": "TVC",
+      "distance_km": 3035,
+      "travel_time_mins": 3642,
+      "daily_trains": 2
+    },
+    {
+      "id": "NDLS-SBC",
+      "source": "NDLS",
+      "target": "SBC",
+      "distance_km": 2406,
+      "travel_time_mins": 2887,
+      "daily_trains": 2
+    },
+    {
+      "id": "BPL-PUNE",
+      "source": "BPL",
+      "target": "PUNE",
+      "distance_km": 895,
+      "travel_time_mins": 940,
+      "daily_trains": 3
+    },
+    {
+      "id": "NZM-UBL",
+      "source": "NZM",
+      "target": "UBL",
+      "distance_km": 2141,
+      "travel_time_mins": 795,
+      "daily_trains": 2
+    },
+    {
+      "id": "NZM-TVC",
+      "source": "NZM",
+      "target": "TVC",
+      "distance_km": 3013,
+      "travel_time_mins": 3615,
+      "daily_trains": 7
+    },
+    {
+      "id": "NGP-NZM",
+      "source": "NGP",
+      "target": "NZM",
+      "distance_km": 1083,
+      "travel_time_mins": 1000,
+      "daily_trains": 2
+    },
+    {
+      "id": "CBE-NZM",
+      "source": "CBE",
+      "target": "NZM",
+      "distance_km": 2675,
+      "travel_time_mins": 3210,
+      "daily_trains": 2
+    },
+    {
+      "id": "ED-NZM",
+      "source": "ED",
+      "target": "NZM",
+      "distance_km": 2602,
+      "travel_time_mins": 3122,
+      "daily_trains": 1
+    },
+    {
+      "id": "NGP-SC",
+      "source": "NGP",
+      "target": "SC",
+      "distance_km": 577,
+      "travel_time_mins": 480,
+      "daily_trains": 5
+    },
+    {
+      "id": "GTL-NZM",
+      "source": "GTL",
+      "target": "NZM",
+      "distance_km": 2025,
+      "travel_time_mins": 410,
+      "daily_trains": 1
+    },
+    {
+      "id": "MDU-NZM",
+      "source": "MDU",
+      "target": "NZM",
+      "distance_km": 2676,
+      "travel_time_mins": 3211,
+      "daily_trains": 2
+    },
+    {
+      "id": "BZA-NGP",
+      "source": "BZA",
+      "target": "NGP",
+      "distance_km": 662,
+      "travel_time_mins": 620,
+      "daily_trains": 1
+    },
+    {
+      "id": "ADI-MAS",
+      "source": "ADI",
+      "target": "MAS",
+      "distance_km": 1891,
+      "travel_time_mins": 2269,
+      "daily_trains": 1
+    },
+    {
+      "id": "ED-KGP",
+      "source": "ED",
+      "target": "KGP",
+      "distance_km": 1873,
+      "travel_time_mins": 390,
+      "daily_trains": 2
+    },
+    {
+      "id": "HWH-TPJ",
+      "source": "HWH",
+      "target": "TPJ",
+      "distance_km": 2025,
+      "travel_time_mins": 2430,
+      "daily_trains": 2
+    },
+    {
+      "id": "HWH-VSKP",
+      "source": "HWH",
+      "target": "VSKP",
+      "distance_km": 882,
+      "travel_time_mins": 805,
+      "daily_trains": 1
+    },
+    {
+      "id": "CBE-MAS",
+      "source": "CBE",
+      "target": "MAS",
+      "distance_km": 497,
+      "travel_time_mins": 596,
+      "daily_trains": 8
+    },
+    {
+      "id": "ERS-SBC",
+      "source": "ERS",
+      "target": "SBC",
+      "distance_km": 587,
+      "travel_time_mins": 704,
+      "daily_trains": 3
+    },
+    {
+      "id": "CBE-SBC",
+      "source": "CBE",
+      "target": "SBC",
+      "distance_km": 381,
+      "travel_time_mins": 407,
+      "daily_trains": 1
+    },
+    {
+      "id": "ED-MAS",
+      "source": "ED",
+      "target": "MAS",
+      "distance_km": 396,
+      "travel_time_mins": 335,
+      "daily_trains": 3
+    },
+    {
+      "id": "MAS-TPJ",
+      "source": "MAS",
+      "target": "TPJ",
+      "distance_km": 494,
+      "travel_time_mins": 515,
+      "daily_trains": 1
+    },
+    {
+      "id": "HWH-SC",
+      "source": "HWH",
+      "target": "SC",
+      "distance_km": 1545,
+      "travel_time_mins": 1854,
+      "daily_trains": 2
+    },
+    {
+      "id": "BZA-KGP",
+      "source": "BZA",
+      "target": "KGP",
+      "distance_km": 1116,
+      "travel_time_mins": 1075,
+      "daily_trains": 1
+    },
+    {
+      "id": "NDLS-SC",
+      "source": "NDLS",
+      "target": "SC",
+      "distance_km": 1673,
+      "travel_time_mins": 2007,
+      "daily_trains": 1
+    },
+    {
+      "id": "SBC-UBL",
+      "source": "SBC",
+      "target": "UBL",
+      "distance_km": 469,
+      "travel_time_mins": 562,
+      "daily_trains": 2
+    },
+    {
+      "id": "R-SC",
+      "source": "R",
+      "target": "SC",
+      "distance_km": 578,
+      "travel_time_mins": 693,
+      "daily_trains": 1
+    },
+    {
+      "id": "SC-VSKP",
+      "source": "SC",
+      "target": "VSKP",
+      "distance_km": 701,
+      "travel_time_mins": 841,
+      "daily_trains": 3
+    },
+    {
+      "id": "PNBE-SC",
+      "source": "PNBE",
+      "target": "SC",
+      "distance_km": 1840,
+      "travel_time_mins": 2208,
+      "daily_trains": 1
+    },
+    {
+      "id": "NDLS-PURI",
+      "source": "NDLS",
+      "target": "PURI",
+      "distance_km": 1862,
+      "travel_time_mins": 2234,
+      "daily_trains": 3
+    },
+    {
+      "id": "PURI-TATA",
+      "source": "PURI",
+      "target": "TATA",
+      "distance_km": 515,
+      "travel_time_mins": 497,
+      "daily_trains": 1
+    },
+    {
+      "id": "NZM-VSKP",
+      "source": "NZM",
+      "target": "VSKP",
+      "distance_km": 2095,
+      "travel_time_mins": 2514,
+      "daily_trains": 5
+    },
+    {
+      "id": "NGP-VSKP",
+      "source": "NGP",
+      "target": "VSKP",
+      "distance_km": 1011,
+      "travel_time_mins": 960,
+      "daily_trains": 1
+    },
+    {
+      "id": "BBS-NDLS",
+      "source": "BBS",
+      "target": "NDLS",
+      "distance_km": 1793,
+      "travel_time_mins": 2151,
+      "daily_trains": 2
+    },
+    {
+      "id": "BBS-CNB",
+      "source": "BBS",
+      "target": "CNB",
+      "distance_km": 1354,
+      "travel_time_mins": 1624,
+      "daily_trains": 2
+    },
+    {
+      "id": "HWH-PURI",
+      "source": "HWH",
+      "target": "PURI",
+      "distance_km": 502,
+      "travel_time_mins": 602,
+      "daily_trains": 7
+    },
+    {
+      "id": "NDLS-RNC",
+      "source": "NDLS",
+      "target": "RNC",
+      "distance_km": 1305,
+      "travel_time_mins": 1566,
+      "daily_trains": 1
+    },
+    {
+      "id": "ADI-HWH",
+      "source": "ADI",
+      "target": "HWH",
+      "distance_km": 2087,
+      "travel_time_mins": 2504,
+      "daily_trains": 2
+    },
+    {
+      "id": "KGP-PURI",
+      "source": "KGP",
+      "target": "PURI",
+      "distance_km": 386,
+      "travel_time_mins": 463,
+      "daily_trains": 2
+    },
+    {
+      "id": "HWH-MAS",
+      "source": "HWH",
+      "target": "MAS",
+      "distance_km": 1662,
+      "travel_time_mins": 1994,
+      "daily_trains": 4
+    },
+    {
+      "id": "KGP-VSKP",
+      "source": "KGP",
+      "target": "VSKP",
+      "distance_km": 766,
+      "travel_time_mins": 673,
+      "daily_trains": 2
+    },
+    {
+      "id": "BBS-MAS",
+      "source": "BBS",
+      "target": "MAS",
+      "distance_km": 1223,
+      "travel_time_mins": 1135,
+      "daily_trains": 1
+    },
+    {
+      "id": "ADI-PURI",
+      "source": "ADI",
+      "target": "PURI",
+      "distance_km": 2130,
+      "travel_time_mins": 2556,
+      "daily_trains": 2
+    },
+    {
+      "id": "ADI-BSL",
+      "source": "ADI",
+      "target": "BSL",
+      "distance_km": 564,
+      "travel_time_mins": 570,
+      "daily_trains": 3
+    },
+    {
+      "id": "BSP-PUNE",
+      "source": "BSP",
+      "target": "PUNE",
+      "distance_km": 1301,
+      "travel_time_mins": 1561,
+      "daily_trains": 2
+    },
+    {
+      "id": "BSP-MAS",
+      "source": "BSP",
+      "target": "MAS",
+      "distance_km": 1412,
+      "travel_time_mins": 1694,
+      "daily_trains": 2
+    },
+    {
+      "id": "MAS-R",
+      "source": "MAS",
+      "target": "R",
+      "distance_km": 1301,
+      "travel_time_mins": 1561,
+      "daily_trains": 1
+    },
+    {
+      "id": "BPL-R",
+      "source": "BPL",
+      "target": "R",
+      "distance_km": 862,
+      "travel_time_mins": 1034,
+      "daily_trains": 1
+    },
+    {
+      "id": "HWH-KYN",
+      "source": "HWH",
+      "target": "KYN",
+      "distance_km": 1914,
+      "travel_time_mins": 2296,
+      "daily_trains": 1
+    },
+    {
+      "id": "BSL-KGP",
+      "source": "BSL",
+      "target": "KGP",
+      "distance_km": 1408,
+      "travel_time_mins": 1340,
+      "daily_trains": 1
+    },
+    {
+      "id": "CSMT-TATA",
+      "source": "CSMT",
+      "target": "TATA",
+      "distance_km": 1718,
+      "travel_time_mins": 2061,
+      "daily_trains": 1
+    },
+    {
+      "id": "BZA-HWH",
+      "source": "BZA",
+      "target": "HWH",
+      "distance_km": 1232,
+      "travel_time_mins": 1165,
+      "daily_trains": 1
+    },
+    {
+      "id": "CSMT-KGP",
+      "source": "CSMT",
+      "target": "KGP",
+      "distance_km": 1852,
+      "travel_time_mins": 2222,
+      "daily_trains": 1
+    },
+    {
+      "id": "CNB-RNC",
+      "source": "CNB",
+      "target": "RNC",
+      "distance_km": 898,
+      "travel_time_mins": 435,
+      "daily_trains": 2
+    },
+    {
+      "id": "BBS-KYN",
+      "source": "BBS",
+      "target": "KYN",
+      "distance_km": 1748,
+      "travel_time_mins": 2097,
+      "daily_trains": 1
+    },
+    {
+      "id": "ST-UMB",
+      "source": "ST",
+      "target": "UMB",
+      "distance_km": 1380,
+      "travel_time_mins": 1263,
+      "daily_trains": 1
+    },
+    {
+      "id": "ADI-DLI",
+      "source": "ADI",
+      "target": "DLI",
+      "distance_km": 933,
+      "travel_time_mins": 1119,
+      "daily_trains": 1
+    },
+    {
+      "id": "ADI-NZM",
+      "source": "ADI",
+      "target": "NZM",
+      "distance_km": 1085,
+      "travel_time_mins": 1302,
+      "daily_trains": 3
+    },
+    {
+      "id": "MMCT-ST",
+      "source": "MMCT",
+      "target": "ST",
+      "distance_km": 263,
+      "travel_time_mins": 315,
+      "daily_trains": 1
+    },
+    {
+      "id": "ADI-MMCT",
+      "source": "ADI",
+      "target": "MMCT",
+      "distance_km": 491,
+      "travel_time_mins": 589,
+      "daily_trains": 4
+    },
+    {
+      "id": "CNB-HWH",
+      "source": "CNB",
+      "target": "HWH",
+      "distance_km": 1008,
+      "travel_time_mins": 905,
+      "daily_trains": 1
+    },
+    {
+      "id": "JP-PUNE",
+      "source": "JP",
+      "target": "PUNE",
+      "distance_km": 1302,
+      "travel_time_mins": 1562,
+      "daily_trains": 2
+    },
+    {
+      "id": "KOTA-PUNE",
+      "source": "KOTA",
+      "target": "PUNE",
+      "distance_km": 1063,
+      "travel_time_mins": 1005,
+      "daily_trains": 1
+    },
+    {
+      "id": "JP-KYN",
+      "source": "JP",
+      "target": "KYN",
+      "distance_km": 1163,
+      "travel_time_mins": 1395,
+      "daily_trains": 1
+    },
+    {
+      "id": "BRC-JP",
+      "source": "BRC",
+      "target": "JP",
+      "distance_km": 767,
+      "travel_time_mins": 654,
+      "daily_trains": 3
+    },
+    {
+      "id": "ASN-DDU",
+      "source": "ASN",
+      "target": "DDU",
+      "distance_km": 461,
+      "travel_time_mins": 425,
+      "daily_trains": 2
+    },
+    {
+      "id": "ADI-PNBE",
+      "source": "ADI",
+      "target": "PNBE",
+      "distance_km": 1772,
+      "travel_time_mins": 2126,
+      "daily_trains": 3
+    },
+    {
+      "id": "JP-MMCT",
+      "source": "JP",
+      "target": "MMCT",
+      "distance_km": 1159,
+      "travel_time_mins": 1390,
+      "daily_trains": 1
+    },
+    {
+      "id": "JP-MAS",
+      "source": "JP",
+      "target": "MAS",
+      "distance_km": 2184,
+      "travel_time_mins": 2620,
+      "daily_trains": 2
+    },
+    {
+      "id": "BZA-JP",
+      "source": "BZA",
+      "target": "JP",
+      "distance_km": 1758,
+      "travel_time_mins": 2109,
+      "daily_trains": 1
+    },
+    {
+      "id": "KOTA-MAS",
+      "source": "KOTA",
+      "target": "MAS",
+      "distance_km": 1942,
+      "travel_time_mins": 2330,
+      "daily_trains": 1
+    },
+    {
+      "id": "CBE-JP",
+      "source": "CBE",
+      "target": "JP",
+      "distance_km": 2680,
+      "travel_time_mins": 3216,
+      "daily_trains": 2
+    },
+    {
+      "id": "CBE-KOTA",
+      "source": "CBE",
+      "target": "KOTA",
+      "distance_km": 2439,
+      "travel_time_mins": 2926,
+      "daily_trains": 1
+    },
+    {
+      "id": "KOTA-SBC",
+      "source": "KOTA",
+      "target": "SBC",
+      "distance_km": 2101,
+      "travel_time_mins": 820,
+      "daily_trains": 1
+    },
+    {
+      "id": "GAYA-SDAH",
+      "source": "GAYA",
+      "target": "SDAH",
+      "distance_km": 464,
+      "travel_time_mins": 435,
+      "daily_trains": 1
+    },
+    {
+      "id": "JP-SDAH",
+      "source": "JP",
+      "target": "SDAH",
+      "distance_km": 1507,
+      "travel_time_mins": 1808,
+      "daily_trains": 1
+    },
+    {
+      "id": "ASR-HWH",
+      "source": "ASR",
+      "target": "HWH",
+      "distance_km": 1910,
+      "travel_time_mins": 2292,
+      "daily_trains": 4
+    },
+    {
+      "id": "ASR-UMB",
+      "source": "ASR",
+      "target": "UMB",
+      "distance_km": 250,
+      "travel_time_mins": 275,
+      "daily_trains": 2
+    },
+    {
+      "id": "BPL-HWH",
+      "source": "BPL",
+      "target": "HWH",
+      "distance_km": 1459,
+      "travel_time_mins": 1750,
+      "daily_trains": 2
+    },
+    {
+      "id": "BSB-SDAH",
+      "source": "BSB",
+      "target": "SDAH",
+      "distance_km": 871,
+      "travel_time_mins": 1045,
+      "daily_trains": 2
+    },
+    {
+      "id": "ASN-JAT",
+      "source": "ASN",
+      "target": "JAT",
+      "distance_km": 1778,
+      "travel_time_mins": 2133,
+      "daily_trains": 1
+    },
+    {
+      "id": "ET-KYN",
+      "source": "ET",
+      "target": "KYN",
+      "distance_km": 698,
+      "travel_time_mins": 728,
+      "daily_trains": 1
+    },
+    {
+      "id": "KOTA-PNBE",
+      "source": "KOTA",
+      "target": "PNBE",
+      "distance_km": 1262,
+      "travel_time_mins": 1514,
+      "daily_trains": 4
+    },
+    {
+      "id": "DHN-TATA",
+      "source": "DHN",
+      "target": "TATA",
+      "distance_km": 193,
+      "travel_time_mins": 231,
+      "daily_trains": 4
+    },
+    {
+      "id": "DHN-RNC",
+      "source": "DHN",
+      "target": "RNC",
+      "distance_km": 176,
+      "travel_time_mins": 310,
+      "daily_trains": 1
+    },
+    {
+      "id": "DHN-PNBE",
+      "source": "DHN",
+      "target": "PNBE",
+      "distance_km": 291,
+      "travel_time_mins": 349,
+      "daily_trains": 4
+    },
+    {
+      "id": "ASN-GKP",
+      "source": "ASN",
+      "target": "GKP",
+      "distance_km": 644,
+      "travel_time_mins": 772,
+      "daily_trains": 2
+    },
+    {
+      "id": "ASN-TATA",
+      "source": "ASN",
+      "target": "TATA",
+      "distance_km": 167,
+      "travel_time_mins": 200,
+      "daily_trains": 2
+    },
+    {
+      "id": "ASN-RNC",
+      "source": "ASN",
+      "target": "RNC",
+      "distance_km": 430,
+      "travel_time_mins": 516,
+      "daily_trains": 1
+    },
+    {
+      "id": "ASR-DLI",
+      "source": "ASR",
+      "target": "DLI",
+      "distance_km": 448,
+      "travel_time_mins": 444,
+      "daily_trains": 3
+    },
+    {
+      "id": "BSB-NDLS",
+      "source": "BSB",
+      "target": "NDLS",
+      "distance_km": 794,
+      "travel_time_mins": 840,
+      "daily_trains": 1
+    },
+    {
+      "id": "DLI-NDLS",
+      "source": "DLI",
+      "target": "NDLS",
+      "distance_km": 554,
+      "travel_time_mins": 664,
+      "daily_trains": 4
+    },
+    {
+      "id": "BSB-GAYA",
+      "source": "BSB",
+      "target": "GAYA",
+      "distance_km": 2795,
+      "travel_time_mins": 3354,
+      "daily_trains": 1
+    },
+    {
+      "id": "GAYA-LKO",
+      "source": "GAYA",
+      "target": "LKO",
+      "distance_km": 503,
+      "travel_time_mins": 615,
+      "daily_trains": 2
+    },
+    {
+      "id": "DLI-JAT",
+      "source": "DLI",
+      "target": "JAT",
+      "distance_km": 829,
+      "travel_time_mins": 994,
+      "daily_trains": 1
+    },
+    {
+      "id": "LDH-NDLS",
+      "source": "LDH",
+      "target": "NDLS",
+      "distance_km": 312,
+      "travel_time_mins": 335,
+      "daily_trains": 1
+    },
+    {
+      "id": "GKP-KGP",
+      "source": "GKP",
+      "target": "KGP",
+      "distance_km": 937,
+      "travel_time_mins": 1330,
+      "daily_trains": 1
+    },
+    {
+      "id": "DDU-GKP",
+      "source": "DDU",
+      "target": "GKP",
+      "distance_km": 329,
+      "travel_time_mins": 495,
+      "daily_trains": 1
+    },
+    {
+      "id": "GKP-RNC",
+      "source": "GKP",
+      "target": "RNC",
+      "distance_km": 846,
+      "travel_time_mins": 1015,
+      "daily_trains": 2
+    },
+    {
+      "id": "BSB-GKP",
+      "source": "BSB",
+      "target": "GKP",
+      "distance_km": 231,
+      "travel_time_mins": 277,
+      "daily_trains": 1
+    },
+    {
+      "id": "CNB-JBP",
+      "source": "CNB",
+      "target": "JBP",
+      "distance_km": 511,
+      "travel_time_mins": 613,
+      "daily_trains": 1
+    },
+    {
+      "id": "GHY-PURI",
+      "source": "GHY",
+      "target": "PURI",
+      "distance_km": 1522,
+      "travel_time_mins": 1826,
+      "daily_trains": 1
+    },
+    {
+      "id": "GHY-JAT",
+      "source": "GHY",
+      "target": "JAT",
+      "distance_km": 2352,
+      "travel_time_mins": 2822,
+      "daily_trains": 4
+    },
+    {
+      "id": "GHY-LDH",
+      "source": "GHY",
+      "target": "LDH",
+      "distance_km": 2081,
+      "travel_time_mins": 2497,
+      "daily_trains": 2
+    },
+    {
+      "id": "DLI-GHY",
+      "source": "DLI",
+      "target": "GHY",
+      "distance_km": 975,
+      "travel_time_mins": 1170,
+      "daily_trains": 1
+    },
+    {
+      "id": "ASR-LKO",
+      "source": "ASR",
+      "target": "LKO",
+      "distance_km": 849,
+      "travel_time_mins": 895,
+      "daily_trains": 1
+    },
+    {
+      "id": "JAT-MAS",
+      "source": "JAT",
+      "target": "MAS",
+      "distance_km": 2798,
+      "travel_time_mins": 3357,
+      "daily_trains": 1
+    },
+    {
+      "id": "LKO-MAS",
+      "source": "LKO",
+      "target": "MAS",
+      "distance_km": 2089,
+      "travel_time_mins": 2506,
+      "daily_trains": 1
+    },
+    {
+      "id": "ERS-TVC",
+      "source": "ERS",
+      "target": "TVC",
+      "distance_km": 220,
+      "travel_time_mins": 264,
+      "daily_trains": 3
+    },
+    {
+      "id": "CSMT-TVC",
+      "source": "CSMT",
+      "target": "TVC",
+      "distance_km": 1959,
+      "travel_time_mins": 2350,
+      "daily_trains": 1
+    },
+    {
+      "id": "MDU-TVC",
+      "source": "MDU",
+      "target": "TVC",
+      "distance_km": 376,
+      "travel_time_mins": 451,
+      "daily_trains": 1
+    },
+    {
+      "id": "ED-SBC",
+      "source": "ED",
+      "target": "SBC",
+      "distance_km": 331,
+      "travel_time_mins": 310,
+      "daily_trains": 1
+    },
+    {
+      "id": "ADI-CBE",
+      "source": "ADI",
+      "target": "CBE",
+      "distance_km": 1989,
+      "travel_time_mins": 2386,
+      "daily_trains": 1
+    },
+    {
+      "id": "ED-TPJ",
+      "source": "ED",
+      "target": "TPJ",
+      "distance_km": 141,
+      "travel_time_mins": 165,
+      "daily_trains": 1
+    },
+    {
+      "id": "DHN-SC",
+      "source": "DHN",
+      "target": "SC",
+      "distance_km": 1541,
+      "travel_time_mins": 1180,
+      "daily_trains": 1
+    },
+    {
+      "id": "ET-SC",
+      "source": "ET",
+      "target": "SC",
+      "distance_km": 1112,
+      "travel_time_mins": 1220,
+      "daily_trains": 1
+    },
+    {
+      "id": "CSMT-SC",
+      "source": "CSMT",
+      "target": "SC",
+      "distance_km": 881,
+      "travel_time_mins": 1057,
+      "daily_trains": 2
+    },
+    {
+      "id": "BZA-UBL",
+      "source": "BZA",
+      "target": "UBL",
+      "distance_km": 693,
+      "travel_time_mins": 831,
+      "daily_trains": 1
+    },
+    {
+      "id": "SC-TVC",
+      "source": "SC",
+      "target": "TVC",
+      "distance_km": 1568,
+      "travel_time_mins": 1881,
+      "daily_trains": 1
+    },
+    {
+      "id": "MAS-UBL",
+      "source": "MAS",
+      "target": "UBL",
+      "distance_km": 710,
+      "travel_time_mins": 780,
+      "daily_trains": 1
+    },
+    {
+      "id": "SC-UBL",
+      "source": "SC",
+      "target": "UBL",
+      "distance_km": 661,
+      "travel_time_mins": 793,
+      "daily_trains": 1
+    },
+    {
+      "id": "BSB-SUR",
+      "source": "BSB",
+      "target": "SUR",
+      "distance_km": 1675,
+      "travel_time_mins": 1115,
+      "daily_trains": 1
+    },
+    {
+      "id": "BZA-R",
+      "source": "BZA",
+      "target": "R",
+      "distance_km": 905,
+      "travel_time_mins": 220,
+      "daily_trains": 1
+    },
+    {
+      "id": "NGP-PNBE",
+      "source": "NGP",
+      "target": "PNBE",
+      "distance_km": 1256,
+      "travel_time_mins": 1295,
+      "daily_trains": 1
+    },
+    {
+      "id": "GTL-KGP",
+      "source": "GTL",
+      "target": "KGP",
+      "distance_km": 1550,
+      "travel_time_mins": 167,
+      "daily_trains": 1
+    },
+    {
+      "id": "JAT-TATA",
+      "source": "JAT",
+      "target": "TATA",
+      "distance_km": 2026,
+      "travel_time_mins": 2431,
+      "daily_trains": 2
+    },
+    {
+      "id": "ASR-TATA",
+      "source": "ASR",
+      "target": "TATA",
+      "distance_km": 1749,
+      "travel_time_mins": 2098,
+      "daily_trains": 2
+    },
+    {
+      "id": "CNB-R",
+      "source": "CNB",
+      "target": "R",
+      "distance_km": 849,
+      "travel_time_mins": 1018,
+      "daily_trains": 1
+    },
+    {
+      "id": "JP-R",
+      "source": "JP",
+      "target": "R",
+      "distance_km": 1228,
+      "travel_time_mins": 1330,
+      "daily_trains": 2
+    },
+    {
+      "id": "BPL-BSP",
+      "source": "BPL",
+      "target": "BSP",
+      "distance_km": 717,
+      "travel_time_mins": 860,
+      "daily_trains": 2
+    },
+    {
+      "id": "ASR-BSP",
+      "source": "ASR",
+      "target": "BSP",
+      "distance_km": 2008,
+      "travel_time_mins": 2409,
+      "daily_trains": 1
+    },
+    {
+      "id": "LDH-R",
+      "source": "LDH",
+      "target": "R",
+      "distance_km": 1763,
+      "travel_time_mins": 600,
+      "daily_trains": 2
+    },
+    {
+      "id": "PURI-R",
+      "source": "PURI",
+      "target": "R",
+      "distance_km": 759,
+      "travel_time_mins": 910,
+      "daily_trains": 1
+    },
+    {
+      "id": "CNB-PURI",
+      "source": "CNB",
+      "target": "PURI",
+      "distance_km": 1360,
+      "travel_time_mins": 1632,
+      "daily_trains": 1
+    },
+    {
+      "id": "PNBE-PURI",
+      "source": "PNBE",
+      "target": "PURI",
+      "distance_km": 931,
+      "travel_time_mins": 1117,
+      "daily_trains": 2
+    },
+    {
+      "id": "BBS-SBC",
+      "source": "BBS",
+      "target": "SBC",
+      "distance_km": 1546,
+      "travel_time_mins": 1855,
+      "daily_trains": 2
+    },
+    {
+      "id": "GAYA-KYN",
+      "source": "GAYA",
+      "target": "KYN",
+      "distance_km": 1654,
+      "travel_time_mins": 410,
+      "daily_trains": 1
+    },
+    {
+      "id": "BSB-RNC",
+      "source": "BSB",
+      "target": "RNC",
+      "distance_km": 572,
+      "travel_time_mins": 686,
+      "daily_trains": 1
+    },
+    {
+      "id": "HWH-RNC",
+      "source": "HWH",
+      "target": "RNC",
+      "distance_km": 416,
+      "travel_time_mins": 499,
+      "daily_trains": 5
+    },
+    {
+      "id": "GAYA-RNC",
+      "source": "GAYA",
+      "target": "RNC",
+      "distance_km": 319,
+      "travel_time_mins": 925,
+      "daily_trains": 2
+    },
+    {
+      "id": "KGP-RNC",
+      "source": "KGP",
+      "target": "RNC",
+      "distance_km": 365,
+      "travel_time_mins": 438,
+      "daily_trains": 2
+    },
+    {
+      "id": "NJP-RNC",
+      "source": "NJP",
+      "target": "RNC",
+      "distance_km": 838,
+      "travel_time_mins": 1005,
+      "daily_trains": 1
+    },
+    {
+      "id": "JAT-ST",
+      "source": "JAT",
+      "target": "ST",
+      "distance_km": 1629,
+      "travel_time_mins": 1954,
+      "daily_trains": 1
+    },
+    {
+      "id": "ADI-BSB",
+      "source": "ADI",
+      "target": "BSB",
+      "distance_km": 1601,
+      "travel_time_mins": 1921,
+      "daily_trains": 2
+    },
+    {
+      "id": "ADI-LKO",
+      "source": "ADI",
+      "target": "LKO",
+      "distance_km": 1301,
+      "travel_time_mins": 1561,
+      "daily_trains": 1
+    },
+    {
+      "id": "ADI-ASN",
+      "source": "ADI",
+      "target": "ASN",
+      "distance_km": 1887,
+      "travel_time_mins": 2264,
+      "daily_trains": 1
+    },
+    {
+      "id": "ADI-ET",
+      "source": "ADI",
+      "target": "ET",
+      "distance_km": 871,
+      "travel_time_mins": 925,
+      "daily_trains": 1
+    },
+    {
+      "id": "ASN-BRC",
+      "source": "ASN",
+      "target": "BRC",
+      "distance_km": 2232,
+      "travel_time_mins": 2678,
+      "daily_trains": 1
+    },
+    {
+      "id": "ASR-JP",
+      "source": "ASR",
+      "target": "JP",
+      "distance_km": 872,
+      "travel_time_mins": 1046,
+      "daily_trains": 1
+    },
+    {
+      "id": "BPL-JP",
+      "source": "BPL",
+      "target": "JP",
+      "distance_km": 790,
+      "travel_time_mins": 948,
+      "daily_trains": 2
+    },
+    {
+      "id": "JP-SC",
+      "source": "JP",
+      "target": "SC",
+      "distance_km": 1731,
+      "travel_time_mins": 2077,
+      "daily_trains": 1
+    },
+    {
+      "id": "JAT-KOTA",
+      "source": "JAT",
+      "target": "KOTA",
+      "distance_km": 1058,
+      "travel_time_mins": 1269,
+      "daily_trains": 3
+    },
+    {
+      "id": "BZA-UMB",
+      "source": "BZA",
+      "target": "UMB",
+      "distance_km": 2008,
+      "travel_time_mins": 695,
+      "daily_trains": 1
+    },
+    {
+      "id": "JP-ST",
+      "source": "JP",
+      "target": "ST",
+      "distance_km": 900,
+      "travel_time_mins": 847,
+      "daily_trains": 1
+    },
+    {
+      "id": "DDU-NDLS",
+      "source": "DDU",
+      "target": "NDLS",
+      "distance_km": 788,
+      "travel_time_mins": 710,
+      "daily_trains": 1
+    },
+    {
+      "id": "UMB-VSKP",
+      "source": "UMB",
+      "target": "VSKP",
+      "distance_km": 2320,
+      "travel_time_mins": 2784,
+      "daily_trains": 1
+    },
+    {
+      "id": "BBS-BPL",
+      "source": "BBS",
+      "target": "BPL",
+      "distance_km": 1359,
+      "travel_time_mins": 1385,
+      "daily_trains": 1
+    },
+    {
+      "id": "BBS-BSL",
+      "source": "BBS",
+      "target": "BSL",
+      "distance_km": 1368,
+      "travel_time_mins": 1425,
+      "daily_trains": 1
+    },
+    {
+      "id": "BRC-BSB",
+      "source": "BRC",
+      "target": "BSB",
+      "distance_km": 1531,
+      "travel_time_mins": 1837,
+      "daily_trains": 1
+    },
+    {
+      "id": "BRC-MAS",
+      "source": "BRC",
+      "target": "MAS",
+      "distance_km": 1626,
+      "travel_time_mins": 1951,
+      "daily_trains": 1
+    },
+    {
+      "id": "NDLS-RTM",
+      "source": "NDLS",
+      "target": "RTM",
+      "distance_km": 731,
+      "travel_time_mins": 535,
+      "daily_trains": 1
+    },
+    {
+      "id": "ASR-BPL",
+      "source": "ASR",
+      "target": "BPL",
+      "distance_km": 1148,
+      "travel_time_mins": 1377,
+      "daily_trains": 2
+    },
+    {
+      "id": "ED-ERS",
+      "source": "ED",
+      "target": "ERS",
+      "distance_km": 293,
+      "travel_time_mins": 80,
+      "daily_trains": 1
+    },
+    {
+      "id": "CSMT-PNBE",
+      "source": "CSMT",
+      "target": "PNBE",
+      "distance_km": 1710,
+      "travel_time_mins": 105,
+      "daily_trains": 2
+    },
+    {
+      "id": "KYN-PNBE",
+      "source": "KYN",
+      "target": "PNBE",
+      "distance_km": 1656,
+      "travel_time_mins": 1987,
+      "daily_trains": 1
+    },
+    {
+      "id": "NDLS-PNBE",
+      "source": "NDLS",
+      "target": "PNBE",
+      "distance_km": 995,
+      "travel_time_mins": 1194,
+      "daily_trains": 1
+    },
+    {
+      "id": "BSB-NZM",
+      "source": "BSB",
+      "target": "NZM",
+      "distance_km": 781,
+      "travel_time_mins": 937,
+      "daily_trains": 1
+    },
+    {
+      "id": "BBS-TVC",
+      "source": "BBS",
+      "target": "TVC",
+      "distance_km": 2094,
+      "travel_time_mins": 665,
+      "daily_trains": 1
+    },
+    {
+      "id": "DD-MAS",
+      "source": "DD",
+      "target": "MAS",
+      "distance_km": 1204,
+      "travel_time_mins": 1444,
+      "daily_trains": 1
+    },
+    {
+      "id": "MAS-NJP",
+      "source": "MAS",
+      "target": "NJP",
+      "distance_km": 2270,
+      "travel_time_mins": 2724,
+      "daily_trains": 2
+    },
+    {
+      "id": "R-TVC",
+      "source": "R",
+      "target": "TVC",
+      "distance_km": 2248,
+      "travel_time_mins": 600,
+      "daily_trains": 2
+    },
+    {
+      "id": "TPJ-TVC",
+      "source": "TPJ",
+      "target": "TVC",
+      "distance_km": 317,
+      "travel_time_mins": 380,
+      "daily_trains": 1
+    },
+    {
+      "id": "ERS-PNBE",
+      "source": "ERS",
+      "target": "PNBE",
+      "distance_km": 2794,
+      "travel_time_mins": 3352,
+      "daily_trains": 2
+    },
+    {
+      "id": "CBE-PNBE",
+      "source": "CBE",
+      "target": "PNBE",
+      "distance_km": 2581,
+      "travel_time_mins": 3097,
+      "daily_trains": 1
+    },
+    {
+      "id": "JBP-PNBE",
+      "source": "JBP",
+      "target": "PNBE",
+      "distance_km": 720,
+      "travel_time_mins": 830,
+      "daily_trains": 1
+    },
+    {
+      "id": "DDU-ERS",
+      "source": "DDU",
+      "target": "ERS",
+      "distance_km": 2837,
+      "travel_time_mins": 3404,
+      "daily_trains": 1
+    },
+    {
+      "id": "BSB-SBC",
+      "source": "BSB",
+      "target": "SBC",
+      "distance_km": 2567,
+      "travel_time_mins": 3080,
+      "daily_trains": 1
+    },
+    {
+      "id": "BSB-MDU",
+      "source": "BSB",
+      "target": "MDU",
+      "distance_km": 3108,
+      "travel_time_mins": 3729,
+      "daily_trains": 1
+    },
+    {
+      "id": "BSB-ET",
+      "source": "BSB",
+      "target": "ET",
+      "distance_km": 760,
+      "travel_time_mins": 770,
+      "daily_trains": 1
+    },
+    {
+      "id": "PUNE-SC",
+      "source": "PUNE",
+      "target": "SC",
+      "distance_km": 597,
+      "travel_time_mins": 610,
+      "daily_trains": 1
+    },
+    {
+      "id": "MAS-VSKP",
+      "source": "MAS",
+      "target": "VSKP",
+      "distance_km": 804,
+      "travel_time_mins": 964,
+      "daily_trains": 5
+    },
+    {
+      "id": "BSP-ERS",
+      "source": "BSP",
+      "target": "ERS",
+      "distance_km": 2154,
+      "travel_time_mins": 2584,
+      "daily_trains": 2
+    },
+    {
+      "id": "ERS-R",
+      "source": "ERS",
+      "target": "R",
+      "distance_km": 2044,
+      "travel_time_mins": 2452,
+      "daily_trains": 1
+    },
+    {
+      "id": "KGP-SBC",
+      "source": "KGP",
+      "target": "SBC",
+      "distance_km": 1857,
+      "travel_time_mins": 430,
+      "daily_trains": 2
+    },
+    {
+      "id": "PURI-ST",
+      "source": "PURI",
+      "target": "ST",
+      "distance_km": 1754,
+      "travel_time_mins": 2104,
+      "daily_trains": 1
+    },
+    {
+      "id": "BSP-PNBE",
+      "source": "BSP",
+      "target": "PNBE",
+      "distance_km": 969,
+      "travel_time_mins": 1162,
+      "daily_trains": 2
+    },
+    {
+      "id": "KGP-SC",
+      "source": "KGP",
+      "target": "SC",
+      "distance_km": 1463,
+      "travel_time_mins": 1755,
+      "daily_trains": 1
+    },
+    {
+      "id": "MAS-PURI",
+      "source": "MAS",
+      "target": "PURI",
+      "distance_km": 1248,
+      "travel_time_mins": 1497,
+      "daily_trains": 2
+    },
+    {
+      "id": "PURI-VSKP",
+      "source": "PURI",
+      "target": "VSKP",
+      "distance_km": 468,
+      "travel_time_mins": 440,
+      "daily_trains": 1
+    },
+    {
+      "id": "NGP-R",
+      "source": "NGP",
+      "target": "R",
+      "distance_km": 301,
+      "travel_time_mins": 265,
+      "daily_trains": 4
+    },
+    {
+      "id": "BBS-PUNE",
+      "source": "BBS",
+      "target": "PUNE",
+      "distance_km": 1703,
+      "travel_time_mins": 2043,
+      "daily_trains": 2
+    },
+    {
+      "id": "PUNE-VSKP",
+      "source": "PUNE",
+      "target": "VSKP",
+      "distance_km": 1260,
+      "travel_time_mins": 1350,
+      "daily_trains": 1
+    },
+    {
+      "id": "BBS-SUR",
+      "source": "BBS",
+      "target": "SUR",
+      "distance_km": 1438,
+      "travel_time_mins": 1725,
+      "daily_trains": 1
+    },
+    {
+      "id": "NGP-TATA",
+      "source": "NGP",
+      "target": "TATA",
+      "distance_km": 877,
+      "travel_time_mins": 800,
+      "daily_trains": 1
+    },
+    {
+      "id": "BRC-PURI",
+      "source": "BRC",
+      "target": "PURI",
+      "distance_km": 1868,
+      "travel_time_mins": 2241,
+      "daily_trains": 1
+    },
+    {
+      "id": "BRC-DD",
+      "source": "BRC",
+      "target": "DD",
+      "distance_km": 611,
+      "travel_time_mins": 615,
+      "daily_trains": 1
+    },
+    {
+      "id": "BSB-CNB",
+      "source": "BSB",
+      "target": "CNB",
+      "distance_km": 357,
+      "travel_time_mins": 428,
+      "daily_trains": 2
+    },
+    {
+      "id": "ADI-JP",
+      "source": "ADI",
+      "target": "JP",
+      "distance_km": 631,
+      "travel_time_mins": 757,
+      "daily_trains": 2
+    },
+    {
+      "id": "GTL-SBC",
+      "source": "GTL",
+      "target": "SBC",
+      "distance_km": 469,
+      "travel_time_mins": 562,
+      "daily_trains": 1
+    },
+    {
+      "id": "BSL-ST",
+      "source": "BSL",
+      "target": "ST",
+      "distance_km": 336,
+      "travel_time_mins": 403,
+      "daily_trains": 1
+    },
+    {
+      "id": "BPL-RTM",
+      "source": "BPL",
+      "target": "RTM",
+      "distance_km": 280,
+      "travel_time_mins": 336,
+      "daily_trains": 1
+    },
+    {
+      "id": "ASR-LDH",
+      "source": "ASR",
+      "target": "LDH",
+      "distance_km": 135,
+      "travel_time_mins": 230,
+      "daily_trains": 1
+    }
+  ],
+  "total_stations": 59,
+  "total_edges": 396,
+  "total_trains": 9264,
+  "mode": "major"
+}
