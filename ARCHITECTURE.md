@@ -76,7 +76,7 @@ Built with **FastAPI**, serving as the bridge between the UI and the heavy-lifti
   - `/api/emergency`: Directly updates the database with a critical block and synchronously triggers a re-optimization to find a new viable schedule.
 
 ### 3. AI Optimization Engine
-The core intelligence module (`optimizer.py`), designed to evaluate thousands of potential scheduling combinations.
+The core intelligence module (`optimizer.py`), designed to evaluate thousands of potential scheduling combinations. For the in-depth mathematical formulation and pseudocode, see [MAINTENANCE_SCHEDULING_ALGORITHM.md](file:///d:/Problem%20Statments/Train%20Managment/MAINTENANCE_SCHEDULING_ALGORITHM.md).
 - **Train Event Simulator**: Calculates theoretical track crossing times based on train routes and speeds.
 - **Window Evaluator**: Evaluates a specific maintenance window against the simulated train events to calculate cascading delays (factoring in 20-minute safety buffers and train priorities).
 - **Candidate Generator**: Slices the day into slots and categorizes them (e.g., *Night Shadow* [00:00-05:00], *Afternoon Lull*, *Peak*). It produces 3 viable options (Minimal Disruption, Feasible, High Disruption) for each maintenance request.

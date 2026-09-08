@@ -26,11 +26,16 @@ h1, h2, h3, h4, h5, h6, .navbar-brand {
   font-family: 'Roboto', sans-serif;
 }
 
-/* Navbar */
+/* Navbar: Fixed 56px height, single-line no wrap */
 .navbar-gov {
   background: #ffffff;
   border-bottom: 3px solid var(--gov-accent);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  height: 56px;
+  min-height: 56px;
+  max-height: 56px;
+  padding: 0 0.75rem !important;
+  z-index: 1050;
 }
 
 .navbar-gov .navbar-brand {
@@ -43,6 +48,44 @@ h1, h2, h3, h4, h5, h6, .navbar-brand {
 }
 .navbar-gov .opacity-75 {
   color: #64748b !important;
+}
+
+.nav-tab-pill {
+  white-space: nowrap !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  padding: 6px 13px !important;
+  border-radius: 50rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+  transition: all 0.15s ease-in-out;
+}
+
+.nav-tab-pill.active {
+  background-color: var(--gov-blue) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(10, 61, 98, 0.25);
+}
+
+.nav-tab-pill:not(.active) {
+  color: #334155 !important;
+  background-color: transparent;
+}
+
+.nav-tab-pill:not(.active):hover {
+  background-color: #f1f5f9 !important;
+  color: var(--gov-blue) !important;
+}
+
+.bg-gov-bg {
+  background-color: var(--gov-bg) !important;
+}
+
+.hover-bg-light:hover {
+  background-color: #f1f5f9;
 }
 
 /* Cards & Layout */
@@ -355,3 +398,206 @@ h1, h2, h3, h4, h5, h6, .navbar-brand {
   width: 100vw !important;
   height: 100vh !important;
 }
+
+/* Digital Twin Simulation Scrubber & Train Styles */
+.custom-simulation-range {
+  background: linear-gradient(
+    to right,
+    #0284c7 0%,   /* 00:00 - Night Shadow */
+    #0284c7 20%,  /* 05:00 */
+    #ea580c 25%,  /* 06:00 - Morning Rush */
+    #ea580c 42%,  /* 10:30 */
+    #16a34a 45%,  /* 11:00 - Afternoon Lull */
+    #16a34a 62%,  /* 15:00 */
+    #dc2626 70%,  /* 17:00 - Evening Rush */
+    #dc2626 88%,  /* 21:00 */
+    #0284c7 95%,  /* Late Night */
+    #0284c7 100%
+  );
+  border-radius: 8px;
+}
+
+.simulated-locomotive-marker {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: transform 0.2s ease-out;
+}
+
+.simulated-locomotive-marker:hover {
+  transform: scale(1.25);
+  z-index: 1000 !important;
+}
+
+.train-loco-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.train-loco-circle.cruising {
+  background: #16a34a;
+  box-shadow: 0 0 12px #22c55e;
+}
+
+.train-loco-circle.delayed {
+  background: #f59e0b;
+  box-shadow: 0 0 12px #f59e0b;
+}
+
+.train-loco-circle.held {
+  background: #dc2626;
+  box-shadow: 0 0 16px #ef4444;
+  animation: pulse 1s infinite;
+}
+
+.train-label-pill {
+  position: absolute;
+  top: -18px;
+  background: rgba(15, 23, 42, 0.9);
+  color: #f8fafc;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  white-space: nowrap;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.train-speed-tag {
+  position: absolute;
+  bottom: -16px;
+  background: rgba(0, 0, 0, 0.85);
+  color: #38bdf8;
+  padding: 0px 4px;
+  border-radius: 3px;
+  font-size: 8px;
+  font-family: monospace;
+  font-weight: 600;
+  white-space: nowrap;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+}
+
+.active-block-hazard-beacon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #dc2626;
+  color: white;
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 10px;
+  font-weight: 800;
+  box-shadow: 0 0 15px rgba(220, 38, 38, 0.8);
+  border: 2px solid white;
+  animation: emergency-flash 1.2s infinite alternate;
+  white-space: nowrap;
+}
+
+.loop-holding-tag {
+  position: absolute;
+  top: 18px;
+  background: #b91c1c;
+  color: #ffffff;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 800;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  border: 1px solid #fecaca;
+  animation: emergency-flash 1s infinite alternate;
+}
+
+/* ==========================================================================
+   Section Controller Dispatch Co-Pilot Styles (Bootstrap & Custom Theme)
+   ========================================================================== */
+.dispatch-banner {
+  background: linear-gradient(135deg, #072942 0%, #0a3d62 50%, #1e1b4b 100%);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  border-radius: 10px;
+  color: #f8fafc;
+  padding: 12px;
+  box-shadow: 0 4px 14px rgba(7, 41, 66, 0.35);
+}
+
+.dispatch-stat-box {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 4px 8px;
+  text-align: center;
+  min-width: 64px;
+}
+
+.dispatch-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+
+.dispatch-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.12);
+}
+
+.dispatch-card.card-loop {
+  border-left: 4px solid #6366f1;
+}
+
+.dispatch-card.card-tslw {
+  border-left: 4px solid #f59e0b;
+  background: #fffdf9;
+}
+
+.dispatch-card.card-detour {
+  border-left: 4px solid #10b981;
+  background: #f9fefb;
+}
+
+.dispatch-card.card-acknowledged {
+  border-left: 4px solid #10b981 !important;
+  background: #f0fdf4;
+}
+
+.dispatch-train-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.dispatch-memo-container {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.dispatch-memo-pre {
+  color: #34d399;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 11px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  margin: 0;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+

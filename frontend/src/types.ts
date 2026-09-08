@@ -243,6 +243,44 @@ export interface CandidatePlanMetrics {
   ml_risk_score?: string;
 }
 
+export interface DispatchDirective {
+  id: string;
+  type: 'LOOP_HOLD' | 'TSLW_WORKING' | 'CHORD_DETOUR' | string;
+  severity: 'CRITICAL' | 'WARNING' | 'ADVISORY' | string;
+  target_station: string;
+  target_station_code: string;
+  assigned_line: string;
+  held_train: {
+    number: string;
+    name: string;
+    type: string;
+    priority: string;
+  };
+  precedence_train: {
+    number: string;
+    name: string;
+    priority: string;
+  };
+  holding_window: {
+    start: string;
+    end: string;
+    duration_mins: number;
+  };
+  action_title: string;
+  action_instruction: string;
+  delay_saved_mins: number;
+  coa_memo_text: string;
+  acknowledged?: boolean;
+}
+
+export interface DispatchStats {
+  total_directives: number;
+  loop_holds: number;
+  tslw_orders: number;
+  chord_detours: number;
+  total_delay_saved_mins: number;
+}
+
 export interface CandidatePlan {
   id: string;
   name: string;
@@ -258,6 +296,8 @@ export interface CandidatePlan {
   total_trains_count?: number;
   affected_trains_count?: number;
   unaffected_trains_count?: number;
+  dispatch_directives?: DispatchDirective[];
+  dispatch_stats?: DispatchStats;
 }
 
 export interface BreakdownByMaintenance {
@@ -281,6 +321,8 @@ export interface OptimizationResponse {
   total_trains_count?: number;
   affected_trains_count?: number;
   unaffected_trains_count?: number;
+  dispatch_directives?: DispatchDirective[];
+  dispatch_stats?: DispatchStats;
 }
 
 export interface LiveTrainHalt {

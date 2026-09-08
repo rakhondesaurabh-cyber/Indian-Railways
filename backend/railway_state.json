@@ -2,7 +2,7 @@
   "maintenance_requests": [
     {
       "id": "MNT-SCD-100",
-      "asset_id": "AK-HWH",
+      "asset_id": "AK-BSL",
       "type": "Track Renewal",
       "duration_mins": 90,
       "priority": "High",

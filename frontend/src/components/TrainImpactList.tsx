@@ -12,8 +12,19 @@ import {
   ShieldCheck,
   ShieldAlert,
   X,
+  Radio,
 } from 'lucide-react';
-import type { AffectedTrain, UnaffectedTrain, CorridorTrain, RailwayNetwork, ScheduledBlock, CorridorSearchResult } from '../types';
+import type {
+  AffectedTrain,
+  UnaffectedTrain,
+  CorridorTrain,
+  RailwayNetwork,
+  ScheduledBlock,
+  CorridorSearchResult,
+  DispatchDirective,
+  DispatchStats,
+} from '../types';
+import { DispatchCoPilot } from './DispatchCoPilot';
 
 interface Props {
   affectedTrains: AffectedTrain[];
@@ -23,6 +34,10 @@ interface Props {
   scheduledBlocks?: ScheduledBlock[] | null;
   corridorTrainsByAsset?: Record<string, CorridorTrain[]>;
   activeCorridor?: CorridorSearchResult | null;
+  dispatchDirectives?: DispatchDirective[];
+  dispatchStats?: DispatchStats;
+  selectedPlanName?: string;
+  onSelectStation?: (stationCode: string) => void;
   onSelectTrack?: (trackId: string) => void;
   onClearTrackFilter?: () => void;
   onViewSchedule?: (trainNumber: string, trainName: string) => void;
@@ -37,16 +52,30 @@ export const TrainImpactList: React.FC<Props> = ({
   scheduledBlocks,
   corridorTrainsByAsset,
   activeCorridor,
+  dispatchDirectives = [],
+  dispatchStats,
+  selectedPlanName = "Optimal Schedule",
+  onSelectStation,
   onSelectTrack,
   onClearTrackFilter,
   onViewSchedule,
   onTrackLiveTrain,
 }) => {
+  const [mainViewMode, setMainViewMode] = useState<'copilot' | 'timetable'>(
+    dispatchDirectives && dispatchDirectives.length > 0 ? 'copilot' : 'timetable'
+  );
   const [activeTab, setActiveTab] = useState<'corridor' | 'all' | 'affected' | 'unaffected'>(
     activeCorridor || selectedTrackId ? 'corridor' : 'all'
   );
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [priorityFilter, setPriorityFilter] = useState<string>('ALL');
+
+  // Sync mainViewMode when dispatchDirectives changes
+  React.useEffect(() => {
+    if (dispatchDirectives && dispatchDirectives.length > 0) {
+      setMainViewMode('copilot');
+    }
+  }, [dispatchDirectives.length]);
 
   // Sync activeTab when activeCorridor or selectedTrackId changes
   React.useEffect(() => {
@@ -262,47 +291,111 @@ export const TrainImpactList: React.FC<Props> = ({
 
   return (
     <div className="mt-3 pt-3 border-top">
-      {/* Track Corridor Focus Banner if a track is active */}
-      {trackInfo && (
-        <Alert variant="primary" className="p-2 mb-2 border border-primary border-opacity-50 shadow-sm">
-          <div className="d-flex justify-content-between align-items-start">
-            <div className="d-flex align-items-center gap-1 flex-wrap">
-              <MapPin size={14} className="text-primary flex-shrink-0" />
-              <span className="fw-bold text-dark extra-small" style={{ fontSize: '0.78rem' }}>
-                Corridor: {trackInfo.src?.name} ⇄ {trackInfo.tgt?.name} ({trackInfo.edge.id})
-              </span>
-            </div>
-            {onClearTrackFilter && (
-              <button
-                type="button"
-                className="btn btn-xs btn-outline-secondary p-0 px-1 border-0"
-                onClick={onClearTrackFilter}
-                title="Show all network tracks"
-              >
-                <X size={13} />
-              </button>
-            )}
-          </div>
-          <div className="d-flex align-items-center gap-2 mt-1 extra-small flex-wrap" style={{ fontSize: '0.72rem' }}>
-            <span className="badge bg-primary text-white">
-              {corridorTrains.length} Corridor Trains
-            </span>
-            <span className={corridorTrains.filter(t => t.is_delayed).length > 0 ? "badge bg-danger text-white" : "badge bg-success text-white"}>
-              {corridorTrains.filter(t => t.is_delayed).length} Delayed / {corridorTrains.filter(t => !t.is_delayed).length} On-Time
-            </span>
-            {trackInfo.scheduled?.ai_explanation && (
-              <span className="badge bg-dark text-info border border-info border-opacity-50 d-flex align-items-center gap-1">
-                🤖 AI Score: {trackInfo.scheduled.ai_explanation.optimization_score.toFixed(1)}/100
-              </span>
-            )}
-            {trackInfo.scheduled && (
-              <span className="text-muted ms-auto">
-                Block: {new Date(trackInfo.scheduled.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(trackInfo.scheduled.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </span>
-            )}
-          </div>
-        </Alert>
+      {/* Top Main View Mode Switcher: 🚦 Dispatch Co-Pilot vs 📋 Timetable & Delays */}
+      <div className="d-flex gap-1 mb-3 p-1 bg-light rounded border shadow-sm">
+        <button
+          type="button"
+          className={`btn btn-sm flex-grow-1 py-1.5 px-2 rounded d-flex align-items-center justify-content-center gap-1.5 ${
+            mainViewMode === 'copilot'
+              ? 'btn-primary text-white fw-bold shadow-sm'
+              : 'btn-light text-muted fw-semibold'
+          }`}
+          style={{ fontSize: '0.74rem' }}
+          onClick={() => setMainViewMode('copilot')}
+        >
+          <Radio size={13} className={mainViewMode === 'copilot' ? 'text-white' : 'text-primary'} />
+          <span>Dispatch Co-Pilot</span>
+          {dispatchDirectives && dispatchDirectives.length > 0 && (
+            <Badge
+              bg={mainViewMode === 'copilot' ? 'light' : 'primary'}
+              text={mainViewMode === 'copilot' ? 'dark' : 'white'}
+              pill
+              className="ms-1"
+              style={{ fontSize: '0.65rem' }}
+            >
+              {dispatchDirectives.length} Orders
+            </Badge>
+          )}
+        </button>
+
+        <button
+          type="button"
+          className={`btn btn-sm flex-grow-1 py-1.5 px-2 rounded d-flex align-items-center justify-content-center gap-1.5 ${
+            mainViewMode === 'timetable'
+              ? 'btn-primary text-white fw-bold shadow-sm'
+              : 'btn-light text-muted fw-semibold'
+          }`}
+          style={{ fontSize: '0.74rem' }}
+          onClick={() => setMainViewMode('timetable')}
+        >
+          <TrainIcon size={13} className={mainViewMode === 'timetable' ? 'text-white' : 'text-secondary'} />
+          <span>Timetable & Delays</span>
+          <Badge
+            bg={mainViewMode === 'timetable' ? 'light' : 'secondary'}
+            text={mainViewMode === 'timetable' ? 'dark' : 'white'}
+            pill
+            className="ms-1"
+            style={{ fontSize: '0.65rem' }}
+          >
+            {totalTrains}
+          </Badge>
+        </button>
+      </div>
+
+      {/* Mode 1: Dispatch Co-Pilot Directives */}
+      {mainViewMode === 'copilot' && (
+        <DispatchCoPilot
+          directives={dispatchDirectives}
+          stats={dispatchStats}
+          onStationSelect={onSelectStation}
+          selectedPlanName={selectedPlanName}
+        />
       )}
+
+      {/* Mode 2: Timetable & Delays List */}
+      {mainViewMode === 'timetable' && (
+        <div>
+          {/* Track Corridor Focus Banner if a track is active */}
+          {trackInfo && (
+            <Alert variant="primary" className="p-2 mb-2 border border-primary border-opacity-50 shadow-sm">
+              <div className="d-flex justify-content-between align-items-start">
+                <div className="d-flex align-items-center gap-1 flex-wrap">
+                  <MapPin size={14} className="text-primary flex-shrink-0" />
+                  <span className="fw-bold text-dark extra-small" style={{ fontSize: '0.78rem' }}>
+                    Corridor: {trackInfo.src?.name} ⇄ {trackInfo.tgt?.name} ({trackInfo.edge.id})
+                  </span>
+                </div>
+                {onClearTrackFilter && (
+                  <button
+                    type="button"
+                    className="btn btn-xs btn-outline-secondary p-0 px-1 border-0"
+                    onClick={onClearTrackFilter}
+                    title="Show all network tracks"
+                  >
+                    <X size={13} />
+                  </button>
+                )}
+              </div>
+              <div className="d-flex align-items-center gap-2 mt-1 extra-small flex-wrap" style={{ fontSize: '0.72rem' }}>
+                <span className="badge bg-primary text-white">
+                  {corridorTrains.length} Corridor Trains
+                </span>
+                <span className={corridorTrains.filter(t => t.is_delayed).length > 0 ? "badge bg-danger text-white" : "badge bg-success text-white"}>
+                  {corridorTrains.filter(t => t.is_delayed).length} Delayed / {corridorTrains.filter(t => !t.is_delayed).length} On-Time
+                </span>
+                {trackInfo.scheduled?.ai_explanation && (
+                  <span className="badge bg-dark text-info border border-info border-opacity-50 d-flex align-items-center gap-1">
+                    🤖 AI Score: {trackInfo.scheduled.ai_explanation.optimization_score.toFixed(1)}/100
+                  </span>
+                )}
+                {trackInfo.scheduled && (
+                  <span className="text-muted ms-auto">
+                    Block: {new Date(trackInfo.scheduled.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(trackInfo.scheduled.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                )}
+              </div>
+            </Alert>
+          )}
 
       {/* Section Header */}
       <div className="d-flex align-items-center justify-content-between mb-2">
@@ -677,5 +770,7 @@ export const TrainImpactList: React.FC<Props> = ({
         )}
       </div>
     </div>
+    )}
+  </div>
   );
 };

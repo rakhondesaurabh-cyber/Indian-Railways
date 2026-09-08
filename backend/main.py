@@ -872,6 +872,8 @@ def optimize_schedule(req: OptimizeRequest = OptimizeRequest()):
         "total_trains_count": len(trains),
         "affected_trains_count": optimal_results.get("affected_trains_count", 0),
         "unaffected_trains_count": optimal_results.get("unaffected_trains_count", len(trains)),
+        "dispatch_directives": optimal_results.get("dispatch_directives", []),
+        "dispatch_stats": optimal_results.get("dispatch_stats", {}),
         "metrics": {
             "before": {"trains_affected": naive_trains_affected, "delay_mins": naive_delay_mins},
             "after": optimal_results["metrics"]
@@ -941,6 +943,8 @@ def inject_emergency(req: EmergencyRequest):
         "total_trains_count": len(trains),
         "affected_trains_count": optimal_results.get("affected_trains_count", 0),
         "unaffected_trains_count": optimal_results.get("unaffected_trains_count", len(trains)),
+        "dispatch_directives": optimal_results.get("dispatch_directives", []),
+        "dispatch_stats": optimal_results.get("dispatch_stats", {}),
         "metrics": {
              "before": {"trains_affected": old_trains, "delay_mins": old_delays},
              "after": optimal_results["metrics"]
@@ -1002,6 +1006,8 @@ def schedule_maintenance(req: EmergencyRequest):
         "total_trains_count": len(trains),
         "affected_trains_count": optimal_results.get("affected_trains_count", 0),
         "unaffected_trains_count": optimal_results.get("unaffected_trains_count", len(trains)),
+        "dispatch_directives": optimal_results.get("dispatch_directives", []),
+        "dispatch_stats": optimal_results.get("dispatch_stats", {}),
         "metrics": {
              "before": {"trains_affected": old_trains, "delay_mins": old_delays},
              "after": optimal_results["metrics"]

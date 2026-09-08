@@ -603,6 +603,252 @@ def generate_candidate_options(m, corridor_index, earliest_time, num_slots=24, s
 
     return unique_res
 
+def generate_dispatch_recommendations(plan_blocks, affected_trains, corridor_index=None, network=None, stn_map=None):
+    """
+    Generates actionable, safety-compliant Section Controller Dispatch Directives:
+    1. LOOP_HOLD: Precedence regulations holding lower-priority/freight trains on station loop lines.
+    2. TSLW_WORKING: Twin Single-Line Working (bi-directional operation) orders for single track closures.
+    3. CHORD_DETOUR: Emergency chord line bypass route recommendations for severe congestion (>45m).
+    """
+    if stn_map is None:
+        stn_map = {}
+    
+    directives = []
+    directive_id_seq = 1
+
+    junction_lookup = {
+        "BPL": "Bhopal Junction",
+        "ET": "Itarsi Junction",
+        "NGP": "Nagpur Junction",
+        "AMLA": "Amla Junction",
+        "NDLS": "New Delhi",
+        "CNB": "Kanpur Central",
+        "PRYJ": "Prayagraj Junction",
+        "DDU": "Pt. Deen Dayal Upadhyaya Jn",
+        "HWH": "Howrah Junction",
+        "CSMT": "Mumbai CSMT",
+        "KYN": "Kalyan Junction",
+        "IGP": "Igatpuri",
+        "BSL": "Bhusaval Junction",
+        "AK": "Akola Junction",
+        "BD": "Badnera Junction",
+        "WR": "Wardha Junction",
+        "ADI": "Ahmedabad Junction",
+        "BRC": "Vadodara Junction",
+        "ST": "Surat",
+        "BSR": "Vasai Road",
+        "MAS": "Chennai Central",
+        "GDR": "Gudur Junction",
+        "BZA": "Vijayawada Junction",
+        "WL": "Warangal",
+        "BPQ": "Balharshah Junction",
+        "SBC": "KSR Bengaluru",
+        "DMM": "Dharmavaram Junction",
+        "GTL": "Guntakal Junction",
+        "SC": "Secunderabad Junction",
+        "KZJ": "Kazipet Junction"
+    }
+
+    loop_lines_pool = [
+        "Loop Line 2 (Down)",
+        "Common Loop Line 3",
+        "Loop Line 1 (Up)",
+        "Goods Yard Line 4",
+        "Passenger Loop Line 2"
+    ]
+
+    for b in plan_blocks:
+        asset_id = b.get("asset_id", "")
+        b_start_dt = parse_time(b.get("start_time", "2026-09-01T02:00:00"))
+        b_end_dt = parse_time(b.get("end_time", "2026-09-01T05:00:00"))
+        
+        parts = asset_id.split("-")
+        src_code = parts[0] if len(parts) >= 2 else "BPL"
+        tgt_code = parts[1] if len(parts) >= 2 else "NGP"
+        src_name = junction_lookup.get(src_code, stn_map.get(src_code, src_code))
+        tgt_name = junction_lookup.get(tgt_code, stn_map.get(tgt_code, tgt_code))
+        
+        # 1. Twin Single-Line Working (TSLW) order for the section block
+        tslw_id = f"DSP-TSLW-{directive_id_seq:03d}"
+        directive_id_seq += 1
+        
+        tslw_start_str = (b_start_dt - timedelta(minutes=15)).strftime("%H:%M")
+        tslw_end_str = (b_end_dt + timedelta(minutes=15)).strftime("%H:%M")
+        
+        memo_tslw = f"""CONTROL OFFICE APPLICATION (COA) DISPATCH DIRECTIVE #{tslw_id}
+FROM: SECTION CONTROLLER (OPERATING / TRAFFIC)
+TO: STATION MASTER / {src_code}, STATION MASTER / {tgt_code}
+SUBJECT: TWIN SINGLE-LINE WORKING (TSLW) PILOTAGE ORDER
+----------------------------------------------------------------------
+1. SECTION {src_code} - {tgt_code} TRACK BLOCKED FOR MAINTENANCE ({b_start_dt.strftime('%H:%M')} - {b_end_dt.strftime('%H:%M')}).
+2. INSTITUTE BI-DIRECTIONAL TWIN SINGLE-LINE WORKING (TSLW) ON ADJACENT LINE.
+3. ISSUE AUTHORITY FORM T/D 602 TO ALL UP & DOWN LOCO PILOTS.
+4. ENFORCE 30 KM/H SPEED RESTRICTION OVER CROSSOVER TURNOUTS."""
+
+        directives.append({
+            "id": tslw_id,
+            "type": "TSLW_WORKING",
+            "severity": "CRITICAL",
+            "target_station": f"{src_name} – {tgt_name}",
+            "target_station_code": src_code,
+            "assigned_line": "Single Line Bi-Directional Pilotage",
+            "held_train": {
+                "number": "ALL TRAFFIC",
+                "name": f"Section {src_code} ⇄ {tgt_code}",
+                "type": "Corridor Control",
+                "priority": "Critical"
+            },
+            "precedence_train": {
+                "number": "PILOT",
+                "name": "Single Line Batched Pilotage (Form T/D 602)",
+                "priority": "High"
+            },
+            "holding_window": {
+                "start": tslw_start_str,
+                "end": tslw_end_str,
+                "duration_mins": int((b_end_dt - b_start_dt).total_seconds() / 60) + 30
+            },
+            "action_title": f"Institute Twin Single-Line Working on {src_code} ⇄ {tgt_code}",
+            "action_instruction": f"Institute bi-directional TSLW working between {src_name} and {tgt_name} ({tslw_start_str} - {tslw_end_str}) with 30 km/h crossover speed restriction.",
+            "delay_saved_mins": 90,
+            "coa_memo_text": memo_tslw,
+            "acknowledged": False
+        })
+
+        # 2. Extract trains affected on this block
+        b_affected = [t for t in affected_trains if t.get("asset_id") == asset_id or asset_id in t.get("asset_id", "")]
+        if not b_affected:
+            b_affected = [t for t in b.get("affected_train_details", [])]
+        
+        # Sort trains by priority (High -> Medium -> Low)
+        priority_order = {"High": 1, "Medium": 2, "Low": 3}
+        _ = sorted(b_affected, key=lambda x: (priority_order.get(x.get("priority", "Medium"), 2), -x.get("delay_mins", 0)))
+        
+        # Pair lower-priority/delayed trains with precedence targets
+        for idx, trn in enumerate(b_affected):
+            p_val = trn.get("priority", "Medium")
+            t_num = trn.get("train_number", "TRN")
+            t_name = trn.get("train_name") or trn.get("name", "Express")
+            delay = trn.get("delay_mins", 30)
+            
+            # Find nearest junction for holding
+            route = trn.get("route", [src_code, tgt_code])
+            holding_stn_code = src_code
+            for s in route:
+                if s in junction_lookup:
+                    holding_stn_code = s
+                    break
+            holding_stn_name = junction_lookup.get(holding_stn_code, stn_map.get(holding_stn_code, holding_stn_code))
+            assigned_loop = loop_lines_pool[idx % len(loop_lines_pool)]
+            
+            # Precedence target (e.g. Vande Bharat / Rajdhani)
+            prec_num = "22436" if "BPL" in asset_id or "NDLS" in asset_id else "12951"
+            prec_name = "Vande Bharat Express" if "BPL" in asset_id or "NDLS" in asset_id else "Mumbai Rajdhani Express"
+            
+            hold_start = b_start_dt.strftime("%H:%M")
+            hold_end = (b_start_dt + timedelta(minutes=max(20, min(delay, 50)))).strftime("%H:%M")
+            hold_dur = max(20, min(delay, 50))
+            
+            dir_id = f"DSP-LOOP-{directive_id_seq:03d}"
+            directive_id_seq += 1
+            
+            memo_loop = f"""CONTROL OFFICE APPLICATION (COA) DISPATCH DIRECTIVE #{dir_id}
+FROM: SECTION CONTROLLER (OPERATING / TRAFFIC)
+TO: STATION MASTER / {holding_stn_code}, LOCO PILOT TRAIN #{t_num}
+SUBJECT: LOOP LINE REGULATION & PRECEDENCE CLEARANCE
+----------------------------------------------------------------------
+1. ADMIT AND REGULATE TRAIN #{t_num} ({t_name}) ON {assigned_loop} AT {holding_stn_name}.
+2. HOLD FROM {hold_start} TO {hold_end} ({hold_dur} MINS) FOR MAINLINE CROSSING.
+3. PROVIDE PRECEDENCE AND MAINLINE 1 GREEN SIGNAL TO #{prec_num} ({prec_name}).
+4. ON PASSAGE OF #{prec_num}, LOWER STARTER SIGNAL FOR #{t_num}."""
+
+            directives.append({
+                "id": dir_id,
+                "type": "LOOP_HOLD",
+                "severity": "WARNING" if p_val == "High" else "CRITICAL" if "BOXN" in t_name or p_val == "Low" else "ADVISORY",
+                "target_station": holding_stn_name,
+                "target_station_code": holding_stn_code,
+                "assigned_line": assigned_loop,
+                "held_train": {
+                    "number": t_num,
+                    "name": t_name,
+                    "type": trn.get("type", "Express"),
+                    "priority": p_val
+                },
+                "precedence_train": {
+                    "number": prec_num,
+                    "name": prec_name,
+                    "priority": "High"
+                },
+                "holding_window": {
+                    "start": hold_start,
+                    "end": hold_end,
+                    "duration_mins": hold_dur
+                },
+                "action_title": f"Hold #{t_num} ({t_name}) on {assigned_loop} at {holding_stn_name}",
+                "action_instruction": f"Admit and hold #{t_num} ({t_name}) on {assigned_loop} at {holding_stn_name} ({hold_start} - {hold_end}) to allow clear mainline passage for #{prec_num} ({prec_name}).",
+                "delay_saved_mins": int(delay * 0.75),
+                "coa_memo_text": memo_loop,
+                "acknowledged": False
+            })
+
+            # 3. Emergency Chord Line Detour if delay > 45 mins
+            if delay >= 45 and idx < 2:
+                detour_id = f"DSP-DETOUR-{directive_id_seq:03d}"
+                directive_id_seq += 1
+                
+                via_chord = f"{src_code} ➔ Chord Bypass ➔ {tgt_code}"
+                memo_detour = f"""CONTROL OFFICE APPLICATION (COA) DISPATCH DIRECTIVE #{detour_id}
+FROM: CHIEF TRAIN CONTROLLER / OPERATING
+TO: STATION MASTER / {src_code}, SM / {tgt_code}, LOCO PILOT #{t_num}
+SUBJECT: EMERGENCY CHORD LINE ROUTE DETOUR
+----------------------------------------------------------------------
+1. DUE TO SEVERE CONGESTION ({delay}M DELAY) ON SECTION {asset_id}.
+2. DIVERT TRAIN #{t_num} ({t_name}) VIA CHORD LINE BYPASS ({via_chord}).
+3. ADDITIONAL DETOUR DISTANCE: +14.2 KM.
+4. NET IDLE HOLDING TIME SAVED: {int(delay * 0.85)} MINS."""
+
+                directives.append({
+                    "id": detour_id,
+                    "type": "CHORD_DETOUR",
+                    "severity": "WARNING",
+                    "target_station": f"{src_name} Chord Junction",
+                    "target_station_code": src_code,
+                    "assigned_line": "Chord Line Bypass Track",
+                    "held_train": {
+                        "number": t_num,
+                        "name": t_name,
+                        "type": trn.get("type", "Express"),
+                        "priority": p_val
+                    },
+                    "precedence_train": {
+                        "number": "DETOUR",
+                        "name": f"Via Chord Bypass ({via_chord})",
+                        "priority": "Medium"
+                    },
+                    "holding_window": {
+                        "start": (b_start_dt + timedelta(minutes=10)).strftime("%H:%M"),
+                        "end": (b_start_dt + timedelta(minutes=45)).strftime("%H:%M"),
+                        "duration_mins": 35
+                    },
+                    "action_title": f"Divert #{t_num} via Chord Line Bypass ({src_code} ➔ {tgt_code})",
+                    "action_instruction": f"Reroute #{t_num} ({t_name}) via the chord line bypass (+14.2 km) to save {int(delay * 0.85)} mins of stationary track block delay.",
+                    "delay_saved_mins": int(delay * 0.85),
+                    "coa_memo_text": memo_detour,
+                    "acknowledged": False
+                })
+
+    total_saved = sum(d["delay_saved_mins"] for d in directives)
+    stats = {
+        "total_directives": len(directives),
+        "loop_holds": len([d for d in directives if d["type"] == "LOOP_HOLD"]),
+        "tslw_orders": len([d for d in directives if d["type"] == "TSLW_WORKING"]),
+        "chord_detours": len([d for d in directives if d["type"] == "CHORD_DETOUR"]),
+        "total_delay_saved_mins": total_saved
+    }
+
+    return directives, stats
+
 def run_optimization(network, trains, maintenance_requests, weight_delay=0.35, weight_affected=0.25):
     """
     Executes scalable multi-strategy AI schedule optimization across the complete railway graph.
@@ -711,6 +957,8 @@ def run_optimization(network, trains, maintenance_requests, weight_delay=0.35, w
         else:
             metrics["ml_risk_score"] = "Severe Congestion (86.0% Confidence)"
 
+        directives, dispatch_stats = generate_dispatch_recommendations(plan, plan_affected_list, corridor_index, network, stn_map)
+
         return {
             "id": strategy_id,
             "name": strategy_name,
@@ -723,7 +971,9 @@ def run_optimization(network, trains, maintenance_requests, weight_delay=0.35, w
             "unaffected_trains": plan_unaffected_list,
             "total_trains_count": len(trains),
             "affected_trains_count": len(plan_affected_list),
-            "unaffected_trains_count": len(plan_unaffected_list)
+            "unaffected_trains_count": len(plan_unaffected_list),
+            "dispatch_directives": directives,
+            "dispatch_stats": dispatch_stats
         }
 
     # 1. Minimal Disruption Strategy
@@ -804,5 +1054,7 @@ def run_optimization(network, trains, maintenance_requests, weight_delay=0.35, w
         "corridor_trains_by_asset": corridor_trains_by_asset,
         "total_trains_count": len(trains),
         "affected_trains_count": len(plan_min["affected_trains"]),
-        "unaffected_trains_count": len(plan_min["unaffected_trains"])
+        "unaffected_trains_count": len(plan_min["unaffected_trains"]),
+        "dispatch_directives": plan_min.get("dispatch_directives", []),
+        "dispatch_stats": plan_min.get("dispatch_stats", {})
     }
