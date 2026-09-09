@@ -26,15 +26,13 @@ h1, h2, h3, h4, h5, h6, .navbar-brand {
   font-family: 'Roboto', sans-serif;
 }
 
-/* Navbar: Fixed 56px height, single-line no wrap */
+/* Responsive Navbar */
 .navbar-gov {
   background: #ffffff;
   border-bottom: 3px solid var(--gov-accent);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  height: 56px;
-  min-height: 56px;
-  max-height: 56px;
-  padding: 0 0.75rem !important;
+  min-height: 54px;
+  padding: 0.35rem 0.75rem !important;
   z-index: 1050;
 }
 

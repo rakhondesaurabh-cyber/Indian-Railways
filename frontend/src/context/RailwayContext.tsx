@@ -503,23 +503,23 @@ export const RailwayProvider: React.FC<{ children: ReactNode }> = ({ children })
 
     const newMetrics: OptimizationMetrics = metrics
       ? {
-          before: metrics.before,
-          after: {
-            trains_affected: newAffectedList.length,
-            delay_mins: totalDelay,
-            ml_predicted_delay_mins: totalMlDelay,
-            ml_risk_score: riskScore,
-          },
-        }
+        before: metrics.before,
+        after: {
+          trains_affected: newAffectedList.length,
+          delay_mins: totalDelay,
+          ml_predicted_delay_mins: totalMlDelay,
+          ml_risk_score: riskScore,
+        },
+      }
       : {
-          before: { trains_affected: newAffectedList.length * 2, delay_mins: totalDelay * 2 },
-          after: {
-            trains_affected: newAffectedList.length,
-            delay_mins: totalDelay,
-            ml_predicted_delay_mins: totalMlDelay,
-            ml_risk_score: riskScore,
-          },
-        };
+        before: { trains_affected: newAffectedList.length * 2, delay_mins: totalDelay * 2 },
+        after: {
+          trains_affected: newAffectedList.length,
+          delay_mins: totalDelay,
+          ml_predicted_delay_mins: totalMlDelay,
+          ml_risk_score: riskScore,
+        },
+      };
 
     setOptimizationPlan(newPlan);
     setMetrics(newMetrics);

@@ -1,34 +1,31 @@
 import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import { Navbar, Container, Nav, Button } from 'react-bootstrap';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Navbar, Container, Nav, Button, Dropdown } from 'react-bootstrap';
 import {
   Train as TrainIcon,
   MapPin,
   Settings,
   Radio,
   Navigation,
-  Play,
   Plus,
   ShieldAlert,
-  Zap,
-  Activity
+  LogOut,
+  Globe2,
+  Sliders,
+  Menu
 } from 'lucide-react';
 import { useRailway } from '../context/RailwayContext';
+import { useAuth, ZONES } from '../context/AuthContext';
 
 export const NavigationHeader: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, isHead, logout, switchZone, activeZone } = useAuth();
   const {
-    trains,
     maintenanceRequests,
     dispatchDirectives,
-    dispatchStats,
-    emergencyActive,
-    showSimulation,
-    setShowSimulation,
     setShowMaintenanceModal,
-    setShowEmergencyModal,
-    handleOptimize,
-    loading
+    setShowEmergencyModal
   } = useRailway();
 
   const isMap = location.pathname === '/' || location.pathname === '/map';
@@ -36,153 +33,185 @@ export const NavigationHeader: React.FC = () => {
   const isDispatch = location.pathname === '/dispatch';
   const isCorridor = location.pathname === '/corridor';
 
-  const totalSaved = dispatchStats?.total_delay_saved_mins ?? dispatchDirectives.reduce((sum, d) => sum + (d.delay_saved_mins || 0), 0);
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+  };
 
   return (
-    <Navbar className="navbar-gov sticky-top">
-      <Container fluid className="px-2 d-flex align-items-center justify-content-between flex-nowrap h-100">
-        
-        {/* Left Section: Brand & Compact Live Telemetry Strip */}
-        <div className="d-flex align-items-center flex-nowrap flex-shrink-0 me-3">
+    <Navbar expand="lg" className="navbar-gov sticky-top py-1">
+      <Container fluid className="px-2 px-md-3">
+
+        {/* Left Section: Brand & Zonal/HQ Jurisdiction Badge */}
+        <div className="d-flex align-items-center me-2">
           <Navbar.Brand as={NavLink} to="/" className="d-flex align-items-center py-0 me-2 text-decoration-none">
-            <div className="bg-primary text-white rounded p-1 me-2 d-flex align-items-center justify-content-center shadow-sm flex-shrink-0" style={{ width: '32px', height: '32px' }}>
+            <div
+              className="bg-primary text-white rounded p-1 me-2 d-flex align-items-center justify-content-center shadow-sm flex-shrink-0"
+              style={{ width: '32px', height: '32px', backgroundColor: 'var(--gov-blue)' }}
+            >
               <TrainIcon size={18} />
             </div>
             <div className="text-nowrap">
-              <div className="fw-black text-dark text-uppercase lh-1" style={{ fontSize: '0.92rem', letterSpacing: '0.4px' }}>
+              <div className="fw-black text-uppercase lh-1" style={{ fontSize: '0.92rem', letterSpacing: '0.4px', color: 'var(--gov-blue)' }}>
                 INDIAN RAILWAYS
               </div>
-              <div className="text-primary fw-bold extra-small" style={{ fontSize: '0.62rem', letterSpacing: '0.2px' }}>
+              <div className="fw-bold extra-small" style={{ fontSize: '0.62rem', letterSpacing: '0.2px', color: 'var(--gov-accent)' }}>
                 RAIL-AI Portal
               </div>
             </div>
           </Navbar.Brand>
 
-          {/* Compact Telemetry Badges (Single-line, non-breaking) */}
-          <div className="d-none d-xl-flex align-items-center gap-1.5 border-start ps-2 text-nowrap flex-nowrap">
-            <span className="badge bg-light text-dark border extra-small py-1 px-2 d-flex align-items-center gap-1">
-              <span className="badge bg-success rounded-circle p-0" style={{ width: '5px', height: '5px' }}></span>
-              HQ / Central
-            </span>
+          {/* User Role & Operational Zone Switcher / Badge */}
+          {user && (
+            <div className="d-flex align-items-center border-start ps-2 text-nowrap">
+              {isHead ? (
+                <Dropdown align="start">
+                  <Dropdown.Toggle
+                    size="sm"
+                    variant="outline-primary"
+                    className="py-0 px-2 extra-small d-flex align-items-center gap-1 fw-bold"
+                    style={{ fontSize: '0.7rem', height: '26px' }}
+                  >
+                    <Globe2 size={11} className="text-primary" />
+                    <span>HQ: {activeZone === 'ALL' ? 'Pan-India' : activeZone}</span>
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu className="shadow-lg border-0 extra-small" style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                    <Dropdown.Header className="extra-small fw-bold text-uppercase">Switch Command Zone</Dropdown.Header>
+                    {ZONES.map((z) => (
+                      <Dropdown.Item
+                        key={z.code}
+                        active={activeZone === z.code}
+                        onClick={() => switchZone(z.code)}
+                        className="extra-small py-1.5"
+                      >
+                        <strong>{z.code}</strong> — {z.name}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+              ) : (
+                <span className="badge bg-success bg-opacity-15 text-success border border-success border-opacity-30 extra-small py-1 px-2 d-flex align-items-center gap-1 fw-bold" style={{ fontSize: '0.7rem' }}>
+                  <Sliders size={11} />
+                  <span>ZONE: {user.assignedZone || 'CR'}</span>
+                </span>
+              )}
+            </div>
+          )}
+        </div>
 
-            <span className="badge bg-light text-dark border extra-small py-1 px-2 d-flex align-items-center gap-1">
-              <Activity size={10} className="text-primary" />
-              {trains.length > 0 ? `${trains.length} Trains` : '1,840 Trains'}
-            </span>
+        {/* Mobile Hamburger Toggle */}
+        <Navbar.Toggle aria-controls="railway-navbar-nav" className="border-0 p-1 ms-auto d-lg-none">
+          <Menu size={20} className="text-dark" />
+        </Navbar.Toggle>
 
-            {maintenanceRequests.length > 0 && (
-              <span className="badge bg-warning text-dark border extra-small py-1 px-2">
-                {maintenanceRequests.length} Block{maintenanceRequests.length > 1 ? 's' : ''}
-              </span>
+        {/* Responsive Navbar Content */}
+        <Navbar.Collapse id="railway-navbar-nav" className="my-2 my-lg-0">
+          
+          {/* Center Section: Workspace Navigation Tabs */}
+          <Nav className="nav-pills d-flex align-items-lg-center flex-column flex-lg-row text-nowrap gap-1 mx-auto my-2 my-lg-0">
+            <NavLink
+              to="/"
+              className={`nav-tab-pill ${isMap ? 'active' : ''}`}
+            >
+              <MapPin size={13} />
+              <span>GIS Network & Twin</span>
+            </NavLink>
+
+            <NavLink
+              to="/planner"
+              className={`nav-tab-pill ${isPlanner ? 'active' : ''}`}
+            >
+              <Settings size={13} />
+              <span>AI Maintenance</span>
+              {maintenanceRequests.length > 0 && (
+                <span className={`badge rounded-pill ${isPlanner ? 'bg-light text-dark' : 'bg-primary text-white'}`} style={{ fontSize: '0.62rem', padding: '2px 5px' }}>
+                  {maintenanceRequests.length}
+                </span>
+              )}
+            </NavLink>
+
+            <NavLink
+              to="/dispatch"
+              className={`nav-tab-pill ${isDispatch ? 'active' : ''}`}
+            >
+              <Radio size={13} />
+              <span>Dispatch Desk</span>
+              {dispatchDirectives && dispatchDirectives.length > 0 && (
+                <span className={`badge rounded-pill ${isDispatch ? 'bg-light text-danger' : 'bg-danger text-white animate-pulse'}`} style={{ fontSize: '0.62rem', padding: '2px 5px' }}>
+                  {dispatchDirectives.length}
+                </span>
+              )}
+            </NavLink>
+
+            <NavLink
+              to="/corridor"
+              className={`nav-tab-pill ${isCorridor ? 'active' : ''}`}
+            >
+              <Navigation size={13} />
+              <span>Corridor Explorer</span>
+            </NavLink>
+          </Nav>
+
+          {/* Right Section: Quick Action Controls & User Account */}
+          <div className="d-flex align-items-center flex-wrap gap-1.5 ms-lg-2 pt-2 pt-lg-0 border-top border-lg-0">
+            
+            {/* Schedule Block Modal Trigger */}
+            <Button
+              variant="outline-primary"
+              size="sm"
+              className="py-1 px-2.5 d-flex align-items-center gap-1 extra-small text-nowrap"
+              style={{ fontSize: '0.72rem', height: '30px' }}
+              onClick={() => setShowMaintenanceModal(true)}
+              title="Schedule Maintenance Block"
+            >
+              <Plus size={13} />
+              <span>Block</span>
+            </Button>
+
+            {/* Emergency Track Failure Modal Trigger */}
+            <Button
+              variant="outline-danger"
+              size="sm"
+              className="py-1 px-2.5 d-flex align-items-center gap-1 extra-small text-nowrap"
+              style={{ fontSize: '0.72rem', height: '30px' }}
+              onClick={() => setShowEmergencyModal(true)}
+              title="Simulate Track Failure & Detour"
+            >
+              <ShieldAlert size={13} />
+              <span>Fail Track</span>
+            </Button>
+
+            {/* User Profile Info & Logout */}
+            {user && (
+              <div className="d-flex align-items-center gap-1 border-start ps-2 ms-1">
+                <div
+                  className="d-flex flex-column text-end lh-1 cursor-default me-1"
+                  title={`${user.displayName} - ${user.designation} (${user.email})`}
+                >
+                  <span className="fw-bold text-dark extra-small" style={{ fontSize: '0.72rem', maxWidth: '90px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {user.displayName.split(' ')[0]}
+                  </span>
+                  <span className="text-muted extra-small" style={{ fontSize: '0.6rem' }}>
+                    {isHead ? 'Apex Head' : `${user.assignedZone} Op`}
+                  </span>
+                </div>
+
+                <Button
+                  variant="outline-secondary"
+                  size="sm"
+                  className="py-1 px-2 d-flex align-items-center gap-1 extra-small text-danger border-0 hover-bg-light"
+                  style={{ fontSize: '0.72rem', height: '30px' }}
+                  onClick={handleLogout}
+                  title={`Sign Out (${user.email})`}
+                >
+                  <LogOut size={13} />
+                </Button>
+              </div>
             )}
 
-            {totalSaved > 0 && (
-              <span className="badge bg-success extra-small py-1 px-2 d-flex align-items-center gap-1">
-                <Zap size={10} /> +{totalSaved}m Saved
-              </span>
-            )}
-
-            {emergencyActive && (
-              <span className="badge bg-danger animate-pulse extra-small py-1 px-2 d-flex align-items-center gap-1">
-                <ShieldAlert size={10} /> Failed
-              </span>
-            )}
           </div>
-        </div>
 
-        {/* Center Section: Workspace Navigation Tabs (Fixed size, single line, no wrapping) */}
-        <Nav className="nav-pills d-flex align-items-center flex-nowrap text-nowrap gap-1 mx-auto flex-shrink-0">
-          <NavLink
-            to="/"
-            className={`nav-tab-pill ${isMap ? 'active' : ''}`}
-          >
-            <MapPin size={13} />
-            <span>GIS Network & Twin</span>
-          </NavLink>
-
-          <NavLink
-            to="/planner"
-            className={`nav-tab-pill ${isPlanner ? 'active' : ''}`}
-          >
-            <Settings size={13} />
-            <span>AI Maintenance Planner</span>
-            {maintenanceRequests.length > 0 && (
-              <span className={`badge rounded-pill ${isPlanner ? 'bg-light text-dark' : 'bg-primary text-white'}`} style={{ fontSize: '0.62rem', padding: '2px 5px' }}>
-                {maintenanceRequests.length}
-              </span>
-            )}
-          </NavLink>
-
-          <NavLink
-            to="/dispatch"
-            className={`nav-tab-pill ${isDispatch ? 'active' : ''}`}
-          >
-            <Radio size={13} />
-            <span>Dispatch Desk</span>
-            {dispatchDirectives && dispatchDirectives.length > 0 && (
-              <span className={`badge rounded-pill ${isDispatch ? 'bg-light text-danger' : 'bg-danger text-white animate-pulse'}`} style={{ fontSize: '0.62rem', padding: '2px 5px' }}>
-                {dispatchDirectives.length} Orders
-              </span>
-            )}
-          </NavLink>
-
-          <NavLink
-            to="/corridor"
-            className={`nav-tab-pill ${isCorridor ? 'active' : ''}`}
-          >
-            <Navigation size={13} />
-            <span>Corridor Explorer</span>
-          </NavLink>
-        </Nav>
-
-        {/* Right Section: Action Controls (Fixed size, single line) */}
-        <div className="d-flex align-items-center gap-1.5 flex-nowrap text-nowrap flex-shrink-0 ms-3">
-          <Button
-            variant={showSimulation ? "info" : "outline-primary"}
-            size="sm"
-            className={`py-1 px-2 d-flex align-items-center gap-1 extra-small text-nowrap ${showSimulation ? 'text-dark fw-bold shadow-sm' : ''}`}
-            style={{ fontSize: '0.72rem', height: '30px' }}
-            onClick={() => setShowSimulation((prev) => !prev)}
-            title="Toggle 24-Hour Digital Twin Simulation Scrubber"
-          >
-            <Play size={11} fill={showSimulation ? 'currentColor' : 'none'} />
-            <span>{showSimulation ? 'Simulation ON' : 'Digital Twin'}</span>
-          </Button>
-
-          <Button
-            variant="outline-primary"
-            size="sm"
-            className="py-1 px-2 d-flex align-items-center gap-1 extra-small text-nowrap"
-            style={{ fontSize: '0.72rem', height: '30px' }}
-            onClick={() => setShowMaintenanceModal(true)}
-          >
-            <Plus size={12} />
-            <span>Schedule Block</span>
-          </Button>
-
-          <Button
-            variant="outline-danger"
-            size="sm"
-            className="py-1 px-2 d-flex align-items-center gap-1 extra-small text-nowrap"
-            style={{ fontSize: '0.72rem', height: '30px' }}
-            onClick={() => setShowEmergencyModal(true)}
-          >
-            <ShieldAlert size={12} />
-            <span>Fail Track</span>
-          </Button>
-
-          <Button
-            variant="primary"
-            size="sm"
-            className="py-1 px-2.5 d-flex align-items-center gap-1 extra-small fw-bold shadow-sm text-nowrap"
-            style={{ fontSize: '0.72rem', height: '30px' }}
-            onClick={handleOptimize}
-            disabled={loading}
-          >
-            <Zap size={12} />
-            <span>{loading ? 'Optimizing...' : 'Run AI'}</span>
-          </Button>
-        </div>
+        </Navbar.Collapse>
 
       </Container>
     </Navbar>

@@ -359,3 +359,17 @@ export interface LiveTrainData {
     timestamp: string;
   };
 }
+
+export type UserRole = 'HEAD' | 'OPERATOR';
+
+export interface RailwayUser {
+  uid: string;
+  email: string;
+  displayName: string;
+  role: UserRole;
+  assignedZone: string; // 'ALL' for Head, or 'CR', 'NR', 'WR', etc.
+  designation: string;
+  sectionName?: string;
+  createdAt?: string;
+}
+

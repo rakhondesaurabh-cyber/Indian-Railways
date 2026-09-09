@@ -1,7 +1,9 @@
 import React from 'react';
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { RailwayProvider, useRailway } from './context/RailwayContext';
 import { NavigationHeader } from './components/NavigationHeader';
+import { AuthPortalPage } from './pages/AuthPortalPage';
 import { NetworkMapPage } from './pages/NetworkMapPage';
 import { MaintenancePlannerPage } from './pages/MaintenancePlannerPage';
 import { DispatchDeskPage } from './pages/DispatchDeskPage';
@@ -64,8 +66,31 @@ const GlobalModals: React.FC = () => {
   );
 };
 
-// Main App Layout
-function AppContent() {
+// Protected Route Guard
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-vh-100 d-flex flex-column align-items-center justify-content-center bg-dark text-white">
+        <div className="spinner-border text-primary mb-3" role="status" style={{ width: '3rem', height: '3rem' }}>
+          <span className="visually-hidden">Authenticating Officer...</span>
+        </div>
+        <div className="fw-bold fs-5">Authenticating Rail Officer Credentials...</div>
+        <div className="text-muted extra-small mt-1">Connecting to Indian Railways Operations Desk</div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
+};
+
+// Authenticated Main App Layout
+function AppLayout() {
   return (
     <div className="d-flex flex-column min-vh-100 bg-gov-bg">
       <NavigationHeader />
@@ -86,10 +111,22 @@ function AppContent() {
 
 export default function App() {
   return (
-    <RailwayProvider>
-      <Router>
-        <AppContent />
-      </Router>
-    </RailwayProvider>
+    <AuthProvider>
+      <RailwayProvider>
+        <Router>
+          <Routes>
+            <Route path="/login" element={<AuthPortalPage />} />
+            <Route
+              path="/*"
+              element={
+                <ProtectedRoute>
+                  <AppLayout />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </Router>
+      </RailwayProvider>
+    </AuthProvider>
   );
 }

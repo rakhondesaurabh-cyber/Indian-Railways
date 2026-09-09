@@ -9,7 +9,11 @@ import {
   Activity,
   Filter,
   Search,
-  Sparkles
+  Sparkles,
+  Zap,
+  CheckCircle2,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { CandidatePlansComparison } from '../components/CandidatePlansComparison';
@@ -40,6 +44,7 @@ export const MaintenancePlannerPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [priorityFilter, setPriorityFilter] = useState<string>('ALL');
   const [expandedRequestId, setExpandedRequestId] = useState<string | null>(null);
+  const [optimizingBlockId, setOptimizingBlockId] = useState<string | null>(null);
 
   // Filter maintenance list
   const filteredMaintenance = useMemo(() => {
@@ -76,6 +81,18 @@ export const MaintenancePlannerPage: React.FC = () => {
         return <Badge bg="info">Medium</Badge>;
       default:
         return <Badge bg="success">Low</Badge>;
+    }
+  };
+
+  const handleBlockOptimize = async (blockId: string) => {
+    setOptimizingBlockId(blockId);
+    try {
+      if (!metrics) {
+        await handleOptimize();
+      }
+      setExpandedRequestId(expandedRequestId === blockId ? null : blockId);
+    } finally {
+      setOptimizingBlockId(null);
     }
   };
 
@@ -226,31 +243,52 @@ export const MaintenancePlannerPage: React.FC = () => {
                             </div>
                           </div>
 
-                          <div className="d-flex align-items-center justify-content-between extra-small text-muted mt-2 pt-1 border-top" style={{ fontSize: '0.72rem' }}>
+                          <div className="d-flex align-items-center justify-content-between extra-small text-muted mt-2 pt-1 border-top flex-wrap gap-1" style={{ fontSize: '0.72rem' }}>
                             <span className="badge bg-light text-dark border">
                               {req.type}
                             </span>
                             <span className="d-flex align-items-center text-primary fw-semibold">
                               <Clock size={11} className="me-1" /> {req.duration_mins / 60} hrs ({req.duration_mins}m)
                             </span>
-                            {breakdown && (
-                              <button
-                                type="button"
-                                className="btn btn-xs btn-outline-primary py-0 px-2"
-                                style={{ fontSize: '0.68rem' }}
-                                onClick={() => setExpandedRequestId(isExpanded ? null : req.id)}
-                              >
-                                {isExpanded ? 'Hide Slots' : `Inspect 3 Slots (${breakdown.options.length})`}
-                              </button>
+                            {scheduledBlock && (
+                              <span className="badge bg-success bg-opacity-15 text-success border border-success border-opacity-30 extra-small py-0.5 px-1.5 d-flex align-items-center gap-1">
+                                <CheckCircle2 size={10} />
+                                <span>{scheduledBlock.start_time} - {scheduledBlock.end_time}</span>
+                              </span>
                             )}
                           </div>
 
+                          {/* Individual AI Optimizer Button for this Block */}
+                          <div className="mt-2 pt-2 border-top d-flex align-items-center justify-content-between flex-wrap gap-1">
+                            <Button
+                              variant={isExpanded ? "primary" : "outline-primary"}
+                              size="sm"
+                              className="w-100 py-1.5 px-2.5 d-flex align-items-center justify-content-center gap-1.5 extra-small fw-bold shadow-sm"
+                              style={{ fontSize: '0.75rem', ...(isExpanded ? { backgroundColor: 'var(--gov-blue)', borderColor: 'var(--gov-blue)' } : {}) }}
+                              onClick={() => handleBlockOptimize(req.id)}
+                              disabled={loading}
+                            >
+                              {loading && optimizingBlockId === req.id ? (
+                                <>
+                                  <Spinner size="sm" animation="border" style={{ width: '12px', height: '12px' }} />
+                                  <span>AI Optimizing {srcName}...</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Zap size={13} className={isExpanded ? "text-warning" : "text-primary"} />
+                                  <span>{breakdown ? (isExpanded ? 'Hide AI Slot Options' : 'Analyze Block with AI Optimizer') : 'Run AI Optimizer on this Block'}</span>
+                                  {isExpanded ? <ChevronUp size={13} className="ms-auto" /> : <ChevronDown size={13} className="ms-auto" />}
+                                </>
+                              )}
+                            </Button>
+                          </div>
+
                           {/* Expandable candidate options selector */}
-                          {isExpanded && breakdown && scheduledBlock && (
+                          {isExpanded && breakdown && (
                             <div className="mt-2 pt-2 border-top">
                               <MaintenanceOptionSelector
                                 breakdown={breakdown}
-                                selectedOptionId={scheduledBlock.option_id || breakdown.options[0].id}
+                                selectedOptionId={scheduledBlock?.option_id || breakdown.options[0].id}
                                 onSelectOption={handleOptionSelect}
                               />
                             </div>

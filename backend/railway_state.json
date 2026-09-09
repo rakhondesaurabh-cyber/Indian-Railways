@@ -8,6 +8,15 @@
       "priority": "High",
       "status": "Pending Block",
       "deadline": "2026-09-05T00:00:00"
+    },
+    {
+      "id": "MNT-SCD-101",
+      "asset_id": "CNB-NDLS",
+      "type": "Track Renewal",
+      "duration_mins": 180,
+      "priority": "High",
+      "status": "Pending Block",
+      "deadline": "2026-09-05T00:00:00"
     }
   ]
 }
