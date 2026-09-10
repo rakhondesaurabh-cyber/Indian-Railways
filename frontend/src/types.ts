@@ -160,6 +160,9 @@ export interface MaintenanceRequest {
   priority: 'Critical' | 'High' | 'Medium' | 'Low' | string;
   deadline: string;
   status: string;
+  scheduled_date?: string;
+  scheduled_day?: string;
+  advance_notice_days?: number;
 }
 
 export interface CorridorTrain {

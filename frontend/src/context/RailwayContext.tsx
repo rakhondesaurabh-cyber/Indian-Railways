@@ -89,7 +89,15 @@ interface RailwayContextType {
   // Core API Action Handlers
   handleOptimize: () => Promise<void>;
   handleEmergencySubmit: (assetId: string, durationMins: number, failureType: string, priority: string) => Promise<void>;
-  handleMaintenanceSubmit: (assetId: string, durationMins: number, failureType: string, priority: string) => Promise<void>;
+  handleMaintenanceSubmit: (
+    assetId: string,
+    durationMins: number,
+    failureType: string,
+    priority: string,
+    scheduledDate?: string,
+    scheduledDay?: string,
+    advanceNoticeDays?: number
+  ) => Promise<void>;
   handleDeleteMaintenance: (id: string) => Promise<void>;
   handleClearAllMaintenance: () => Promise<void>;
   handleSearchCorridor: (fromCode: string, toCode: string) => Promise<void>;
@@ -347,7 +355,10 @@ export const RailwayProvider: React.FC<{ children: ReactNode }> = ({ children })
     assetId: string,
     durationMins: number,
     failureType: string,
-    priority: string
+    priority: string,
+    scheduledDate?: string,
+    scheduledDay?: string,
+    advanceNoticeDays?: number
   ) => {
     setLoading(true);
     setSelectedTrackId(assetId);
@@ -361,6 +372,9 @@ export const RailwayProvider: React.FC<{ children: ReactNode }> = ({ children })
           duration_mins: durationMins,
           type: failureType,
           priority: priority,
+          scheduled_date: scheduledDate,
+          scheduled_day: scheduledDay,
+          advance_notice_days: advanceNoticeDays,
         }),
       });
       const data = await res.json();

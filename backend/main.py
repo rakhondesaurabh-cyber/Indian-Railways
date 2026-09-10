@@ -885,6 +885,9 @@ class EmergencyRequest(BaseModel):
     duration_mins: int = 180
     type: str = "Track Failure"
     priority: str = "Critical"
+    scheduled_date: Optional[str] = None
+    scheduled_day: Optional[str] = None
+    advance_notice_days: Optional[int] = None
 
 @app.post("/api/emergency")
 def inject_emergency(req: EmergencyRequest):
@@ -909,7 +912,10 @@ def inject_emergency(req: EmergencyRequest):
         "duration_mins": req.duration_mins,
         "priority": req.priority,
         "status": "Active Block",
-        "deadline": "2026-09-02T00:00:00"
+        "deadline": "2026-09-02T00:00:00",
+        "scheduled_date": req.scheduled_date or "Today (Immediate)",
+        "scheduled_day": req.scheduled_day or "Today",
+        "advance_notice_days": req.advance_notice_days if req.advance_notice_days is not None else 0
     }
     
     if "maintenance_requests" not in state:
@@ -973,7 +979,10 @@ def schedule_maintenance(req: EmergencyRequest):
         "duration_mins": req.duration_mins,
         "priority": req.priority,
         "status": "Pending Block",
-        "deadline": "2026-09-05T00:00:00"
+        "deadline": "2026-09-05T00:00:00",
+        "scheduled_date": req.scheduled_date or "Tomorrow",
+        "scheduled_day": req.scheduled_day or "Friday",
+        "advance_notice_days": req.advance_notice_days if req.advance_notice_days is not None else 1
     }
 
     if "maintenance_requests" not in state:

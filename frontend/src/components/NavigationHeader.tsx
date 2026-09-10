@@ -90,7 +90,7 @@ export const NavigationHeader: React.FC = () => {
                   </Dropdown.Menu>
                 </Dropdown>
               ) : (
-                <span className="badge bg-success bg-opacity-15 text-success border border-success border-opacity-30 extra-small py-1 px-2 d-flex align-items-center gap-1 fw-bold" style={{ fontSize: '0.7rem' }}>
+                <span className="badge badge-soft-success extra-small py-1 px-2 d-flex align-items-center gap-1 fw-bold" style={{ fontSize: '0.7rem' }}>
                   <Sliders size={11} />
                   <span>ZONE: {user.assignedZone || 'CR'}</span>
                 </span>

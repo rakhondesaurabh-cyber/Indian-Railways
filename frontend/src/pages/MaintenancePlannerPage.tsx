@@ -13,7 +13,8 @@ import {
   Zap,
   CheckCircle2,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Calendar
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { CandidatePlansComparison } from '../components/CandidatePlansComparison';
@@ -243,17 +244,30 @@ export const MaintenancePlannerPage: React.FC = () => {
                             </div>
                           </div>
 
-                          <div className="d-flex align-items-center justify-content-between extra-small text-muted mt-2 pt-1 border-top flex-wrap gap-1" style={{ fontSize: '0.72rem' }}>
+                          {/* Scheduled Date & Notice Badge */}
+                          <div className="d-flex align-items-center gap-1.5 my-1.5 flex-wrap">
+                            <span className="badge badge-soft-dark py-1 px-2 d-flex align-items-center gap-1 font-monospace" style={{ fontSize: '0.72rem' }}>
+                              <Calendar size={11} className="text-primary" />
+                              <span>{req.scheduled_day || 'Tomorrow'}, {req.scheduled_date || '11 Sep'}</span>
+                            </span>
+                            {req.advance_notice_days !== undefined && (
+                              <span className={`badge ${req.advance_notice_days >= 1 ? 'badge-soft-success' : 'badge-soft-warning'} py-1 px-2`} style={{ fontSize: '0.7rem' }}>
+                                {req.advance_notice_days === 0 ? '0d Immediate Notice' : `${req.advance_notice_days} Day${req.advance_notice_days > 1 ? 's' : ''} Advance Notice`}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="d-flex align-items-center justify-content-between extra-small text-muted mt-1.5 pt-1 border-top flex-wrap gap-1" style={{ fontSize: '0.72rem' }}>
                             <span className="badge bg-light text-dark border">
                               {req.type}
                             </span>
                             <span className="d-flex align-items-center text-primary fw-semibold">
                               <Clock size={11} className="me-1" /> {req.duration_mins / 60} hrs ({req.duration_mins}m)
                             </span>
-                            {scheduledBlock && (
-                              <span className="badge bg-success bg-opacity-15 text-success border border-success border-opacity-30 extra-small py-0.5 px-1.5 d-flex align-items-center gap-1">
-                                <CheckCircle2 size={10} />
-                                <span>{scheduledBlock.start_time} - {scheduledBlock.end_time}</span>
+                            {scheduledBlock && scheduledBlock.start_time && (
+                              <span className="badge badge-soft-success py-1 px-2 d-flex align-items-center gap-1 font-monospace" style={{ fontSize: '0.72rem' }}>
+                                <CheckCircle2 size={11} className="text-success" />
+                                <span>Optimal: {scheduledBlock.start_time} - {scheduledBlock.end_time}</span>
                               </span>
                             )}
                           </div>
