@@ -137,9 +137,9 @@ export const NetworkMapPage: React.FC = () => {
 
               {/* Digital Twin Button */}
               <Button
-                variant={showSimulation ? 'info' : 'outline-primary'}
+                variant={showSimulation ? 'primary' : 'outline-primary'}
                 size="sm"
-                className={`py-1 px-2.5 d-flex align-items-center gap-1 extra-small ${showSimulation ? 'text-dark fw-bold shadow-sm' : ''}`}
+                className={`py-1 px-2.5 d-flex align-items-center gap-1 extra-small ${showSimulation ? 'shadow-sm text-white fw-bold' : 'fw-semibold'}`}
                 style={{ fontSize: '0.72rem' }}
                 onClick={() => setShowSimulation((prev) => !prev)}
               >

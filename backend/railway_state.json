@@ -1,3 +1,13 @@
 {
-  "maintenance_requests": []
+  "maintenance_requests": [
+    {
+      "id": "MNT-SCD-100",
+      "asset_id": "JP-NGP",
+      "type": "Track Renewal",
+      "duration_mins": 180,
+      "priority": "High",
+      "status": "Pending Block",
+      "deadline": "2026-09-05T00:00:00"
+    }
+  ]
 }

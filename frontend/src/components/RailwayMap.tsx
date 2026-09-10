@@ -190,7 +190,7 @@ function MapTopRightControls({
             type="button"
             onClick={onToggleSimulation}
             title={showSimulation ? "Close 24h Digital Twin Simulation" : "Launch 24-Hour Digital Twin Simulation Scrubber"}
-            className={`btn btn-sm shadow-sm d-flex align-items-center gap-1.5 py-1 px-2.5 fw-bold ${showSimulation ? 'btn-info text-dark shadow' : 'btn-light bg-white border text-primary'}`}
+            className={`btn btn-sm shadow-sm d-flex align-items-center gap-1.5 py-1 px-2.5 fw-bold ${showSimulation ? 'btn-primary text-white shadow' : 'btn-light bg-white border text-primary'}`}
             style={{ fontSize: '0.78rem' }}
           >
             <Play size={12} fill={showSimulation ? 'currentColor' : 'none'} className={showSimulation ? '' : 'text-primary'} />
