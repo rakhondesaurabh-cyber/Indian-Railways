@@ -157,7 +157,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       // Check local registered users or determine role from email
-      const isHeadEmail = email.toLowerCase().includes('head') || email.toLowerCase().includes('board') || email.toLowerCase().includes('chairman');
+      const isHeadEmail = email.toLowerCase().includes('head') || email.toLowerCase().includes('board') || email.toLowerCase().includes('chairman') || email.toLowerCase().includes('admin');
       const detectedZone = email.toUpperCase().includes('NR') ? 'NR' :
         email.toUpperCase().includes('WR') ? 'WR' :
         email.toUpperCase().includes('SR') ? 'SR' :

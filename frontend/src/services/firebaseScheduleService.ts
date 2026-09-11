@@ -163,9 +163,7 @@ export const subscribeToMaintenanceSchedules = (
         snapshot.forEach((d) => {
           schedules.push(d.data() as MaintenanceRequest);
         });
-        if (schedules.length > 0) {
-          onUpdate(schedules);
-        }
+        onUpdate(schedules);
       },
       (error) => {
         console.warn('[Firebase Firestore] Realtime subscription notice:', error);

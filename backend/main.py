@@ -880,6 +880,15 @@ def optimize_schedule(req: OptimizeRequest = OptimizeRequest()):
         }
     }
 
+class MaintenanceSubTask(BaseModel):
+    id: Optional[str] = None
+    department: str = "CIVIL"
+    type: str = "Track Renewal"
+    duration_mins: int = 180
+    priority: str = "High"
+    equipment: Optional[str] = None
+    description: Optional[str] = None
+
 class EmergencyRequest(BaseModel):
     asset_id: str
     duration_mins: int = 180
@@ -894,6 +903,77 @@ class EmergencyRequest(BaseModel):
     scheduled_date: Optional[str] = None
     scheduled_day: Optional[str] = None
     advance_notice_days: Optional[int] = None
+    tasks: Optional[List[MaintenanceSubTask]] = None
+    is_bundled: Optional[bool] = False
+
+class JointPreviewRequest(BaseModel):
+    asset_id: str
+    tasks: Optional[List[MaintenanceSubTask]] = None
+    duration_mins: Optional[int] = 180
+    department: Optional[str] = "CIVIL"
+
+@app.post("/api/preview_joint_maintenance")
+def preview_joint_maintenance(req: JointPreviewRequest):
+    req.asset_id = normalize_asset_id(req.asset_id)
+    net = get_network_full()
+    trains = get_all_trains()
+    corridor_index, all_events, stn_trains_index, train_map = build_corridor_inverted_index(net, trains)
+    stn_map = get_station_name_map(net)
+    
+    tasks_list = req.tasks or []
+    if tasks_list and len(tasks_list) > 1:
+        max_dur = max(t.duration_mins for t in tasks_list)
+        joint_dur = max_dur + 20
+        separate_total = sum(t.duration_mins + 20 for t in tasks_list)
+        saved_mins = max(0, separate_total - joint_dur)
+        dept_set = list(dict.fromkeys(t.department for t in tasks_list))
+        primary_type = f"Joint Block ({len(tasks_list)} Tasks: {' + '.join(dept_set)})"
+    elif tasks_list and len(tasks_list) == 1:
+        joint_dur = tasks_list[0].duration_mins
+        saved_mins = 0
+        dept_set = [tasks_list[0].department]
+        primary_type = tasks_list[0].type
+    else:
+        joint_dur = req.duration_mins or 180
+        saved_mins = 0
+        dept_set = [req.department or "CIVIL"]
+        primary_type = "Track Maintenance"
+
+    temp_m = {
+        "id": "MNT-PREVIEW",
+        "asset_id": req.asset_id,
+        "type": primary_type,
+        "duration_mins": joint_dur,
+        "tasks": [t.dict() for t in tasks_list] if tasks_list else [],
+        "priority": "High"
+    }
+    
+    earliest_time = datetime(2026, 9, 1, 0, 0, 0)
+    options = generate_candidate_options(temp_m, corridor_index, earliest_time, 24, stn_map, stn_trains_index, train_map)
+    opt_a = options[0]
+
+    return {
+        "status": "success",
+        "asset_id": req.asset_id,
+        "joint_duration_mins": joint_dur,
+        "joint_duration_hrs": round(joint_dur / 60, 1),
+        "track_time_saved_mins": saved_mins,
+        "track_time_saved_hrs": round(saved_mins / 60, 1),
+        "total_tasks_count": len(tasks_list) if tasks_list else 1,
+        "departments": dept_set,
+        "recommended_window": {
+            "start_time": opt_a["start_time"],
+            "end_time": opt_a["end_time"],
+            "time_label": f"{parse_time(opt_a['start_time']).strftime('%H:%M')} – {parse_time(opt_a['end_time']).strftime('%H:%M')} IST",
+            "badge": opt_a["badge"],
+            "rationale": opt_a["rationale"],
+            "affected_trains_count": len(opt_a.get("affected_train_details", [])),
+            "ml_predicted_delay": opt_a.get("ml_predicted_delay", 0),
+            "ml_risk_level": opt_a.get("ml_risk_level", "Low Risk"),
+            "ai_score": opt_a.get("ai_explanation", {}).get("optimization_score", 95.0)
+        },
+        "candidate_options": options
+    }
 
 @app.post("/api/emergency")
 def inject_emergency(req: EmergencyRequest):
@@ -901,7 +981,6 @@ def inject_emergency(req: EmergencyRequest):
     state = load_state()
     net = get_network_full()
     
-    # Check if edge exists
     edge_exists = any(e["id"] == req.asset_id for e in net["edges"])
     if not edge_exists:
         parts = req.asset_id.split("-")
@@ -910,6 +989,15 @@ def inject_emergency(req: EmergencyRequest):
             if any(e["id"] == alt_id for e in net["edges"]):
                 req.asset_id = alt_id
                 
+    tasks_data = [t.dict() for t in req.tasks] if req.tasks else []
+    if tasks_data and len(tasks_data) > 1:
+        max_dur = max(t["duration_mins"] for t in tasks_data)
+        dur = max_dur + 20
+        is_bundled = True
+    else:
+        dur = req.duration_mins
+        is_bundled = bool(req.is_bundled)
+
     emergency_id = f"EMG-{len(state.get('maintenance_requests', [])) + 100}"
     new_request = {
         "id": emergency_id,
@@ -921,13 +1009,15 @@ def inject_emergency(req: EmergencyRequest):
         "created_by": req.created_by or "Section Controller",
         "created_by_role": req.created_by_role or "OPERATOR",
         "created_by_designation": req.created_by_designation or "Section Dispatch Controller",
-        "duration_mins": req.duration_mins,
+        "duration_mins": dur,
         "priority": req.priority,
         "status": "Active Block",
         "deadline": "2026-09-02T00:00:00",
         "scheduled_date": req.scheduled_date or "Today (Immediate)",
         "scheduled_day": req.scheduled_day or "Today",
         "advance_notice_days": req.advance_notice_days if req.advance_notice_days is not None else 0,
+        "tasks": tasks_data,
+        "is_bundled": is_bundled,
         "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ")
     }
     
@@ -937,7 +1027,6 @@ def inject_emergency(req: EmergencyRequest):
     state["maintenance_requests"].insert(0, new_request)
     save_state(state)
     
-    # Trigger re-optimization
     trains = get_all_trains()
     optimal_results = run_optimization(net, trains, state["maintenance_requests"])
     
@@ -984,24 +1073,39 @@ def schedule_maintenance(req: EmergencyRequest):
             if any(e["id"] == alt_id for e in net["edges"]):
                 req.asset_id = alt_id
 
+    tasks_data = [t.dict() for t in req.tasks] if req.tasks else []
+    if tasks_data and len(tasks_data) > 1:
+        max_dur = max(t["duration_mins"] for t in tasks_data)
+        dur = max_dur + 20
+        is_bundled = True
+        dept_set = list(dict.fromkeys(t["department"] for t in tasks_data))
+        maint_type = f"Joint Block ({len(tasks_data)} Tasks: {' + '.join(dept_set)})"
+    else:
+        dur = req.duration_mins
+        is_bundled = bool(req.is_bundled)
+        maint_type = req.type
+
     maint_id = f"MNT-SCD-{len(state.get('maintenance_requests', [])) + 100}"
     new_request = {
         "id": maint_id,
         "asset_id": req.asset_id,
-        "type": req.type,
+        "type": maint_type,
         "department": req.department or "CIVIL",
         "zone": req.zone or "CR",
         "section_name": req.section_name or req.asset_id,
         "created_by": req.created_by or "Section Controller",
         "created_by_role": req.created_by_role or "OPERATOR",
         "created_by_designation": req.created_by_designation or "Section Dispatch Controller",
-        "duration_mins": req.duration_mins,
+        "duration_mins": dur,
         "priority": req.priority,
         "status": "Pending Block",
         "deadline": "2026-09-05T00:00:00",
         "scheduled_date": req.scheduled_date or "Tomorrow",
         "scheduled_day": req.scheduled_day or "Friday",
         "advance_notice_days": req.advance_notice_days if req.advance_notice_days is not None else 1,
+        "tasks": tasks_data,
+        "is_bundled": is_bundled,
+        "total_tasks_count": len(tasks_data) if tasks_data else 1,
         "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ")
     }
 
@@ -1046,7 +1150,11 @@ def schedule_maintenance(req: EmergencyRequest):
 @app.delete("/api/maintenance/{maint_id}")
 def delete_maintenance(maint_id: str):
     state = load_state()
-    state["maintenance_requests"] = [m for m in state.get("maintenance_requests", []) if m.get("id") != maint_id]
+    target_id = str(maint_id).strip().upper()
+    state["maintenance_requests"] = [
+        m for m in state.get("maintenance_requests", [])
+        if str(m.get("id", "")).strip().upper() != target_id
+    ]
     save_state(state)
     
     net = get_network_full()

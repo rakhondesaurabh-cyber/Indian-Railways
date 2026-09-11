@@ -59,7 +59,8 @@ export const MaintenancePlannerPage: React.FC = () => {
 
   // Filter maintenance list with Section & Department Visibility
   const filteredMaintenance = useMemo(() => {
-    return maintenanceRequests.filter((req) => {
+    const list = Array.isArray(maintenanceRequests) ? maintenanceRequests : [];
+    return list.filter((req) => {
       let assetName = '';
       let assetZone = req.zone || '';
       if (network) {
@@ -144,17 +145,48 @@ export const MaintenancePlannerPage: React.FC = () => {
     }
   };
 
+  // Automatically trigger AI optimization on page load if maintenance blocks exist but optimization hasn't run yet
+  React.useEffect(() => {
+    const list = Array.isArray(maintenanceRequests) ? maintenanceRequests : [];
+    if (list.length > 0 && (!metrics || candidatePlans.length === 0)) {
+      handleOptimize();
+    }
+  }, [Array.isArray(maintenanceRequests) ? maintenanceRequests.length : 0]);
+
   const handleBlockOptimize = async (blockId: string) => {
     setOptimizingBlockId(blockId);
     try {
-      if (!metrics) {
+      if (!metrics || candidatePlans.length === 0) {
         await handleOptimize();
       }
       setExpandedRequestId(expandedRequestId === blockId ? null : blockId);
+      const list = Array.isArray(maintenanceRequests) ? maintenanceRequests : [];
+      const req = list.find((m) => m.id === blockId);
+      if (req) {
+        setSelectedTrackId(req.asset_id);
+      }
+    } catch (err) {
+      console.error('Error optimizing block:', err);
     } finally {
       setOptimizingBlockId(null);
     }
   };
+
+  const activeExpandedReq = useMemo(() => {
+    if (!expandedRequestId) return null;
+    const list = Array.isArray(maintenanceRequests) ? maintenanceRequests : [];
+    return list.find((m) => m.id === expandedRequestId) || null;
+  }, [expandedRequestId, maintenanceRequests]);
+
+  const activeBlockBreakdown = useMemo(() => {
+    if (!expandedRequestId) return null;
+    return breakdownByMaintenance[expandedRequestId] || null;
+  }, [expandedRequestId, breakdownByMaintenance]);
+
+  const activeScheduledBlock = useMemo(() => {
+    if (!expandedRequestId) return null;
+    return optimizationPlan?.find((p) => p.maintenance_id === expandedRequestId) || null;
+  }, [expandedRequestId, optimizationPlan]);
 
   return (
     <Container fluid className="py-3 px-3">
@@ -375,11 +407,16 @@ export const MaintenancePlannerPage: React.FC = () => {
                               <Button
                                 variant="outline-danger"
                                 size="sm"
-                                className="py-0 px-1 border-0"
-                                onClick={() => handleDeleteMaintenance(req.id)}
-                                title="Delete maintenance request"
+                                className="py-0.5 px-1.5 border-0 text-danger hover-bg-danger"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  handleDeleteMaintenance(req.id);
+                                }}
+                                title="Delete maintenance block"
+                                style={{ cursor: 'pointer' }}
                               >
-                                <Trash2 size={12} />
+                                <Trash2 size={13} />
                               </Button>
                             </div>
                           </div>
@@ -401,12 +438,36 @@ export const MaintenancePlannerPage: React.FC = () => {
                             )}
                           </div>
 
+                          {/* Bundled Multi-Task / Department Sub-Tasks */}
+                          {req.tasks && req.tasks.length > 1 && (
+                            <div className="p-2 my-1.5 rounded-2 bg-light border">
+                              <div className="d-flex align-items-center justify-content-between mb-1">
+                                <span className="fw-bold extra-small text-dark d-flex align-items-center gap-1">
+                                  <Sparkles size={11} className="text-warning" />
+                                  <span>Joint Multi-Departmental Block ({req.tasks.length} Tasks)</span>
+                                </span>
+                                {req.track_time_saved_mins ? (
+                                  <span className="badge bg-success extra-small" style={{ fontSize: '0.62rem' }}>
+                                    Saved {(req.track_time_saved_mins / 60).toFixed(1)}h Line Closure
+                                  </span>
+                                ) : null}
+                              </div>
+                              <div className="d-flex flex-wrap gap-1">
+                                {req.tasks.map((st, sidx) => (
+                                  <span key={sidx} className="badge bg-white text-dark border extra-small d-flex align-items-center gap-1" style={{ fontSize: '0.65rem' }}>
+                                    <strong className="text-primary">{st.department}:</strong> {st.type} ({st.duration_mins}m)
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
                           <div className="d-flex align-items-center justify-content-between extra-small text-muted mt-1.5 pt-1 border-top flex-wrap gap-1" style={{ fontSize: '0.72rem' }}>
                             <span className="badge bg-light text-dark border">
                               {req.type}
                             </span>
                             <span className="d-flex align-items-center text-primary fw-semibold">
-                              <Clock size={11} className="me-1" /> {req.duration_mins / 60} hrs ({req.duration_mins}m)
+                              <Clock size={11} className="me-1" /> {(req.duration_mins / 60).toFixed(1)} hrs ({req.duration_mins}m)
                             </span>
                             {scheduledBlock && scheduledBlock.start_time && (
                               <span className="badge badge-soft-success py-1 px-2 d-flex align-items-center gap-1 font-monospace" style={{ fontSize: '0.72rem' }}>
@@ -508,6 +569,31 @@ export const MaintenancePlannerPage: React.FC = () => {
                 </div>
               ) : (
                 <div className="d-flex flex-column gap-3">
+                  {/* 🎯 Focused Block Recommendation Highlight when a block is expanded / analyzed */}
+                  {activeBlockBreakdown && (
+                    <div className="p-2.5 rounded-3 border bg-light bg-opacity-50 shadow-xs">
+                      <div className="d-flex justify-content-between align-items-center mb-1">
+                        <span className="fw-bold extra-small text-primary d-flex align-items-center gap-1">
+                          <Zap size={13} className="text-warning" />
+                          <span>Focused Block Analysis: <strong>{activeBlockBreakdown.maintenance_request.id}</strong></span>
+                        </span>
+                        <Badge bg="info" className="extra-small">
+                          {activeBlockBreakdown.options.length} Candidate Slots
+                        </Badge>
+                      </div>
+                      <div className="text-dark small fw-semibold mb-1">
+                        {activeBlockBreakdown.maintenance_request.section_name || activeBlockBreakdown.maintenance_request.asset_id}
+                      </div>
+                      <div className="extra-small text-muted d-flex align-items-center gap-2 flex-wrap" style={{ fontSize: '0.72rem' }}>
+                        <span>Selected Slot: <strong className="text-success">{activeScheduledBlock?.start_time ? `${activeScheduledBlock.start_time} – ${activeScheduledBlock.end_time}` : activeBlockBreakdown.options[0].label}</strong></span>
+                        <span>•</span>
+                        <span>Delay: <strong className="text-danger">{activeScheduledBlock?.delay_caused || activeBlockBreakdown.options[0].delay_caused}m</strong></span>
+                        <span>•</span>
+                        <span>ML Risk: <strong className="text-dark">{activeScheduledBlock?.ml_risk_level || activeBlockBreakdown.options[0].ml_risk_level || 'Low Risk'}</strong></span>
+                      </div>
+                    </div>
+                  )}
+
                   {/* 🤖 AI "Why This Block?" Decision Explanation Card */}
                   {activeAiExplanations && activeAiExplanations.length > 0 && (
                     <AiDecisionExplanation

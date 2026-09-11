@@ -152,11 +152,21 @@ export interface UnaffectedTrain {
   delay_mins: number;
 }
 
+export interface MaintenanceSubTask {
+  id?: string;
+  department: 'CIVIL' | 'S&T' | 'OHE' | 'TRAFFIC' | 'MECHANICAL' | string;
+  type: string;
+  duration_mins: number;
+  priority: 'Critical' | 'High' | 'Medium' | 'Low' | string;
+  equipment?: string;
+  description?: string;
+}
+
 export interface MaintenanceRequest {
   id: string;
   asset_id: string;
   type: string;
-  department?: 'CIVIL' | 'S&T' | 'OHE' | 'TRAFFIC' | 'ELECTRICAL' | string;
+  department?: 'CIVIL' | 'S&T' | 'OHE' | 'TRAFFIC' | 'ELECTRICAL' | 'MECHANICAL' | string;
   zone?: string;
   section_name?: string;
   created_by?: string;
@@ -169,6 +179,10 @@ export interface MaintenanceRequest {
   scheduled_date?: string;
   scheduled_day?: string;
   advance_notice_days?: number;
+  tasks?: MaintenanceSubTask[];
+  is_bundled?: boolean;
+  total_tasks_count?: number;
+  track_time_saved_mins?: number;
   created_at?: string;
   syncedAt?: any;
 }

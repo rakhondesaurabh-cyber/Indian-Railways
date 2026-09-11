@@ -7,7 +7,7 @@ import type { BreakdownByMaintenance, MaintenanceRequest } from '../types';
 interface Props {
   breakdown: BreakdownByMaintenance;
   selectedOptionId: string;
-  onSelectOption: (optionId: string, maintenanceId: string) => void;
+  onSelectOption: (maintenanceId: string, optionId: string) => void;
 }
 
 export const MaintenanceOptionSelector: React.FC<Props> = ({ breakdown, selectedOptionId, onSelectOption }) => {
@@ -42,13 +42,13 @@ export const MaintenanceOptionSelector: React.FC<Props> = ({ breakdown, selected
               <div
                 className="d-flex align-items-start gap-2"
                 style={{ cursor: 'pointer' }}
-                onClick={() => onSelectOption(opt.id, req.id)}
+                onClick={() => onSelectOption(req.id, opt.id)}
               >
                 <Form.Check
                   type="radio"
                   id={opt.id}
                   checked={isSelected}
-                  onChange={() => onSelectOption(opt.id, req.id)}
+                  onChange={() => onSelectOption(req.id, opt.id)}
                   className="mt-1"
                 />
                 <div className="flex-grow-1">

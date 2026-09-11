@@ -2,27 +2,15 @@
   "maintenance_requests": [
     {
       "id": "MNT-SCD-100",
-      "asset_id": "CSMT-KYN",
-      "type": "Signal Upgrades",
-      "duration_mins": 150,
-      "priority": "High",
-      "status": "Pending Block",
-      "deadline": "2026-09-05T00:00:00",
-      "scheduled_date": "2026-09-13",
-      "scheduled_day": "Sunday",
-      "advance_notice_days": 2
-    },
-    {
-      "id": "MNT-SCD-101",
-      "asset_id": "NDLS-JPE",
-      "type": "Bridge Maintenance",
+      "asset_id": "JAT-PUNE",
+      "type": "Signal Point Machine Overhaul",
       "duration_mins": 120,
-      "priority": "Critical",
+      "priority": "Medium",
       "status": "Pending Block",
       "deadline": "2026-09-05T00:00:00",
-      "scheduled_date": "2026-09-11",
-      "scheduled_day": "Friday",
-      "advance_notice_days": 0
+      "scheduled_date": "2026-09-12",
+      "scheduled_day": "Saturday",
+      "advance_notice_days": 1
     }
   ]
 }

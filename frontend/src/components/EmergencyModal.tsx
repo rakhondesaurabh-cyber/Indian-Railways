@@ -270,7 +270,7 @@ export const EmergencyModal: React.FC<EmergencyModalProps> = ({
           <Form.Group className="mb-4">
             <div className="d-flex justify-content-between align-items-center mb-1">
               <Form.Label className="fw-semibold small text-secondary mb-0">
-                Estimated Restoration Time: <span className="text-danger fw-bold">{durationMins / 60} hrs ({durationMins} mins)</span>
+                Estimated Restoration Time: <span className="text-danger fw-bold">{(durationMins / 60).toFixed(1)} hrs ({durationMins} mins)</span>
               </Form.Label>
               <Badge bg="danger" className="d-flex align-items-center gap-1">
                 <Clock size={12} /> {durationMins}m

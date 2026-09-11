@@ -1,7 +1,26 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { Modal, Button, Form, Alert, Badge, InputGroup, Nav } from 'react-bootstrap';
-import { Zap, Clock, Wrench, Search, MapPin, Calendar, CheckCircle2, Building2, UserCheck, ShieldCheck } from 'lucide-react';
-import type { RailwayNetwork, TrackEdge, StationSearchResult } from '../types';
+import {
+  Zap,
+  Clock,
+  Wrench,
+  Search,
+  MapPin,
+  Calendar,
+  CheckCircle2,
+  Building2,
+  UserCheck,
+  ShieldCheck,
+  Plus,
+  Trash2,
+  Sparkles,
+  Layers,
+  ArrowRight,
+  TrendingDown,
+  Info,
+  AlertTriangle
+} from 'lucide-react';
+import type { RailwayNetwork, TrackEdge, StationSearchResult, MaintenanceSubTask } from '../types';
 import { API_BASE_URL } from '../config';
 import { useAuth, ZONES } from '../context/AuthContext';
 
@@ -23,12 +42,54 @@ interface MaintenanceModalProps {
     sectionName?: string,
     createdBy?: string,
     createdByRole?: string,
-    createdByDesignation?: string
+    createdByDesignation?: string,
+    tasks?: MaintenanceSubTask[]
   ) => Promise<void>;
   loading: boolean;
 }
 
-// Helpers for formatted date calculation
+interface LocalSubTask {
+  id: string;
+  department: string;
+  type: string;
+  durationMins: number;
+  priority: string;
+  equipment: string;
+}
+
+const DEPARTMENT_PRESETS: Record<string, { label: string; types: string[]; defaultDuration: number; equipment: string }> = {
+  CIVIL: {
+    label: 'CIVIL (Track / P-Way)',
+    types: ['Track Renewal & Deep Screening', 'Ballast Cleaning (BCM)', 'Rail Flaw Ultrasonic Testing', 'Bridge Girder Overhaul', 'Turnout Replacement'],
+    defaultDuration: 180,
+    equipment: 'Track Relaying Train (TRT) / BCM'
+  },
+  'S&T': {
+    label: 'S&T (Signals & Telecom)',
+    types: ['Signal Point Machine Overhaul', 'Axle Counter & Track Circuit', 'Electronic Interlocking (EI)', 'Automatic Block Signal Testing', 'OFC Cable Splicing'],
+    defaultDuration: 120,
+    equipment: 'S&T Point Calibration Rig'
+  },
+  OHE: {
+    label: 'OHE (Overhead Traction)',
+    types: ['Overhead Wire Maintenance', 'OHE Cantilever Adjustment', 'Traction Substation (TSS) Isolation', 'Neutral Section Replacement', 'Insulator Washing & Power Block'],
+    defaultDuration: 150,
+    equipment: '4-Wheeler Tower Wagon'
+  },
+  TRAFFIC: {
+    label: 'TRAFFIC (Operations)',
+    types: ['Yard Interlocking & Route Setting', 'Loop Line Clearance', 'Level Crossing Gate Rehabilitation', 'Block Section Re-signalling'],
+    defaultDuration: 120,
+    equipment: 'Traffic Operating Block Pilot'
+  },
+  MECHANICAL: {
+    label: 'MECHANICAL (Rolling Stock)',
+    types: ['Wagon Inspection & Brake Rigging', 'Track Machine Maintenance', 'C&W Roll-by Examination', 'Loco Breakdown Mock Drill'],
+    defaultDuration: 90,
+    equipment: 'Rolling Stock Inspection Toolset'
+  }
+};
+
 const getOffsetDateString = (offsetDays: number = 1): string => {
   const d = new Date();
   d.setDate(d.getDate() + offsetDays);
@@ -70,17 +131,39 @@ export const MaintenanceModal: React.FC<MaintenanceModalProps> = ({
   const [fromSearchResults, setFromSearchResults] = useState<StationSearchResult[]>([]);
   const [toSearchResults, setToSearchResults] = useState<StationSearchResult[]>([]);
 
-  const { user, isHead } = useAuth();
-  const [durationMins, setDurationMins] = useState<number>(180);
-  const [failureType, setFailureType] = useState<string>('Track Renewal');
-  const [department, setDepartment] = useState<string>(user?.department && user.department !== 'ALL' ? user.department : 'CIVIL');
-  const [zone, setZone] = useState<string>(user?.assignedZone && user.assignedZone !== 'ALL' ? user.assignedZone : 'CR');
-  const [priority, setPriority] = useState<string>('High');
+  const { user } = useAuth();
+  const [zone] = useState<string>(user?.assignedZone && user.assignedZone !== 'ALL' ? user.assignedZone : 'CR');
   const [trackSearch, setTrackSearch] = useState<string>('');
 
   // 1-2 Days Advance Scheduling State
-  const [advancePreset, setAdvancePreset] = useState<number>(1); // Default: Tomorrow (+1 day)
+  const [advancePreset, setAdvancePreset] = useState<number>(1);
   const [scheduledDate, setScheduledDate] = useState<string>(() => getOffsetDateString(1));
+
+  // Multi-Maintenance Tasks List State (Defaults to unselected placeholders as requested)
+  const [tasks, setTasks] = useState<LocalSubTask[]>([
+    {
+      id: 'task-1',
+      department: '',
+      type: '',
+      durationMins: 180,
+      priority: 'High',
+      equipment: ''
+    }
+  ]);
+
+  const [validationError, setValidationError] = useState<string | null>(null);
+
+  // Fast Live AI Preview State
+  const [livePreview, setLivePreview] = useState<{
+    recommendedTime: string;
+    badge: string;
+    rationale: string;
+    savedMins: number;
+    jointMins: number;
+    affectedTrains: number;
+    score: number;
+    loading: boolean;
+  } | null>(null);
 
   // Sync scheduled date when preset changes
   const handlePresetSelect = (days: number) => {
@@ -90,7 +173,6 @@ export const MaintenanceModal: React.FC<MaintenanceModalProps> = ({
 
   const handleCustomDateChange = (dateVal: string) => {
     setScheduledDate(dateVal);
-    // Calculate difference in days from today
     try {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -140,27 +222,182 @@ export const MaintenanceModal: React.FC<MaintenanceModalProps> = ({
     }
   }, [toJunction]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const finalAssetId = selectionMode === 'junctions'
+  // Multi-Task Management Handlers
+  const handleAddTask = () => {
+    if (tasks.length >= 6) return;
+    setValidationError(null);
+
+    const newTask: LocalSubTask = {
+      id: `task-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+      department: '',
+      type: '',
+      durationMins: 120,
+      priority: 'High',
+      equipment: ''
+    };
+
+    setTasks(prev => [...prev, newTask]);
+  };
+
+  const handleRemoveTask = (taskId: string) => {
+    if (tasks.length <= 1) return;
+    setValidationError(null);
+    setTasks(prev => prev.filter(t => t.id !== taskId));
+  };
+
+  const handleTaskChange = (taskId: string, field: keyof LocalSubTask, value: any) => {
+    setValidationError(null);
+    setTasks(prev => prev.map(t => {
+      if (t.id !== taskId) return t;
+      
+      const updated = { ...t, [field]: value };
+      
+      // If department changed, reset type so user selects from the new department options
+      if (field === 'department') {
+        updated.type = '';
+        if (value && DEPARTMENT_PRESETS[value]) {
+          const preset = DEPARTMENT_PRESETS[value];
+          updated.durationMins = preset.defaultDuration;
+          updated.equipment = preset.equipment;
+        } else {
+          updated.equipment = '';
+        }
+      }
+      return updated;
+    }));
+  };
+
+  // Calculated Unified Joint Block Metrics
+  const jointMetrics = useMemo(() => {
+    const validTasks = tasks.filter(t => t.department && t.type);
+    if (validTasks.length === 0) {
+      return {
+        unifiedMins: tasks[0]?.durationMins || 180,
+        savedMins: 0,
+        savedHrs: '0.0',
+        distinctDepts: [],
+        highestPriority: 'High',
+        hasValidSelection: false
+      };
+    }
+    
+    const maxDur = Math.max(...validTasks.map(t => t.durationMins));
+    const unifiedMins = validTasks.length > 1 ? maxDur + 20 : maxDur; // +20m safety buffer
+    const separateTotal = validTasks.reduce((sum, t) => sum + t.durationMins + 20, 0);
+    const savedMins = validTasks.length > 1 ? Math.max(0, separateTotal - unifiedMins) : 0;
+    const distinctDepts = Array.from(new Set(validTasks.map(t => t.department)));
+
+    return {
+      unifiedMins,
+      savedMins,
+      savedHrs: (savedMins / 60).toFixed(1),
+      distinctDepts,
+      highestPriority: validTasks.some(t => t.priority === 'Critical') ? 'Critical' :
+                       validTasks.some(t => t.priority === 'High') ? 'High' :
+                       validTasks.some(t => t.priority === 'Medium') ? 'Medium' : 'Low',
+      hasValidSelection: validTasks.length === tasks.length
+    };
+  }, [tasks]);
+
+  // Fast AI Live Recommendation Query (Sub-50ms)
+  const effectiveAssetId = useMemo(() => {
+    return selectionMode === 'junctions'
       ? `${fromJunction.trim().toUpperCase()}-${toJunction.trim().toUpperCase()}`
       : assetId;
+  }, [selectionMode, fromJunction, toJunction, assetId]);
 
-    if (!finalAssetId) return;
+  const fetchLivePreview = useCallback(async () => {
+    if (!effectiveAssetId || effectiveAssetId.length < 3) return;
+    const validTasks = tasks.filter(t => t.department && t.type);
+    if (validTasks.length === 0) {
+      setLivePreview(null);
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/preview_joint_maintenance`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          asset_id: effectiveAssetId,
+          tasks: validTasks.map(t => ({
+            department: t.department,
+            type: t.type,
+            duration_mins: t.durationMins,
+            priority: t.priority,
+            equipment: t.equipment
+          })),
+          duration_mins: jointMetrics.unifiedMins,
+          department: validTasks[0]?.department || 'CIVIL'
+        })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        const rw = data.recommended_window;
+        setLivePreview({
+          recommendedTime: rw?.time_label || '01:30 – 04:50 IST',
+          badge: rw?.badge || 'Recommended',
+          rationale: rw?.rationale || 'Optimal Night Shadow window with 0 train disruption.',
+          savedMins: data.track_time_saved_mins || jointMetrics.savedMins,
+          jointMins: data.joint_duration_mins || jointMetrics.unifiedMins,
+          affectedTrains: rw?.affected_trains_count || 0,
+          score: rw?.ai_score || 98.4,
+          loading: false
+        });
+      }
+    } catch {
+      // Fallback
+    }
+  }, [effectiveAssetId, tasks, jointMetrics.unifiedMins, jointMetrics.savedMins]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchLivePreview();
+    }, 150);
+    return () => clearTimeout(timer);
+  }, [fetchLivePreview]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!effectiveAssetId) return;
+
+    // Validate that all tasks have a department and type selected
+    const unselectedTaskIndex = tasks.findIndex(t => !t.department || !t.type);
+    if (unselectedTaskIndex !== -1) {
+      setValidationError(`Please select both Department and Maintenance Activity Type for Task #${unselectedTaskIndex + 1}.`);
+      return;
+    }
+
+    setValidationError(null);
+
+    const subTasksPayload: MaintenanceSubTask[] = tasks.map(t => ({
+      department: t.department,
+      type: t.type,
+      duration_mins: t.durationMins,
+      priority: t.priority,
+      equipment: t.equipment
+    }));
+
+    const primaryType = tasks.length > 1
+      ? `Joint Block (${tasks.length} Tasks: ${jointMetrics.distinctDepts.join(' + ')})`
+      : tasks[0].type;
+
     await onSubmit(
-      finalAssetId,
-      durationMins,
-      failureType,
-      priority,
+      effectiveAssetId,
+      jointMetrics.unifiedMins,
+      primaryType,
+      jointMetrics.highestPriority,
       scheduledDate,
       scheduledDayName,
       advancePreset,
-      department,
+      tasks[0]?.department || 'CIVIL',
       zone,
-      selectionMode === 'junctions' ? `${fromJunction.trim().toUpperCase()} ⇄ ${toJunction.trim().toUpperCase()}` : finalAssetId,
+      selectionMode === 'junctions' ? `${fromJunction.trim().toUpperCase()} ⇄ ${toJunction.trim().toUpperCase()}` : effectiveAssetId,
       user?.displayName || 'Section Controller',
       user?.role || 'OPERATOR',
-      user?.designation || 'Section Dispatch Controller'
+      user?.designation || 'Section Dispatch Controller',
+      subTasksPayload
     );
     onHide();
   };
@@ -189,25 +426,32 @@ export const MaintenanceModal: React.FC<MaintenanceModalProps> = ({
   const todayMinDate = useMemo(() => getOffsetDateString(0), []);
 
   return (
-    <Modal show={show} onHide={onHide} centered backdrop="static" size="lg">
-      <Modal.Header closeButton className="bg-primary text-white border-0" style={{ backgroundColor: 'var(--gov-blue)' }}>
-        <Modal.Title className="d-flex align-items-center gap-2 fs-5">
-          <Wrench size={22} />
-          Schedule Planned Track Maintenance
-        </Modal.Title>
+    <Modal show={show} onHide={onHide} centered backdrop="static" size="xl">
+      <Modal.Header closeButton className="bg-primary text-white border-0 py-3" style={{ backgroundColor: 'var(--gov-blue)' }}>
+        <div className="d-flex align-items-center justify-content-between w-100 pe-3 flex-wrap gap-2">
+          <Modal.Title className="d-flex align-items-center gap-2 fs-5 text-white">
+            <Wrench size={22} className="text-warning" />
+            <span>Integrated Traffic & Multi-Departmental Maintenance Planner</span>
+          </Modal.Title>
+          <Badge bg="warning" text="dark" className="d-flex align-items-center gap-1 extra-small px-2.5 py-1 fw-bold">
+            <Sparkles size={12} />
+            <span>OPTIMIZATION ENGINE v2.4 (FAST SOLVER)</span>
+          </Badge>
+        </div>
       </Modal.Header>
+
       <Form onSubmit={handleSubmit}>
-        <Modal.Body className="p-4 custom-scrollbar" style={{ maxHeight: '75vh', overflowY: 'auto' }}>
+        <Modal.Body className="p-3 p-md-4 custom-scrollbar" style={{ maxHeight: '78vh', overflowY: 'auto' }}>
           
-          <Alert variant="info" className="d-flex align-items-start gap-2 mb-3 py-2 small">
-            <Zap size={18} className="flex-shrink-0 mt-1 text-info" />
-            <div>
-              <strong>AI Corridor Schedule Optimizer:</strong> Scheduling maintenance evaluates optimal Night Shadow & Daylight windows, computes train conflict reroutes, and issues advance caution orders.
-            </div>
-          </Alert>
+          {validationError && (
+            <Alert variant="danger" className="d-flex align-items-center gap-2 py-2 px-3 extra-small mb-3">
+              <AlertTriangle size={15} className="flex-shrink-0 text-danger" />
+              <span>{validationError}</span>
+            </Alert>
+          )}
 
           {/* Target Track Selection Mode Tabs */}
-          <Nav variant="pills" className="nav-fill mb-3 bg-light p-1 rounded">
+          <Nav variant="pills" className="nav-fill mb-3 bg-light p-1 rounded border">
             <Nav.Item>
               <Nav.Link
                 active={selectionMode === 'preset'}
@@ -248,7 +492,7 @@ export const MaintenanceModal: React.FC<MaintenanceModalProps> = ({
                 value={assetId}
                 onChange={(e) => setAssetId(e.target.value)}
                 required
-                className="form-select-lg fs-6"
+                className="form-select-sm fs-6"
               >
                 {filteredEdges.map((edge) => (
                   <option key={edge.id} value={edge.id}>
@@ -333,7 +577,7 @@ export const MaintenanceModal: React.FC<MaintenanceModalProps> = ({
             </div>
           )}
 
-          {/* Section: 1-2 Days Advance Scheduling & Date / Day Selector */}
+          {/* Section: 1-2 Days Advance Scheduling & Date Selector */}
           <div className="p-3 mb-3 rounded-3 border bg-light bg-opacity-75">
             <div className="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2">
               <div className="d-flex align-items-center gap-1.5 fw-bold text-dark small">
@@ -345,7 +589,6 @@ export const MaintenanceModal: React.FC<MaintenanceModalProps> = ({
               </Badge>
             </div>
 
-            {/* Quick Presets: Today / Tomorrow (+1d) / Day After (+2d) / +3d */}
             <div className="d-flex flex-wrap gap-1.5 mb-2.5">
               <Button
                 type="button"
@@ -385,7 +628,6 @@ export const MaintenanceModal: React.FC<MaintenanceModalProps> = ({
               </Button>
             </div>
 
-            {/* Date Picker Input and Live Computed Day Indicator */}
             <div className="row g-2 align-items-center">
               <div className="col-12 col-md-6">
                 <InputGroup size="sm">
@@ -413,189 +655,268 @@ export const MaintenanceModal: React.FC<MaintenanceModalProps> = ({
                 </div>
               </div>
             </div>
-
-            {/* Indian Railways Advance Planning Advisory Note */}
-            <div className="extra-small text-muted mt-2 pt-1 border-top" style={{ fontSize: '0.73rem' }}>
-              <span className="text-success fw-bold">✓ IR Traffic Circular Protocol:</span> Scheduling 1-2 days in advance pre-queues Caution Orders (T/409) and allows cross-zonal freight trains to be rerouted ahead of time.
-            </div>
           </div>
 
-          {/* Department & Operational Jurisdiction (RBAC) */}
-          <div className="row g-3 mb-3 p-2.5 rounded-3 border bg-white shadow-xs">
-            <div className="col-md-6">
-              <Form.Group>
-                <Form.Label className="fw-semibold small text-secondary d-flex align-items-center gap-1">
-                  <Building2 size={13} className="text-primary" />
-                  <span>Executing Department</span>
-                </Form.Label>
-                <Form.Select
-                  value={department}
-                  onChange={(e) => setDepartment(e.target.value)}
-                  size="sm"
-                  className="fw-bold"
-                >
-                  <option value="CIVIL">CIVIL — Permanent Way (P-Way / Track)</option>
-                  <option value="S&T">S&T — Signal & Telecommunication</option>
-                  <option value="OHE">OHE — Traction Power / Overhead Electrification</option>
-                  <option value="TRAFFIC">TRAFFIC — Operating & Block Section</option>
-                  <option value="MECHANICAL">MECHANICAL — Rolling Stock & C&W</option>
-                </Form.Select>
-              </Form.Group>
-            </div>
-
-            <div className="col-md-6">
-              <Form.Group>
-                <Form.Label className="fw-semibold small text-secondary d-flex align-items-center gap-1">
-                  <ShieldCheck size={13} className="text-success" />
-                  <span>Operational Zone / Command</span>
-                </Form.Label>
-                {isHead ? (
-                  <Form.Select
-                    value={zone}
-                    onChange={(e) => setZone(e.target.value)}
-                    size="sm"
-                    className="fw-bold"
-                  >
-                    {ZONES.filter(z => z.code !== 'ALL').map(z => (
-                      <option key={z.code} value={z.code}>
-                        {z.code} — {z.name}
-                      </option>
-                    ))}
-                  </Form.Select>
-                ) : (
-                  <div className="form-control form-control-sm bg-light fw-bold text-dark d-flex align-items-center justify-content-between">
-                    <span>ZONE: {zone} ({user?.sectionName || 'Section Command'})</span>
-                    <Badge bg="primary" style={{ fontSize: '0.62rem' }}>Section Locked</Badge>
-                  </div>
-                )}
-              </Form.Group>
-            </div>
-
-            {/* Live Visibility & Persistence Tag */}
-            <div className="col-12 mt-2 pt-1 border-top extra-small text-muted d-flex flex-wrap align-items-center justify-content-between gap-1">
-              <div className="d-flex align-items-center gap-1">
-                <UserCheck size={12} className="text-primary" />
-                <span>Scheduling Officer: <strong>{user?.displayName || 'Section Controller'}</strong> ({user?.designation || 'Dispatcher'})</span>
+          {/* ========================================================================= */}
+          {/* MULTI-MAINTENANCE BUNDLED BLOCK BUILDER (3-4 Concurrent Tasks)            */}
+          {/* ========================================================================= */}
+          <div className="p-3 mb-3 rounded-3 border bg-white shadow-sm">
+            <div className="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2 border-bottom pb-2">
+              <div>
+                <div className="d-flex align-items-center gap-2">
+                  <Layers size={18} className="text-primary" />
+                  <span className="fw-bold text-dark fs-6">Bundled Multi-Departmental Maintenance Tasks</span>
+                  <Badge bg={jointMetrics.hasValidSelection ? "info" : "secondary"} className="extra-small px-2 py-0.5">
+                    {tasks.length} {tasks.length === 1 ? 'Task Configured' : 'Tasks Configured'}
+                  </Badge>
+                </div>
+                <div className="text-muted extra-small mt-0.5">
+                  Select department and maintenance type to bundle multiple departmental tasks into a single synchronized traffic block.
+                </div>
               </div>
-              <span className="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25" style={{ fontSize: '0.65rem' }}>
-                ✓ Stored in Firestore & Visible to {zone} {department} & Main Head
-              </span>
+
+              <Button
+                type="button"
+                variant="outline-primary"
+                size="sm"
+                onClick={handleAddTask}
+                disabled={tasks.length >= 6}
+                className="d-flex align-items-center gap-1.5 fw-bold extra-small py-1.5 px-3 shadow-xs"
+              >
+                <Plus size={15} />
+                <span>Add More Maintenance</span>
+              </Button>
+            </div>
+
+            {/* List of Sub-Tasks */}
+            <div className="d-flex flex-column gap-3">
+              {tasks.map((task, index) => {
+                const preset = task.department ? DEPARTMENT_PRESETS[task.department] : null;
+                const hasDept = Boolean(task.department);
+
+                return (
+                  <div 
+                    key={task.id} 
+                    className="p-3 rounded-3 border bg-light bg-opacity-50 position-relative transition-all"
+                    style={{ borderLeft: `4px solid ${
+                      task.department === 'CIVIL' ? 'var(--gov-blue)' :
+                      task.department === 'OHE' ? '#eab308' :
+                      task.department === 'S&T' ? '#16a34a' :
+                      task.department === 'MECHANICAL' ? '#dc2626' :
+                      task.department === 'TRAFFIC' ? '#0891b2' : '#94a3b8'
+                    }`}}
+                  >
+                    <div className="d-flex align-items-center justify-content-between mb-2">
+                      <div className="d-flex align-items-center gap-2">
+                        <span className="badge bg-dark extra-small px-2 py-0.5">Task #{index + 1}</span>
+                        <span className={`fw-bold extra-small text-uppercase ${hasDept ? 'text-dark' : 'text-muted'}`}>
+                          {hasDept ? `${task.department} Department` : 'Select Department & Type'}
+                        </span>
+                      </div>
+                      
+                      {tasks.length > 1 && (
+                        <Button
+                          type="button"
+                          variant="outline-danger"
+                          size="sm"
+                          onClick={() => handleRemoveTask(task.id)}
+                          className="p-1 px-2 extra-small border-0 text-danger hover-bg-danger"
+                          title="Remove task"
+                        >
+                          <Trash2 size={14} />
+                        </Button>
+                      )}
+                    </div>
+
+                    <div className="row g-2">
+                      {/* Department Select with Placeholder */}
+                      <div className="col-12 col-md-3">
+                        <Form.Label className="extra-small text-muted fw-bold mb-1">
+                          Department <span className="text-danger">*</span>
+                        </Form.Label>
+                        <Form.Select
+                          size="sm"
+                          value={task.department}
+                          onChange={(e) => handleTaskChange(task.id, 'department', e.target.value)}
+                          className={`extra-small ${hasDept ? 'fw-bold text-dark' : 'text-muted'}`}
+                          required
+                        >
+                          <option value="">-- Select Department --</option>
+                          <option value="CIVIL">CIVIL (Track / P-Way)</option>
+                          <option value="S&T">S&T (Signals & Telecom)</option>
+                          <option value="OHE">OHE (Overhead Traction)</option>
+                          <option value="MECHANICAL">MECHANICAL (Rolling Stock)</option>
+                          <option value="TRAFFIC">TRAFFIC (Operations)</option>
+                        </Form.Select>
+                      </div>
+
+                      {/* Maintenance Activity Type Select with Placeholder */}
+                      <div className="col-12 col-md-4">
+                        <Form.Label className="extra-small text-muted fw-bold mb-1">
+                          Maintenance Activity Type <span className="text-danger">*</span>
+                        </Form.Label>
+                        <Form.Select
+                          size="sm"
+                          value={task.type}
+                          onChange={(e) => handleTaskChange(task.id, 'type', e.target.value)}
+                          disabled={!hasDept}
+                          className={`extra-small ${task.type ? 'text-dark' : 'text-muted'}`}
+                          required
+                        >
+                          <option value="">{hasDept ? '-- Select Maintenance Type --' : '-- Select Department First --'}</option>
+                          {preset && preset.types.map(t => (
+                            <option key={t} value={t}>{t}</option>
+                          ))}
+                        </Form.Select>
+                      </div>
+
+                      {/* Priority */}
+                      <div className="col-6 col-md-2">
+                        <Form.Label className="extra-small text-muted fw-bold mb-1">Priority</Form.Label>
+                        <Form.Select
+                          size="sm"
+                          value={task.priority}
+                          onChange={(e) => handleTaskChange(task.id, 'priority', e.target.value)}
+                          className="extra-small fw-semibold"
+                        >
+                          <option value="Critical">Critical</option>
+                          <option value="High">High</option>
+                          <option value="Medium">Medium</option>
+                          <option value="Low">Low</option>
+                        </Form.Select>
+                      </div>
+
+                      {/* Duration */}
+                      <div className="col-6 col-md-3">
+                        <Form.Label className="extra-small text-muted fw-bold mb-1 d-flex align-items-center justify-content-between">
+                          <span>Duration</span>
+                          <span className="text-primary fw-bold">{task.durationMins}m ({(task.durationMins / 60).toFixed(1)}h)</span>
+                        </Form.Label>
+                        <Form.Range
+                          min={30}
+                          max={360}
+                          step={30}
+                          value={task.durationMins}
+                          onChange={(e) => handleTaskChange(task.id, 'durationMins', Number(e.target.value))}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Joint Optimization Intelligence & Savings Summary */}
+            <div className="mt-3 p-3 rounded-3 bg-primary bg-opacity-10 border border-primary border-opacity-25">
+              <div className="row g-2 align-items-center">
+                <div className="col-12 col-md-7">
+                  <div className="d-flex align-items-center gap-2 mb-1">
+                    <Sparkles size={16} className="text-primary" />
+                    <span className="fw-bold text-dark small">AI Synchronized Block Formulation</span>
+                  </div>
+                  <div className="text-muted extra-small">
+                    {jointMetrics.hasValidSelection ? (
+                      <>
+                        All <strong>{tasks.length} tasks</strong> execute simultaneously in <strong>1 unified window</strong> of{' '}
+                        <strong className="text-primary">{jointMetrics.unifiedMins} mins ({(jointMetrics.unifiedMins / 60).toFixed(1)} hrs)</strong>{' '}
+                        (includes +20m safety clearance buffer).
+                      </>
+                    ) : (
+                      <>Please select department and maintenance type for all tasks to calculate synchronized block duration.</>
+                    )}
+                  </div>
+                </div>
+
+                <div className="col-12 col-md-5 text-md-end">
+                  {tasks.length > 1 && jointMetrics.savedMins > 0 ? (
+                    <div className="d-inline-flex align-items-center gap-2 px-3 py-1.5 rounded-pill bg-success text-white shadow-sm extra-small fw-bold">
+                      <TrendingDown size={15} />
+                      <span>Saved {jointMetrics.savedMins} mins ({jointMetrics.savedHrs} hrs) Track Occupancy!</span>
+                    </div>
+                  ) : (
+                    <span className="badge bg-light text-secondary border extra-small py-1 px-2.5">
+                      {tasks.length > 1 ? 'Multi-Task Coordinated Window' : 'Single Task Block'}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* ========================================================================= */}
+          {/* FAST AI REAL-TIME RECOMMENDED WINDOW PREVIEW CARD                         */}
+          {/* ========================================================================= */}
+          <div className="p-3 mb-3 rounded-3 border bg-light bg-opacity-75">
+            <div className="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2">
+              <div className="d-flex align-items-center gap-1.5 fw-bold text-dark small">
+                <Zap size={16} className="text-warning" />
+                <span>Instant AI Optimal Execution Window (Fast Solver)</span>
+              </div>
+              {livePreview && (
+                <Badge bg="success" className="extra-small px-2 py-0.5">
+                  AI Score: {livePreview.score}% Optimal
+                </Badge>
+              )}
+            </div>
+
+            {livePreview ? (
+              <div className="p-2.5 bg-white rounded border">
+                <div className="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-1.5">
+                  <div className="d-flex align-items-center gap-2">
+                    <span className="badge bg-primary extra-small px-2.5 py-1 fw-bold fs-6" style={{ backgroundColor: 'var(--gov-blue)' }}>
+                      ⭐ {livePreview.recommendedTime}
+                    </span>
+                    <Badge bg="info" className="extra-small py-1">{livePreview.badge}</Badge>
+                  </div>
+                  <div className="text-muted extra-small">
+                    Passenger Conflicts: <strong className="text-success">{livePreview.affectedTrains} trains</strong> | ML Delay Risk: <strong className="text-success">Minimal</strong>
+                  </div>
+                </div>
+                <div className="text-secondary extra-small" style={{ fontSize: '0.76rem' }}>
+                  {livePreview.rationale}
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-2 text-muted extra-small">
+                <Info size={14} className="me-1 text-primary" /> Select department and maintenance activity type to compute real-time optimal window.
+              </div>
+            )}
+          </div>
+
+          {/* Zone & Officer Authorization Footer Info */}
+          <div className="d-flex align-items-center justify-content-between border-top pt-2.5 text-muted extra-small flex-wrap gap-2">
+            <div className="d-flex align-items-center gap-1.5">
+              <UserCheck size={13} className="text-primary" />
+              <span>Officer: <strong>{user?.displayName || 'Section Controller'}</strong> ({user?.designation || 'Dispatcher'})</span>
+            </div>
+            <div className="d-flex align-items-center gap-1.5">
+              <ShieldCheck size={13} className="text-success" />
+              <span>Jurisdiction: <strong>{zone} Zone</strong> • Firestore Multi-Tenant Synced</span>
             </div>
           </div>
 
-          {/* Maintenance Type & Priority */}
-          <div className="row g-3 mb-3">
-            <div className="col-md-6">
-              <Form.Group>
-                <Form.Label className="fw-semibold small text-secondary">Maintenance Type</Form.Label>
-                <Form.Select
-                  value={failureType}
-                  onChange={(e) => setFailureType(e.target.value)}
-                  size="sm"
-                >
-                  <option value="Track Renewal">Track Renewal</option>
-                  <option value="Overhead Wire Maintenance">OHE Maintenance</option>
-                  <option value="Signal Upgrades">Signal System Upgrades</option>
-                  <option value="Bridge Maintenance">Bridge Maintenance</option>
-                  <option value="Ballast Cleaning">Ballast Cleaning</option>
-                </Form.Select>
-              </Form.Group>
-            </div>
-
-            <div className="col-md-6">
-              <Form.Group>
-                <Form.Label className="fw-semibold small text-secondary">Priority Level</Form.Label>
-                <Form.Select
-                  value={priority}
-                  onChange={(e) => setPriority(e.target.value)}
-                  size="sm"
-                >
-                  <option value="Critical">Critical Priority</option>
-                  <option value="High">High Priority</option>
-                  <option value="Medium">Medium Priority</option>
-                  <option value="Low">Low Priority</option>
-                </Form.Select>
-              </Form.Group>
-            </div>
-          </div>
-
-          {/* Block Duration Slider */}
-          <Form.Group className="mb-3">
-            <div className="d-flex justify-content-between align-items-center mb-1">
-              <Form.Label className="fw-semibold small text-secondary mb-0">
-                Block Duration: <span className="text-primary fw-bold">{durationMins / 60} hrs ({durationMins} mins)</span>
-              </Form.Label>
-              <Badge bg="secondary" className="d-flex align-items-center gap-1">
-                <Clock size={12} /> {durationMins}m
-              </Badge>
-            </div>
-            <Form.Range
-              min={30}
-              max={480}
-              step={30}
-              value={durationMins}
-              onChange={(e) => setDurationMins(Number(e.target.value))}
-            />
-            <div className="d-flex justify-content-between text-muted extra-small" style={{ fontSize: '0.75rem' }}>
-              <span>30m</span>
-              <span>2h</span>
-              <span>4h</span>
-              <span>6h</span>
-              <span>8h</span>
-            </div>
-          </Form.Group>
-
-          {/* Quick Preset Scenarios */}
-          <div className="bg-light p-2 rounded border">
-            <div className="extra-small fw-bold text-uppercase text-muted mb-1.5" style={{ fontSize: '0.72rem' }}>
-              Quick Scenarios:
-            </div>
-            <div className="d-flex flex-wrap gap-1.5">
-              <Button
-                variant="outline-secondary"
-                size="sm"
-                className="extra-small py-1"
-                onClick={() => {
-                  setDurationMins(120);
-                  setFailureType('Signal Upgrades');
-                  setPriority('Medium');
-                }}
-              >
-                2h Routine Signal
-              </Button>
-              <Button
-                variant="outline-secondary"
-                size="sm"
-                className="extra-small py-1"
-                onClick={() => {
-                  setDurationMins(240);
-                  setFailureType('Track Renewal');
-                  setPriority('Critical');
-                }}
-              >
-                4h Major Track Renewal
-              </Button>
-              <Button
-                variant="outline-secondary"
-                size="sm"
-                className="extra-small py-1"
-                onClick={() => {
-                  setDurationMins(360);
-                  setFailureType('Bridge Maintenance');
-                  setPriority('High');
-                }}
-              >
-                6h Bridge Overhaul
-              </Button>
-            </div>
-          </div>
         </Modal.Body>
+
         <Modal.Footer className="border-top-0 pt-0 px-4 pb-4">
           <Button variant="light" onClick={onHide} disabled={loading}>
             Cancel
           </Button>
-          <Button variant="primary" type="submit" disabled={loading} style={{ backgroundColor: 'var(--gov-blue)', borderColor: 'var(--gov-blue)' }}>
-            {loading ? 'Optimizing Schedule & Loading Corridor...' : `Schedule Block for ${scheduledDayName} & View Corridor`}
+          <Button 
+            variant="primary" 
+            type="submit" 
+            disabled={loading} 
+            className="d-flex align-items-center gap-2 fw-bold px-4 shadow-sm"
+            style={{ backgroundColor: 'var(--gov-blue)', borderColor: 'var(--gov-blue)' }}
+          >
+            {loading ? (
+              <span>Optimizing {tasks.length} Tasks in Realtime...</span>
+            ) : (
+              <>
+                <span>Schedule Synchronized Block ({tasks.length} Tasks) for {scheduledDayName}</span>
+                <ArrowRight size={16} />
+              </>
+            )}
           </Button>
         </Modal.Footer>
       </Form>

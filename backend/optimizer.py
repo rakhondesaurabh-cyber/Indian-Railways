@@ -10,6 +10,14 @@ import pickle
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "delay_predictor.xgb")
 _ml_model = None
 
+# Global Inverted Index & Corridor Cache for Lightning Fast AI Inference
+_cached_corridor_index = None
+_cached_all_events = None
+_cached_stn_trains_index = None
+_cached_train_map = None
+_cached_corridor_trains_raw = {}
+_cached_network_signature = None
+
 def get_ml_model():
     global _ml_model
     if _ml_model is None and os.path.exists(MODEL_PATH):
@@ -137,10 +145,18 @@ def get_station_code_variants(code: str) -> set:
 
 def build_corridor_inverted_index(network, trains):
     """
-    Build an inverted index mapping each corridor edge_id to its sorted list of train crossing events,
-    and a station inverted index mapping every junction to trains traversing it.
-    Enables O(1) corridor lookups and lightning-fast optimization across 2,800+ trains.
+    Builds or returns the globally cached inverted index mapping corridor edge_ids to train crossing events.
+    Precomputed in-memory for instant sub-millisecond lookups.
     """
+    global _cached_corridor_index, _cached_all_events, _cached_stn_trains_index, _cached_train_map, _cached_network_signature
+
+    num_trains = len(trains)
+    num_edges = len(network.get("edges", []))
+    sig = (num_trains, num_edges)
+
+    if _cached_corridor_index is not None and _cached_network_signature == sig:
+        return _cached_corridor_index, _cached_all_events, _cached_stn_trains_index, _cached_train_map
+
     edge_map = {}
     for edge in network.get("edges", []):
         u = edge["source"]
@@ -148,8 +164,8 @@ def build_corridor_inverted_index(network, trains):
         edge_map[f"{u}-{v}"] = edge
         edge_map[f"{v}-{u}"] = edge
 
-    corridor_index = {} # edge_id -> list of train event objects
-    stn_trains_index = {} # station_code -> list of train objects
+    corridor_index = {}
+    stn_trains_index = {}
     train_map = {}
     all_events = []
 
@@ -199,30 +215,37 @@ def build_corridor_inverted_index(network, trains):
                 }
                 all_events.append(ev)
 
-                # Index under primary edge id and directional key
                 if eid not in corridor_index:
                     corridor_index[eid] = []
                 corridor_index[eid].append(ev)
 
-                # Advance timetable
                 current_time = end_cross
             else:
                 current_time += timedelta(minutes=30)
 
-    # Sort events on each corridor by crossing start time
     for eid in corridor_index:
         corridor_index[eid].sort(key=lambda x: x["start_cross"])
 
+    _cached_corridor_index = corridor_index
+    _cached_all_events = all_events
+    _cached_stn_trains_index = stn_trains_index
+    _cached_train_map = train_map
+    _cached_network_signature = sig
+    _cached_corridor_trains_raw.clear()
+
     return corridor_index, all_events, stn_trains_index, train_map
 
-def get_corridor_trains_for_window(asset_id, m_start_dt, m_end_dt, corridor_index, maintenance_id="", stn_trains_index=None, train_map=None):
+def get_raw_corridor_trains(asset_id, corridor_index, stn_trains_index=None, train_map=None):
     """
-    Look up all trains traversing a corridor/section and calculate individual conflict status & delay.
-    Ensures complete parity with corridor search by evaluating every train that traverses both endpoints.
+    Precomputes and caches the raw list of trains crossing this corridor in 24h.
+    Subsequent calls for different time slots simply filter this list in memory in microseconds.
     """
-    buffer = timedelta(minutes=20) # 20-minute safety buffer for signal clearance
-    corridor_trains = []
-    base_date = m_start_dt.replace(hour=0, minute=0, second=0, microsecond=0)
+    global _cached_corridor_trains_raw
+    if asset_id in _cached_corridor_trains_raw:
+        return _cached_corridor_trains_raw[asset_id]
+
+    base_date = datetime(2026, 9, 1, 0, 0, 0)
+    raw_list = []
 
     parts = asset_id.split("-")
     if len(parts) == 2 and stn_trains_index and train_map:
@@ -267,56 +290,25 @@ def get_corridor_trains_for_window(asset_id, m_start_dt, m_end_dt, corridor_inde
             if end_cross <= start_cross:
                 end_cross += timedelta(days=1)
 
-            latest_start = max(m_start_dt - buffer, start_cross)
-            earliest_end = min(m_end_dt + buffer, end_cross)
-            delta = (earliest_end - latest_start).total_seconds()
-            is_delayed = delta > 0
-
-            p_val = t.get("priority", "Medium")
-            priority_mult = 2.5 if p_val == "High" else (0.6 if p_val == "Low" else 1.0)
-
-            if is_delayed:
-                overlap_mins = max(15, int(delta / 60))
-                train_delay = int(overlap_mins * priority_mult + 20)
-                status_label = f"Delayed (+{train_delay}m)"
-                status_code = "delayed"
-            elif end_cross <= m_start_dt:
-                train_delay = 0
-                status_label = "On-Time (Clears Before Block)"
-                status_code = "before_block"
-            else:
-                train_delay = 0
-                status_label = "On-Time (Passes After Block)"
-                status_code = "after_block"
-
             train_clean_name = t.get("train_name") or t.get("name", t["id"]).split(" #")[0]
             train_num = str(t.get("train_number", t["id"].replace("TRN-", "")))
 
-            corridor_trains.append({
+            raw_list.append({
                 "train_id": t["id"],
                 "train_number": train_num,
                 "train_name": train_clean_name,
                 "name": t.get("name", f"{train_clean_name} #{train_num}"),
                 "type": t.get("type", "Express"),
-                "priority": p_val,
-                "delay_mins": train_delay,
+                "priority": t.get("priority", "Medium"),
                 "asset_id": asset_id,
-                "maintenance_id": maintenance_id,
-                "start_cross": start_cross.isoformat(),
-                "end_cross": end_cross.isoformat(),
-                "start_cross_time": start_cross.strftime("%H:%M"),
-                "end_cross_time": end_cross.strftime("%H:%M"),
+                "start_cross": start_cross,
+                "end_cross": end_cross,
                 "direction": direction,
-                "is_delayed": is_delayed,
-                "status_label": status_label,
-                "status_code": status_code,
                 "origin": t.get("origin", r[0] if r else ""),
                 "destination": t.get("destination", r[-1] if r else ""),
-                "route": r,
-                "status": "Delayed" if is_delayed else "On-Time"
+                "route": r
             })
     else:
-        # Fallback to direct corridor_index events if any
         events = corridor_index.get(asset_id, [])
         if not events:
             parts = asset_id.split("-")
@@ -324,77 +316,108 @@ def get_corridor_trains_for_window(asset_id, m_start_dt, m_end_dt, corridor_inde
                 alt_id = f"{parts[1]}-{parts[0]}"
                 events = corridor_index.get(alt_id, [])
         for ev in events:
-            latest_start = max(m_start_dt - buffer, ev["start_cross"])
-            earliest_end = min(m_end_dt + buffer, ev["end_cross"])
-            delta = (earliest_end - latest_start).total_seconds()
-            is_delayed = delta > 0
-
-            p_val = ev["priority"]
-            priority_mult = 2.5 if p_val == "High" else (0.6 if p_val == "Low" else 1.0)
-
-            if is_delayed:
-                overlap_mins = max(15, int(delta / 60))
-                train_delay = int(overlap_mins * priority_mult + 20)
-                status_label = f"Delayed (+{train_delay}m)"
-                status_code = "delayed"
-            elif ev["end_cross"] <= m_start_dt:
-                train_delay = 0
-                status_label = "On-Time (Clears Before Block)"
-                status_code = "before_block"
-            else:
-                train_delay = 0
-                status_label = "On-Time (Passes After Block)"
-                status_code = "after_block"
-
-            corridor_trains.append({
+            raw_list.append({
                 "train_id": ev["train_id"],
                 "train_number": ev["train_number"],
                 "train_name": ev["train_name"],
                 "name": ev["name"],
                 "type": ev["type"],
                 "priority": ev["priority"],
-                "delay_mins": train_delay,
                 "asset_id": asset_id,
-                "maintenance_id": maintenance_id,
-                "start_cross": ev["start_cross"].isoformat(),
-                "end_cross": ev["end_cross"].isoformat(),
-                "start_cross_time": ev["start_cross"].strftime("%H:%M"),
-                "end_cross_time": ev["end_cross"].strftime("%H:%M"),
-                "is_delayed": is_delayed,
-                "status_label": status_label,
-                "status_code": status_code,
+                "start_cross": ev["start_cross"],
+                "end_cross": ev["end_cross"],
+                "direction": "forward",
                 "origin": ev["origin"],
                 "destination": ev["destination"],
-                "route": ev["route"],
-                "status": "Delayed" if is_delayed else "On-Time"
+                "route": ev["route"]
             })
 
-    corridor_trains.sort(key=lambda x: x["start_cross"])
+    raw_list.sort(key=lambda x: x["start_cross"])
+    _cached_corridor_trains_raw[asset_id] = raw_list
+    return raw_list
+
+def get_corridor_trains_for_window(asset_id, m_start_dt, m_end_dt, corridor_index, maintenance_id="", stn_trains_index=None, train_map=None):
+    """
+    Evaluates individual conflict status & delay using the cached raw corridor trains in sub-millisecond time.
+    Applies +20 minute safety buffer as standard.
+    """
+    buffer = timedelta(minutes=20)
+    raw_trains = get_raw_corridor_trains(asset_id, corridor_index, stn_trains_index, train_map)
+    corridor_trains = []
+
+    for t in raw_trains:
+        start_cross = t["start_cross"]
+        end_cross = t["end_cross"]
+
+        latest_start = max(m_start_dt - buffer, start_cross)
+        earliest_end = min(m_end_dt + buffer, end_cross)
+        delta = (earliest_end - latest_start).total_seconds()
+        is_delayed = delta > 0
+
+        p_val = t["priority"]
+        priority_mult = 2.5 if p_val == "High" else (0.6 if p_val == "Low" else 1.0)
+
+        if is_delayed:
+            overlap_mins = max(15, int(delta / 60))
+            train_delay = int(overlap_mins * priority_mult + 20)
+            status_label = f"Delayed (+{train_delay}m)"
+            status_code = "delayed"
+        elif end_cross <= m_start_dt:
+            train_delay = 0
+            status_label = "On-Time (Clears Before Block)"
+            status_code = "before_block"
+        else:
+            train_delay = 0
+            status_label = "On-Time (Passes After Block)"
+            status_code = "after_block"
+
+        corridor_trains.append({
+            "train_id": t["train_id"],
+            "train_number": t["train_number"],
+            "train_name": t["train_name"],
+            "name": t["name"],
+            "type": t["type"],
+            "priority": p_val,
+            "delay_mins": train_delay,
+            "asset_id": asset_id,
+            "maintenance_id": maintenance_id,
+            "start_cross": start_cross.isoformat(),
+            "end_cross": end_cross.isoformat(),
+            "start_cross_time": start_cross.strftime("%H:%M"),
+            "end_cross_time": end_cross.strftime("%H:%M"),
+            "direction": t.get("direction", "forward"),
+            "is_delayed": is_delayed,
+            "status_label": status_label,
+            "status_code": status_code,
+            "origin": t["origin"],
+            "destination": t["destination"],
+            "route": t["route"],
+            "status": "Delayed" if is_delayed else "On-Time"
+        })
+
     return corridor_trains
 
 def predict_ml_delay(hour, duration_mins, traffic_density, is_weekend=0):
     """
-    Runs inference on the trained XGBoost model to predict corridor delay risk.
+    Fast inference using preloaded XGBoost model or heuristic approximation.
     """
+    if traffic_density == 0:
+        return 0
+
     model = get_ml_model()
     if model is not None:
         try:
-            features = pd.DataFrame([{
-                'hour': hour,
-                'duration_mins': duration_mins,
-                'traffic_density': traffic_density,
-                'is_weekend': is_weekend
-            }])
-            pred = model.predict(features)[0]
-            return max(0, int(round(pred)))
+            feats = np.array([[hour, duration_mins, traffic_density, is_weekend]], dtype=np.float32)
+            pred = model.predict(feats)[0]
+            return max(0, int(round(float(pred))))
         except Exception:
             pass
     
-    # Heuristic fallback if model not loaded
-    base = traffic_density * 35.0 * (1.15 if is_weekend else 1.0)
+    # Heuristic formula for active window traffic
+    base = traffic_density * 25.0 * (1.15 if is_weekend else 1.0)
     if duration_mins >= 240:
-        base += (duration_mins - 180) * 0.4
-    return int(base)
+        base += (duration_mins - 180) * 0.25
+    return max(0, int(round(base)))
 
 def get_station_name_map(network):
     stn_map = {}
@@ -437,13 +460,15 @@ def generate_ai_explanation(m, opt, stn_map=None):
     label = opt.get("label", "Option A")
     
     high_priority_affected = [t for t in affected_objs if t.get("priority") == "High"]
+    bundled_count = len(m.get("tasks", []))
     
     reasons = [
-        "Optimal ML predicted clearance" if ml_predicted_delay == 0 else f"ML Predicted Delay: {ml_predicted_delay}m",
-        "Lowest train density" if len(corridor_trains) < 3 else "Managed train density",
+        f"Bundled {bundled_count} joint departmental tasks" if bundled_count > 1 else "Optimal traffic clearance window",
+        "Optimal ML predicted clearance (0 min delay)" if ml_predicted_delay == 0 else f"ML Predicted Delay: {ml_predicted_delay}m",
+        "Lowest train density" if len(affected_objs) == 0 else f"{len(affected_objs)} trains regulated in window",
         "No priority train affected" if len(high_priority_affected) == 0 else f"{len(high_priority_affected)} priority trains regulated",
         "Maintenance deadline factored",
-        "Crew constraints met",
+        "Crew & equipment joint possession met",
         "Lowest simulated delay" if delay_caused == 0 else f"Simulated delay ({delay_caused}m)"
     ]
     
@@ -451,20 +476,17 @@ def generate_ai_explanation(m, opt, stn_map=None):
     affected_count = len(affected_objs)
     high_priority_count = len(high_priority_affected)
     
-    # Base score depends on unaffected ratio
     if total_trains == 0:
         base_score = 96.0
     else:
         unaffected_ratio = (total_trains - affected_count) / total_trains
-        base_score = 60.0 + (unaffected_ratio * 35.0) # Base 60-95
+        base_score = 60.0 + (unaffected_ratio * 35.0)
         
-    # Dynamic penalties based on ML predictions and simulation
     delay_penalty = (delay_caused * 0.05) + (ml_predicted_delay * 0.03)
     priority_penalty = high_priority_count * 3.5
     
     score = base_score - delay_penalty - priority_penalty
     
-    # Adjust score based on option category, maintaining variability
     if badge == "Recommended" or "A" in label:
         score += 3.5
         score = min(99.8, max(85.0, score))
@@ -492,11 +514,10 @@ def evaluate_window(m, m_start, m_end, corridor_index, stn_trains_index=None, tr
     affected_names = [t["name"] for t in affected_objects]
     sim_delay = sum(t["delay_mins"] for t in affected_objects)
     
-    # ML Delay Prediction
-    traffic_density = len(corridor_trains)
+    # Active traffic density is the number of trains conflicting within this specific block window
+    traffic_density = len(affected_objects)
     ml_delay = predict_ml_delay(m_start.hour, m.get("duration_mins", 180), traffic_density)
     
-    # ML Risk Level
     if ml_delay <= 25:
         risk_level = "Low Risk"
     elif ml_delay <= 75:
@@ -510,14 +531,15 @@ def evaluate_window(m, m_start, m_end, corridor_index, stn_trains_index=None, tr
 
 def generate_candidate_options(m, corridor_index, earliest_time, num_slots=24, stn_map=None, stn_trains_index=None, train_map=None):
     all_slots = []
+    dur_mins = m.get("duration_mins", 180)
+
     for t in range(num_slots):
         m_start = earliest_time + timedelta(hours=t)
-        m_end = m_start + timedelta(minutes=m["duration_mins"])
+        m_end = m_start + timedelta(minutes=dur_mins)
         affected_objs, affected_names, sim_delay, ml_delay, risk_level, corridor_trains = evaluate_window(
             m, m_start, m_end, corridor_index, stn_trains_index, train_map
         )
         
-        # Classify time window category
         hour = m_start.hour
         if 0 <= hour <= 5:
             category = "Night Shadow"
@@ -540,17 +562,13 @@ def generate_candidate_options(m, corridor_index, earliest_time, num_slots=24, s
             "hour": hour
         })
         
-    # Sort slots by simulated delay
     all_slots.sort(key=lambda x: (x["delay_caused"], x["ml_delay"]))
     
-    # Option A: Minimal Disruption (Night Shadow or lowest delay slot)
     opt_a = next((s for s in all_slots if s["category"] == "Night Shadow"), all_slots[0])
     
-    # Option B: Daylight / Fast Execution (11:00 - 16:00 or lowest day delay)
     day_slots = [s for s in all_slots if 6 <= s["hour"] <= 18]
     opt_b = min(day_slots, key=lambda x: x["delay_caused"]) if day_slots else all_slots[len(all_slots)//2]
     
-    # Option C: Peak / Naive Baseline (highest delay slot)
     peak_slots = [s for s in all_slots if s["category"] == "Peak"]
     opt_c = max(peak_slots, key=lambda x: x["delay_caused"]) if peak_slots else all_slots[-1]
     
@@ -579,12 +597,11 @@ def generate_candidate_options(m, corridor_index, earliest_time, num_slots=24, s
         }
         
     res = [
-        format_opt(opt_a, "A", "Recommended", "Optimal minimal-disruption window during Night Shadow hours."),
+        format_opt(opt_a, "A", "Recommended", "Optimal minimal-disruption synchronized window during Night Shadow hours."),
         format_opt(opt_b, "B", "Feasible", "Daylight window allowing fast completion with moderate disruption."),
         format_opt(opt_c, "C", "High Disruption", "Peak hour scheduling causing significant cascading delays.")
     ]
     
-    # Deduplicate if start/end times match
     unique_res = []
     seen = set()
     for r in res:
@@ -668,7 +685,6 @@ def generate_dispatch_recommendations(plan_blocks, affected_trains, corridor_ind
         src_name = junction_lookup.get(src_code, stn_map.get(src_code, src_code))
         tgt_name = junction_lookup.get(tgt_code, stn_map.get(tgt_code, tgt_code))
         
-        # 1. Twin Single-Line Working (TSLW) order for the section block
         tslw_id = f"DSP-TSLW-{directive_id_seq:03d}"
         directive_id_seq += 1
         
@@ -715,23 +731,96 @@ SUBJECT: TWIN SINGLE-LINE WORKING (TSLW) PILOTAGE ORDER
             "acknowledged": False
         })
 
-        # 2. Extract trains affected on this block
         b_affected = [t for t in affected_trains if t.get("asset_id") == asset_id or asset_id in t.get("asset_id", "")]
         if not b_affected:
             b_affected = [t for t in b.get("affected_train_details", [])]
         
-        # Sort trains by priority (High -> Medium -> Low)
-        priority_order = {"High": 1, "Medium": 2, "Low": 3}
-        _ = sorted(b_affected, key=lambda x: (priority_order.get(x.get("priority", "Medium"), 2), -x.get("delay_mins", 0)))
-        
-        # Pair lower-priority/delayed trains with precedence targets
+        # Dynamic Regional Priority Train Pools for Indian Railways Precedence Dispatching
+        ZONAL_PRIORITY_POOLS = {
+            "CR": [
+                ("22221", "CSMT - NZM Rajdhani Express", "High"),
+                ("22223", "CSMT - Shirdi Sainagar Vande Bharat", "High"),
+                ("12289", "Mumbai - Nagpur Duronto Express", "High"),
+                ("12123", "Deccan Queen Superfast Express", "High"),
+                ("12105", "Vidarbha Superfast Express", "High"),
+                ("12137", "Punjab Mail SF Express", "High"),
+                ("12859", "Gitanjali Superfast Express", "High"),
+                ("12163", "Mumbai LTT - Chennai Central SF", "High"),
+                ("12261", "Mumbai - Howrah AC Duronto", "High"),
+                ("11077", "Jhelum Express (Pune - Jammu Tawi)", "High"),
+            ],
+            "NR": [
+                ("22436", "New Delhi - Varanasi Vande Bharat Express", "High"),
+                ("12002", "New Delhi - Bhopal Shatabdi Express", "High"),
+                ("12302", "New Delhi - Howrah Rajdhani Express", "High"),
+                ("12424", "New Delhi - Dibrugarh Rajdhani Express", "High"),
+                ("12004", "New Delhi - Lucknow Shatabdi Express", "High"),
+                ("12434", "Hazrat Nizamuddin - Chennai Rajdhani", "High"),
+                ("12260", "New Delhi - Sealdah AC Duronto", "High"),
+                ("22439", "Vande Bharat Express (NDLS - SVDK Katra)", "High"),
+                ("12011", "New Delhi - Kalka Shatabdi Express", "High"),
+                ("12414", "Pooja Superfast Express", "High"),
+            ],
+            "WR": [
+                ("12951", "Mumbai Central - New Delhi Rajdhani Express", "High"),
+                ("20901", "Mumbai Central - Gandhinagar Vande Bharat", "High"),
+                ("12009", "Mumbai Central - Ahmedabad Shatabdi", "High"),
+                ("12953", "August Kranti Rajdhani Express", "High"),
+                ("12925", "Paschim Superfast Express", "High"),
+                ("12903", "Golden Temple Mail Superfast", "High"),
+                ("22945", "Saurashtra Mail Express", "High"),
+                ("12971", "Bandra Terminus - Bhavnagar Superfast", "High"),
+            ],
+            "ER": [
+                ("12301", "Howrah - New Delhi Rajdhani Express", "High"),
+                ("22895", "Howrah - Puri Vande Bharat Express", "High"),
+                ("12259", "Sealdah - Bikaner AC Duronto", "High"),
+                ("12841", "Coromandel Superfast Express", "High"),
+                ("12313", "Sealdah - New Delhi Rajdhani Express", "High"),
+                ("12859", "Gitanjali Superfast Express", "High"),
+                ("12277", "Howrah - Puri Shatabdi Express", "High"),
+            ],
+            "SR": [
+                ("20607", "MGR Chennai - Mysuru Vande Bharat", "High"),
+                ("12626", "Kerala Superfast Express (NDLS - TVC)", "High"),
+                ("12615", "Grand Trunk Superfast Express", "High"),
+                ("12433", "MGR Chennai Central - NZM Rajdhani", "High"),
+                ("12295", "Sanghamitra Superfast Express", "High"),
+                ("20805", "Andhra Pradesh Superfast Express", "High"),
+                ("12723", "Telangana Superfast Express", "High"),
+                ("12621", "Tamil Nadu Superfast Express", "High"),
+            ]
+        }
+
+        # Determine corridor zonal jurisdiction
+        corridor_zone = "CR"
+        if any(code in asset_id for code in ["NDLS", "DLI", "NZM", "CNB", "LKO", "UMB", "GZB"]):
+            corridor_zone = "NR"
+        elif any(code in asset_id for code in ["MMCT", "BCT", "ADI", "BRC", "ST", "RTM"]):
+            corridor_zone = "WR"
+        elif any(code in asset_id for code in ["HWH", "SDAH", "ASN", "BBS", "PURI", "TATA"]):
+            corridor_zone = "ER"
+        elif any(code in asset_id for code in ["MAS", "MS", "SBC", "SC", "HYB", "BZA", "TVC"]):
+            corridor_zone = "SR"
+
+        zonal_pool = ZONAL_PRIORITY_POOLS.get(corridor_zone, ZONAL_PRIORITY_POOLS["CR"])
+
+        # Extract other real timetable trains traversing this corridor
+        corridor_active_trains = [
+            t for t in b.get("corridor_trains", [])
+            if t.get("train_id")
+        ]
+        other_high_priority = [
+            t for t in corridor_active_trains
+            if t.get("priority") == "High"
+        ]
+
         for idx, trn in enumerate(b_affected):
             p_val = trn.get("priority", "Medium")
             t_num = trn.get("train_number", "TRN")
             t_name = trn.get("train_name") or trn.get("name", "Express")
             delay = trn.get("delay_mins", 30)
             
-            # Find nearest junction for holding
             route = trn.get("route", [src_code, tgt_code])
             holding_stn_code = src_code
             for s in route:
@@ -741,9 +830,20 @@ SUBJECT: TWIN SINGLE-LINE WORKING (TSLW) PILOTAGE ORDER
             holding_stn_name = junction_lookup.get(holding_stn_code, stn_map.get(holding_stn_code, holding_stn_code))
             assigned_loop = loop_lines_pool[idx % len(loop_lines_pool)]
             
-            # Precedence target (e.g. Vande Bharat / Rajdhani)
-            prec_num = "22436" if "BPL" in asset_id or "NDLS" in asset_id else "12951"
-            prec_name = "Vande Bharat Express" if "BPL" in asset_id or "NDLS" in asset_id else "Mumbai Rajdhani Express"
+            # Dynamic Precedence Selection from corridor trains or zonal pool
+            prec_candidate = next(
+                (ct for ct in other_high_priority if ct.get("train_id") != trn.get("train_id") and ct.get("train_number") != t_num),
+                None
+            )
+
+            if prec_candidate:
+                prec_num = str(prec_candidate.get("train_number", "12002"))
+                prec_name = prec_candidate.get("train_name") or prec_candidate.get("name", "Vande Bharat Express")
+            else:
+                # Cycle through the authentic zonal priority pool uniquely
+                pool_item = zonal_pool[(idx + directive_id_seq) % len(zonal_pool)]
+                prec_num = pool_item[0]
+                prec_name = pool_item[1]
             
             hold_start = b_start_dt.strftime("%H:%M")
             hold_end = (b_start_dt + timedelta(minutes=max(20, min(delay, 50)))).strftime("%H:%M")
@@ -792,7 +892,6 @@ SUBJECT: LOOP LINE REGULATION & PRECEDENCE CLEARANCE
                 "acknowledged": False
             })
 
-            # 3. Emergency Chord Line Detour if delay > 45 mins
             if delay >= 45 and idx < 2:
                 detour_id = f"DSP-DETOUR-{directive_id_seq:03d}"
                 directive_id_seq += 1
@@ -851,19 +950,40 @@ SUBJECT: EMERGENCY CHORD LINE ROUTE DETOUR
 
 def run_optimization(network, trains, maintenance_requests, weight_delay=0.35, weight_affected=0.25):
     """
-    Executes scalable multi-strategy AI schedule optimization across the complete railway graph.
+    Executes high-performance multi-strategy AI schedule optimization across the complete railway graph.
+    Processes multi-maintenance bundled blocks instantly.
     """
     corridor_index, all_events, stn_trains_index, train_map = build_corridor_inverted_index(network, trains)
     stn_map = get_station_name_map(network)
     
-    # Discretize horizon
-    earliest_time = min([e["start_cross"] for e in all_events]) if all_events else parse_time("2026-09-01T00:00:00")
-    earliest_time = earliest_time.replace(hour=0, minute=0, second=0)
+    earliest_time = datetime(2026, 9, 1, 0, 0, 0)
     num_slots = 24
     
-    # Generate candidate options for each maintenance block
-    breakdown_by_maintenance = {}
+    # Process each maintenance request (incorporating multi-task bundled duration)
+    normalized_requests = []
     for m in maintenance_requests:
+        m_copy = dict(m)
+        tasks = m_copy.get("tasks", [])
+        if tasks and len(tasks) > 1:
+            # Multi-maintenance bundling: unified duration = max(task durations) + 20m safety buffer
+            max_task_dur = max(t.get("duration_mins", 120) for t in tasks)
+            unified_dur = max_task_dur + 20
+            m_copy["duration_mins"] = unified_dur
+            m_copy["is_bundled"] = True
+            m_copy["total_tasks_count"] = len(tasks)
+            
+            # Calculate track time saved vs separate sequential blocks
+            separate_total = sum(t.get("duration_mins", 120) + 20 for t in tasks)
+            m_copy["track_time_saved_mins"] = max(0, separate_total - unified_dur)
+        else:
+            m_copy["is_bundled"] = False
+            m_copy["total_tasks_count"] = 1
+            m_copy["track_time_saved_mins"] = 0
+            
+        normalized_requests.append(m_copy)
+
+    breakdown_by_maintenance = {}
+    for m in normalized_requests:
         options = generate_candidate_options(m, corridor_index, earliest_time, num_slots, stn_map, stn_trains_index, train_map)
         breakdown_by_maintenance[m["id"]] = {
             "maintenance_request": m,
@@ -877,11 +997,10 @@ def run_optimization(network, trains, maintenance_requests, weight_delay=0.35, w
         plan_affected_map = {}
         total_ml_delay = 0
 
-        for m in maintenance_requests:
+        for m in normalized_requests:
             options = breakdown_by_maintenance[m["id"]]["options"]
             selected_opt = option_selector(options, m)
             
-            # Simple track conflict avoidance
             asset = m["asset_id"]
             if asset in edge_allocations:
                 for opt in options:
@@ -895,6 +1014,12 @@ def run_optimization(network, trains, maintenance_requests, weight_delay=0.35, w
             plan.append({
                 "maintenance_id": m["id"],
                 "asset_id": m["asset_id"],
+                "department": m.get("department", "CIVIL"),
+                "zone": m.get("zone", "CR"),
+                "tasks": m.get("tasks", []),
+                "is_bundled": m.get("is_bundled", False),
+                "total_tasks_count": m.get("total_tasks_count", 1),
+                "track_time_saved_mins": m.get("track_time_saved_mins", 0),
                 "start_time": selected_opt["start_time"],
                 "end_time": selected_opt["end_time"],
                 "affected_trains": selected_opt["affected_trains"],
@@ -907,7 +1032,6 @@ def run_optimization(network, trains, maintenance_requests, weight_delay=0.35, w
                 "ai_explanation": selected_opt.get("ai_explanation")
             })
 
-            # Aggregate affected trains across all maintenance blocks
             for t in selected_opt.get("affected_train_details", []):
                 tid = t["train_id"]
                 if tid not in plan_affected_map:
@@ -922,7 +1046,7 @@ def run_optimization(network, trains, maintenance_requests, weight_delay=0.35, w
         plan_affected_list = list(plan_affected_map.values())
         affected_ids = set(plan_affected_map.keys())
 
-        # Build unaffected train list
+        # Unaffected trains
         plan_unaffected_list = []
         for trn in trains:
             if trn["id"] not in affected_ids:
@@ -947,7 +1071,6 @@ def run_optimization(network, trains, maintenance_requests, weight_delay=0.35, w
         metrics["delay_mins"] = sum(t["delay_mins"] for t in plan_affected_list)
         metrics["ml_predicted_delay_mins"] = total_ml_delay
         
-        # Calculate strategy ML risk
         if total_ml_delay <= 30:
             metrics["ml_risk_score"] = "Low Risk (96.4% Confidence)"
         elif total_ml_delay <= 100:
@@ -976,7 +1099,6 @@ def run_optimization(network, trains, maintenance_requests, weight_delay=0.35, w
             "dispatch_stats": dispatch_stats
         }
 
-    # 1. Minimal Disruption Strategy
     plan_min = build_plan(
         "minimal_disruption",
         "Minimal Disruption",
@@ -985,7 +1107,6 @@ def run_optimization(network, trains, maintenance_requests, weight_delay=0.35, w
     )
     plan_min["badge"] = "Recommended"
 
-    # 2. Urgent Daylight Strategy
     plan_urgent = build_plan(
         "urgent_daylight",
         "Urgent Daylight",
@@ -994,7 +1115,6 @@ def run_optimization(network, trains, maintenance_requests, weight_delay=0.35, w
     )
     plan_urgent["badge"] = "Feasible"
 
-    # 3. Corridor Batching Strategy
     plan_batch = build_plan(
         "corridor_batch",
         "Corridor Batch",
@@ -1003,7 +1123,6 @@ def run_optimization(network, trains, maintenance_requests, weight_delay=0.35, w
     )
     plan_batch["badge"] = "Efficient"
 
-    # 4. Naive Baseline Strategy
     plan_naive = build_plan(
         "naive_baseline",
         "Naive Baseline",
@@ -1014,9 +1133,8 @@ def run_optimization(network, trains, maintenance_requests, weight_delay=0.35, w
 
     candidate_plans = [plan_min, plan_urgent, plan_batch, plan_naive]
 
-    # Precompute timetable crossing events for requested corridors
     corridor_trains_by_asset = {}
-    active_assets = set(m["asset_id"] for m in maintenance_requests)
+    active_assets = set(m["asset_id"] for m in normalized_requests)
     for aid in active_assets:
         t_list = get_corridor_trains_for_window(
             aid,
@@ -1032,13 +1150,6 @@ def run_optimization(network, trains, maintenance_requests, weight_delay=0.35, w
         if len(parts) == 2:
             rev_aid = f"{parts[1]}-{parts[0]}"
             corridor_trains_by_asset[rev_aid] = t_list
-            u_vars = get_station_code_variants(parts[0])
-            v_vars = get_station_code_variants(parts[1])
-            for uv in u_vars:
-                for vv in v_vars:
-                    corridor_trains_by_asset[f"{uv}-{vv}"] = t_list
-                    corridor_trains_by_asset[f"{vv}-{uv}"] = t_list
-
 
     return {
         "status": "success",
