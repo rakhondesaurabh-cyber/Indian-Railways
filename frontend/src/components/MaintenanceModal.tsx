@@ -1,8 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Modal, Button, Form, Alert, Badge, InputGroup, Nav } from 'react-bootstrap';
-import { Zap, Clock, Wrench, Search, MapPin, Calendar, CheckCircle2 } from 'lucide-react';
+import { Zap, Clock, Wrench, Search, MapPin, Calendar, CheckCircle2, Building2, UserCheck, ShieldCheck } from 'lucide-react';
 import type { RailwayNetwork, TrackEdge, StationSearchResult } from '../types';
 import { API_BASE_URL } from '../config';
+import { useAuth, ZONES } from '../context/AuthContext';
 
 interface MaintenanceModalProps {
   show: boolean;
@@ -16,7 +17,13 @@ interface MaintenanceModalProps {
     priority: string,
     scheduledDate?: string,
     scheduledDay?: string,
-    advanceNoticeDays?: number
+    advanceNoticeDays?: number,
+    department?: string,
+    zone?: string,
+    sectionName?: string,
+    createdBy?: string,
+    createdByRole?: string,
+    createdByDesignation?: string
   ) => Promise<void>;
   loading: boolean;
 }
@@ -63,8 +70,11 @@ export const MaintenanceModal: React.FC<MaintenanceModalProps> = ({
   const [fromSearchResults, setFromSearchResults] = useState<StationSearchResult[]>([]);
   const [toSearchResults, setToSearchResults] = useState<StationSearchResult[]>([]);
 
+  const { user, isHead } = useAuth();
   const [durationMins, setDurationMins] = useState<number>(180);
   const [failureType, setFailureType] = useState<string>('Track Renewal');
+  const [department, setDepartment] = useState<string>(user?.department && user.department !== 'ALL' ? user.department : 'CIVIL');
+  const [zone, setZone] = useState<string>(user?.assignedZone && user.assignedZone !== 'ALL' ? user.assignedZone : 'CR');
   const [priority, setPriority] = useState<string>('High');
   const [trackSearch, setTrackSearch] = useState<string>('');
 
@@ -144,7 +154,13 @@ export const MaintenanceModal: React.FC<MaintenanceModalProps> = ({
       priority,
       scheduledDate,
       scheduledDayName,
-      advancePreset
+      advancePreset,
+      department,
+      zone,
+      selectionMode === 'junctions' ? `${fromJunction.trim().toUpperCase()} ⇄ ${toJunction.trim().toUpperCase()}` : finalAssetId,
+      user?.displayName || 'Section Controller',
+      user?.role || 'OPERATOR',
+      user?.designation || 'Section Dispatch Controller'
     );
     onHide();
   };
@@ -401,6 +417,69 @@ export const MaintenanceModal: React.FC<MaintenanceModalProps> = ({
             {/* Indian Railways Advance Planning Advisory Note */}
             <div className="extra-small text-muted mt-2 pt-1 border-top" style={{ fontSize: '0.73rem' }}>
               <span className="text-success fw-bold">✓ IR Traffic Circular Protocol:</span> Scheduling 1-2 days in advance pre-queues Caution Orders (T/409) and allows cross-zonal freight trains to be rerouted ahead of time.
+            </div>
+          </div>
+
+          {/* Department & Operational Jurisdiction (RBAC) */}
+          <div className="row g-3 mb-3 p-2.5 rounded-3 border bg-white shadow-xs">
+            <div className="col-md-6">
+              <Form.Group>
+                <Form.Label className="fw-semibold small text-secondary d-flex align-items-center gap-1">
+                  <Building2 size={13} className="text-primary" />
+                  <span>Executing Department</span>
+                </Form.Label>
+                <Form.Select
+                  value={department}
+                  onChange={(e) => setDepartment(e.target.value)}
+                  size="sm"
+                  className="fw-bold"
+                >
+                  <option value="CIVIL">CIVIL — Permanent Way (P-Way / Track)</option>
+                  <option value="S&T">S&T — Signal & Telecommunication</option>
+                  <option value="OHE">OHE — Traction Power / Overhead Electrification</option>
+                  <option value="TRAFFIC">TRAFFIC — Operating & Block Section</option>
+                  <option value="MECHANICAL">MECHANICAL — Rolling Stock & C&W</option>
+                </Form.Select>
+              </Form.Group>
+            </div>
+
+            <div className="col-md-6">
+              <Form.Group>
+                <Form.Label className="fw-semibold small text-secondary d-flex align-items-center gap-1">
+                  <ShieldCheck size={13} className="text-success" />
+                  <span>Operational Zone / Command</span>
+                </Form.Label>
+                {isHead ? (
+                  <Form.Select
+                    value={zone}
+                    onChange={(e) => setZone(e.target.value)}
+                    size="sm"
+                    className="fw-bold"
+                  >
+                    {ZONES.filter(z => z.code !== 'ALL').map(z => (
+                      <option key={z.code} value={z.code}>
+                        {z.code} — {z.name}
+                      </option>
+                    ))}
+                  </Form.Select>
+                ) : (
+                  <div className="form-control form-control-sm bg-light fw-bold text-dark d-flex align-items-center justify-content-between">
+                    <span>ZONE: {zone} ({user?.sectionName || 'Section Command'})</span>
+                    <Badge bg="primary" style={{ fontSize: '0.62rem' }}>Section Locked</Badge>
+                  </div>
+                )}
+              </Form.Group>
+            </div>
+
+            {/* Live Visibility & Persistence Tag */}
+            <div className="col-12 mt-2 pt-1 border-top extra-small text-muted d-flex flex-wrap align-items-center justify-content-between gap-1">
+              <div className="d-flex align-items-center gap-1">
+                <UserCheck size={12} className="text-primary" />
+                <span>Scheduling Officer: <strong>{user?.displayName || 'Section Controller'}</strong> ({user?.designation || 'Dispatcher'})</span>
+              </div>
+              <span className="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25" style={{ fontSize: '0.65rem' }}>
+                ✓ Stored in Firestore & Visible to {zone} {department} & Main Head
+              </span>
             </div>
           </div>
 

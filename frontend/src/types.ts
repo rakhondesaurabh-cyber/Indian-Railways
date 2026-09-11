@@ -156,6 +156,12 @@ export interface MaintenanceRequest {
   id: string;
   asset_id: string;
   type: string;
+  department?: 'CIVIL' | 'S&T' | 'OHE' | 'TRAFFIC' | 'ELECTRICAL' | string;
+  zone?: string;
+  section_name?: string;
+  created_by?: string;
+  created_by_role?: 'HEAD' | 'OPERATOR' | string;
+  created_by_designation?: string;
   duration_mins: number;
   priority: 'Critical' | 'High' | 'Medium' | 'Low' | string;
   deadline: string;
@@ -163,6 +169,8 @@ export interface MaintenanceRequest {
   scheduled_date?: string;
   scheduled_day?: string;
   advance_notice_days?: number;
+  created_at?: string;
+  syncedAt?: any;
 }
 
 export interface CorridorTrain {
@@ -370,6 +378,7 @@ export interface RailwayUser {
   email: string;
   displayName: string;
   role: UserRole;
+  department?: 'CIVIL' | 'S&T' | 'OHE' | 'TRAFFIC' | 'ELECTRICAL' | 'ALL' | string;
   assignedZone: string; // 'ALL' for Head, or 'CR', 'NR', 'WR', etc.
   designation: string;
   sectionName?: string;

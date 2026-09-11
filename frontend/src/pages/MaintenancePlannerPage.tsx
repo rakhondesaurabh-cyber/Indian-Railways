@@ -14,13 +14,19 @@ import {
   CheckCircle2,
   ChevronDown,
   ChevronUp,
-  Calendar
+  Calendar,
+  Database,
+  Building2,
+  Globe2,
+  User,
+  ShieldCheck
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { CandidatePlansComparison } from '../components/CandidatePlansComparison';
 import { MaintenanceOptionSelector } from '../components/MaintenanceOptionSelector';
 import { AiDecisionExplanation } from '../components/AiDecisionExplanation';
 import { useRailway } from '../context/RailwayContext';
+import { useAuth, ZONES } from '../context/AuthContext';
 
 export const MaintenancePlannerPage: React.FC = () => {
   const {
@@ -42,15 +48,20 @@ export const MaintenancePlannerPage: React.FC = () => {
     handleOptionSelect,
   } = useRailway();
 
+  const { user, isHead } = useAuth();
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [priorityFilter, setPriorityFilter] = useState<string>('ALL');
+  const [departmentFilter, setDepartmentFilter] = useState<string>('ALL');
+  const [zoneFilter, setZoneFilter] = useState<string>('ALL');
+  const [scopeFilter, setScopeFilter] = useState<'MY_SECTION' | 'ALL_SECTIONS'>('MY_SECTION');
   const [expandedRequestId, setExpandedRequestId] = useState<string | null>(null);
   const [optimizingBlockId, setOptimizingBlockId] = useState<string | null>(null);
 
-  // Filter maintenance list
+  // Filter maintenance list with Section & Department Visibility
   const filteredMaintenance = useMemo(() => {
     return maintenanceRequests.filter((req) => {
       let assetName = '';
+      let assetZone = req.zone || '';
       if (network) {
         const parts = req.asset_id.split('-');
         if (parts.length === 2) {
@@ -58,19 +69,50 @@ export const MaintenancePlannerPage: React.FC = () => {
           const v = network.nodes.find((n) => n.id === parts[1] || n.code === parts[1]);
           if (u && v) {
             assetName = `${u.name} ${v.name}`;
+            if (!assetZone && (u.zone || v.zone)) {
+              assetZone = u.zone || v.zone || '';
+            }
           }
         }
       }
 
-      const matchesSearch =
-        req.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        req.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        req.asset_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        assetName.toLowerCase().includes(searchQuery.toLowerCase());
+      // 1. Role-Based Section Visibility: Operators default to their section, Head sees all
+      if (!isHead && scopeFilter === 'MY_SECTION') {
+        const opZone = user?.assignedZone || 'CR';
+        if (opZone !== 'ALL') {
+          const matchesZone = !req.zone || req.zone === opZone || assetZone === opZone || req.asset_id.includes(opZone);
+          if (!matchesZone) return false;
+        }
+      } else if (isHead && zoneFilter !== 'ALL') {
+        const matchesHeadZone = req.zone === zoneFilter || assetZone === zoneFilter;
+        if (!matchesHeadZone) return false;
+      }
+
+      // 2. Department Filtering
+      if (departmentFilter !== 'ALL') {
+        const reqDept = req.department || (req.type.toLowerCase().includes('signal') ? 'S&T' : req.type.toLowerCase().includes('wire') || req.type.toLowerCase().includes('ohe') ? 'OHE' : 'CIVIL');
+        if (reqDept !== departmentFilter) return false;
+      }
+
+      // 3. Priority Filtering
       const matchesPriority = priorityFilter === 'ALL' || req.priority === priorityFilter;
-      return matchesSearch && matchesPriority;
+      if (!matchesPriority) return false;
+
+      // 4. Text Search
+      const query = searchQuery.toLowerCase();
+      const matchesSearch =
+        !query ||
+        req.id.toLowerCase().includes(query) ||
+        req.type.toLowerCase().includes(query) ||
+        req.asset_id.toLowerCase().includes(query) ||
+        (req.department && req.department.toLowerCase().includes(query)) ||
+        (req.created_by && req.created_by.toLowerCase().includes(query)) ||
+        (req.zone && req.zone.toLowerCase().includes(query)) ||
+        assetName.toLowerCase().includes(query);
+
+      return matchesSearch;
     });
-  }, [maintenanceRequests, searchQuery, priorityFilter, network]);
+  }, [maintenanceRequests, searchQuery, priorityFilter, departmentFilter, zoneFilter, scopeFilter, network, isHead, user]);
 
   const getPriorityBadge = (priority: string) => {
     switch (priority) {
@@ -82,6 +124,23 @@ export const MaintenancePlannerPage: React.FC = () => {
         return <Badge bg="info">Medium</Badge>;
       default:
         return <Badge bg="success">Low</Badge>;
+    }
+  };
+
+  const getDepartmentBadge = (dept?: string, type?: string) => {
+    const d = dept || (type?.toLowerCase().includes('signal') ? 'S&T' : type?.toLowerCase().includes('wire') || type?.toLowerCase().includes('ohe') ? 'OHE' : 'CIVIL');
+    switch (d) {
+      case 'S&T':
+        return <span className="badge text-white px-2 py-0.5" style={{ backgroundColor: '#7c3aed', fontSize: '0.68rem' }}>S&T (Signals)</span>;
+      case 'OHE':
+        return <span className="badge bg-warning text-dark px-2 py-0.5" style={{ fontSize: '0.68rem' }}>OHE (Traction)</span>;
+      case 'TRAFFIC':
+        return <span className="badge text-white px-2 py-0.5" style={{ backgroundColor: '#0891b2', fontSize: '0.68rem' }}>TRAFFIC</span>;
+      case 'MECHANICAL':
+        return <span className="badge bg-secondary text-white px-2 py-0.5" style={{ fontSize: '0.68rem' }}>MECHANICAL</span>;
+      case 'CIVIL':
+      default:
+        return <span className="badge bg-primary text-white px-2 py-0.5" style={{ fontSize: '0.68rem' }}>CIVIL (Track)</span>;
     }
   };
 
@@ -136,7 +195,57 @@ export const MaintenancePlannerPage: React.FC = () => {
             </Card.Header>
 
             <Card.Body className="p-3 d-flex flex-column custom-scrollbar" style={{ maxHeight: 'calc(100vh - 150px)', overflowY: 'auto' }}>
-              {/* Search & Filters */}
+              
+              {/* Jurisdiction & Role-Based Scope Banner */}
+              {isHead ? (
+                <div className="p-2 px-2.5 mb-2.5 rounded-2 border bg-dark text-white d-flex flex-wrap align-items-center justify-content-between gap-1 extra-small shadow-xs">
+                  <div className="d-flex align-items-center gap-1.5">
+                    <Globe2 size={13} className="text-warning" />
+                    <span><strong>Apex Head of Department:</strong> Pan-India visibility across all zones & departments.</span>
+                  </div>
+                  <div className="d-flex align-items-center gap-1">
+                    <span className="text-white-50 extra-small">Filter Zone:</span>
+                    <select
+                      value={zoneFilter}
+                      onChange={(e) => setZoneFilter(e.target.value)}
+                      className="form-select form-select-sm py-0 px-1 extra-small bg-light text-dark fw-bold border-0"
+                      style={{ fontSize: '0.68rem', height: '22px' }}
+                    >
+                      <option value="ALL">All 18 Zones</option>
+                      {ZONES.filter(z => z.code !== 'ALL').map(z => (
+                        <option key={z.code} value={z.code}>{z.code}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              ) : (
+                <div className="p-2 px-2.5 mb-2.5 rounded-2 border bg-light text-dark d-flex flex-wrap align-items-center justify-content-between gap-1 extra-small shadow-xs">
+                  <div className="d-flex align-items-center gap-1.5">
+                    <ShieldCheck size={13} className="text-primary" />
+                    <span><strong>Section Operator:</strong> Zone <strong>{user?.assignedZone || 'CR'}</strong> ({user?.sectionName || 'Section Command'})</span>
+                  </div>
+                  <div className="d-flex align-items-center gap-1">
+                    <button
+                      type="button"
+                      className={`btn btn-xs py-0 px-1.5 rounded ${scopeFilter === 'MY_SECTION' ? 'btn-primary' : 'btn-outline-secondary'}`}
+                      style={{ fontSize: '0.65rem' }}
+                      onClick={() => setScopeFilter('MY_SECTION')}
+                    >
+                      My Section
+                    </button>
+                    <button
+                      type="button"
+                      className={`btn btn-xs py-0 px-1.5 rounded ${scopeFilter === 'ALL_SECTIONS' ? 'btn-primary' : 'btn-outline-secondary'}`}
+                      style={{ fontSize: '0.65rem' }}
+                      onClick={() => setScopeFilter('ALL_SECTIONS')}
+                    >
+                      All Network
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Search & Department / Priority Filters */}
               <div className="mb-3">
                 <InputGroup size="sm" className="mb-2">
                   <InputGroup.Text className="bg-white border-end-0 py-0 px-2">
@@ -144,7 +253,7 @@ export const MaintenancePlannerPage: React.FC = () => {
                   </InputGroup.Text>
                   <Form.Control
                     size="sm"
-                    placeholder="Search corridor, asset, block ID..."
+                    placeholder="Search corridor, asset, department, operator..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="border-start-0 ps-1 extra-small"
@@ -152,11 +261,29 @@ export const MaintenancePlannerPage: React.FC = () => {
                   />
                 </InputGroup>
 
+                {/* Department Filter Pills */}
+                <div className="d-flex align-items-center gap-1 flex-wrap mb-1.5">
+                  <Building2 size={11} className="text-muted" />
+                  <span className="text-muted extra-small" style={{ fontSize: '0.68rem' }}>Dept:</span>
+                  {['ALL', 'CIVIL', 'S&T', 'OHE', 'TRAFFIC', 'MECHANICAL'].map((dept) => (
+                    <button
+                      key={dept}
+                      type="button"
+                      className={`btn btn-xs py-0 px-2 rounded-pill ${
+                        departmentFilter === dept ? 'btn-primary' : 'btn-outline-secondary'
+                      }`}
+                      style={{ fontSize: '0.68rem' }}
+                      onClick={() => setDepartmentFilter(dept)}
+                    >
+                      {dept}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Priority Filter Pills */}
                 <div className="d-flex align-items-center gap-1 flex-wrap">
                   <Filter size={11} className="text-muted" />
-                  <span className="text-muted extra-small" style={{ fontSize: '0.7rem' }}>
-                    Priority:
-                  </span>
+                  <span className="text-muted extra-small" style={{ fontSize: '0.68rem' }}>Priority:</span>
                   {['ALL', 'Critical', 'High', 'Medium', 'Low'].map((p) => (
                     <button
                       key={p}
@@ -164,12 +291,25 @@ export const MaintenancePlannerPage: React.FC = () => {
                       className={`btn btn-xs py-0 px-2 rounded-pill ${
                         priorityFilter === p ? 'btn-primary' : 'btn-outline-secondary'
                       }`}
-                      style={{ fontSize: '0.7rem' }}
+                      style={{ fontSize: '0.68rem' }}
                       onClick={() => setPriorityFilter(p)}
                     >
                       {p}
                     </button>
                   ))}
+                </div>
+
+                {/* Firebase Cloud Sync Status */}
+                <div className="d-flex align-items-center justify-content-between bg-light px-2.5 py-1.5 rounded-2 border mt-2.5 extra-small">
+                  <div className="d-flex align-items-center gap-1.5 text-dark">
+                    <Database size={12} className="text-success" />
+                    <span style={{ fontSize: '0.68rem' }}>
+                      <strong>Firebase Cloud Sync:</strong> <code className="text-primary fw-bold" style={{ fontSize: '0.68rem' }}>rail-ai-bcbeb</code>
+                    </span>
+                  </div>
+                  <span className="badge bg-success rounded-pill" style={{ fontSize: '0.6rem', padding: '2px 7px' }}>
+                    Firestore Live ({filteredMaintenance.length} Visible)
+                  </span>
                 </div>
               </div>
 
@@ -244,15 +384,19 @@ export const MaintenancePlannerPage: React.FC = () => {
                             </div>
                           </div>
 
-                          {/* Scheduled Date & Notice Badge */}
+                          {/* Department & Scheduled Date Badges */}
                           <div className="d-flex align-items-center gap-1.5 my-1.5 flex-wrap">
-                            <span className="badge badge-soft-dark py-1 px-2 d-flex align-items-center gap-1 font-monospace" style={{ fontSize: '0.72rem' }}>
+                            {getDepartmentBadge(req.department, req.type)}
+                            <span className="badge bg-light text-dark border extra-small" style={{ fontSize: '0.68rem' }}>
+                              ZONE: {req.zone || 'CR'}
+                            </span>
+                            <span className="badge badge-soft-dark py-1 px-2 d-flex align-items-center gap-1 font-monospace" style={{ fontSize: '0.7rem' }}>
                               <Calendar size={11} className="text-primary" />
                               <span>{req.scheduled_day || 'Tomorrow'}, {req.scheduled_date || '11 Sep'}</span>
                             </span>
                             {req.advance_notice_days !== undefined && (
-                              <span className={`badge ${req.advance_notice_days >= 1 ? 'badge-soft-success' : 'badge-soft-warning'} py-1 px-2`} style={{ fontSize: '0.7rem' }}>
-                                {req.advance_notice_days === 0 ? '0d Immediate Notice' : `${req.advance_notice_days} Day${req.advance_notice_days > 1 ? 's' : ''} Advance Notice`}
+                              <span className={`badge ${req.advance_notice_days >= 1 ? 'badge-soft-success' : 'badge-soft-warning'} py-1 px-1.5`} style={{ fontSize: '0.68rem' }}>
+                                {req.advance_notice_days === 0 ? '0d Immediate' : `+${req.advance_notice_days}d Notice`}
                               </span>
                             )}
                           </div>
@@ -270,6 +414,17 @@ export const MaintenancePlannerPage: React.FC = () => {
                                 <span>Optimal: {scheduledBlock.start_time} - {scheduledBlock.end_time}</span>
                               </span>
                             )}
+                          </div>
+
+                          {/* Created By Metadata Tag */}
+                          <div className="d-flex align-items-center justify-content-between extra-small text-muted mt-1.5 pt-1 border-top" style={{ fontSize: '0.68rem' }}>
+                            <div className="d-flex align-items-center gap-1">
+                              <User size={11} className="text-secondary" />
+                              <span>Officer: <strong className="text-dark">{req.created_by || 'Section Controller'}</strong> ({req.created_by_designation || (req.created_by_role === 'HEAD' ? 'Apex Head' : 'Section Operator')})</span>
+                            </div>
+                            <span className="text-success extra-small fw-semibold">
+                              Firestore Active
+                            </span>
                           </div>
 
                           {/* Individual AI Optimizer Button for this Block */}

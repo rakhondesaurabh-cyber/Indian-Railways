@@ -885,6 +885,12 @@ class EmergencyRequest(BaseModel):
     duration_mins: int = 180
     type: str = "Track Failure"
     priority: str = "Critical"
+    department: Optional[str] = "CIVIL"
+    zone: Optional[str] = "CR"
+    section_name: Optional[str] = None
+    created_by: Optional[str] = "Section Controller"
+    created_by_role: Optional[str] = "OPERATOR"
+    created_by_designation: Optional[str] = None
     scheduled_date: Optional[str] = None
     scheduled_day: Optional[str] = None
     advance_notice_days: Optional[int] = None
@@ -909,13 +915,20 @@ def inject_emergency(req: EmergencyRequest):
         "id": emergency_id,
         "asset_id": req.asset_id,
         "type": req.type,
+        "department": req.department or "CIVIL",
+        "zone": req.zone or "CR",
+        "section_name": req.section_name or req.asset_id,
+        "created_by": req.created_by or "Section Controller",
+        "created_by_role": req.created_by_role or "OPERATOR",
+        "created_by_designation": req.created_by_designation or "Section Dispatch Controller",
         "duration_mins": req.duration_mins,
         "priority": req.priority,
         "status": "Active Block",
         "deadline": "2026-09-02T00:00:00",
         "scheduled_date": req.scheduled_date or "Today (Immediate)",
         "scheduled_day": req.scheduled_day or "Today",
-        "advance_notice_days": req.advance_notice_days if req.advance_notice_days is not None else 0
+        "advance_notice_days": req.advance_notice_days if req.advance_notice_days is not None else 0,
+        "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ")
     }
     
     if "maintenance_requests" not in state:
@@ -976,13 +989,20 @@ def schedule_maintenance(req: EmergencyRequest):
         "id": maint_id,
         "asset_id": req.asset_id,
         "type": req.type,
+        "department": req.department or "CIVIL",
+        "zone": req.zone or "CR",
+        "section_name": req.section_name or req.asset_id,
+        "created_by": req.created_by or "Section Controller",
+        "created_by_role": req.created_by_role or "OPERATOR",
+        "created_by_designation": req.created_by_designation or "Section Dispatch Controller",
         "duration_mins": req.duration_mins,
         "priority": req.priority,
         "status": "Pending Block",
         "deadline": "2026-09-05T00:00:00",
         "scheduled_date": req.scheduled_date or "Tomorrow",
         "scheduled_day": req.scheduled_day or "Friday",
-        "advance_notice_days": req.advance_notice_days if req.advance_notice_days is not None else 1
+        "advance_notice_days": req.advance_notice_days if req.advance_notice_days is not None else 1,
+        "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ")
     }
 
     if "maintenance_requests" not in state:

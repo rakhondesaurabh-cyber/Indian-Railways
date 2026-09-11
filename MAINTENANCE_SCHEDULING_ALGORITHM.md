@@ -13,12 +13,12 @@ Given a railway network graph $G = (V, E)$, a schedule of active train services 
 
 For each maintenance block $M_k$ on track segment $e \in E$ with duration $D_k$:
 
-$$\min_{t_k \in \mathcal{H}} \mathcal{J}(t_k) = \alpha \sum_{i \in \mathcal{C}(t_k)} \left( w_i \cdot \Delta_{i}(t_k) \right) + \beta \cdot \text{ML\_Delay}(t_k, D_k, \rho_e) + \gamma \cdot \mathcal{P}_{\text{priority}}(t_k)$$
+$$\min_{t_k \in \mathcal{H}} \mathcal{J}(t_k) = \alpha \sum_{i \in \mathcal{C}(t_k)} \left( w_i \cdot (\Delta_{i}(t_k) + 20) \right) + \beta \cdot \text{ML\_Delay}(t_k, D_k, \rho_e) + \gamma \cdot \mathcal{P}_{\text{priority}}(t_k) - \delta \cdot \text{NightShadowBonus}(t_k)$$
 
 Where:
 - $\mathcal{H} = \{00:00, 01:00, \dots, 23:00\}$ is the discretized 24-hour candidate window space.
 - $\mathcal{C}(t_k)$ is the set of conflicting train crossings intersecting the maintenance window $[t_k - \tau_{\text{buf}}, t_k + D_k + \tau_{\text{buf}}]$.
-- $\tau_{\text{buf}} = 20\text{ minutes}$ is the mandatory safety buffer for track clearance and signal isolation.
+- $\tau_{\text{buf}} = +20\text{ minutes}$ is the mandatory safety buffer added for track clearance and signal isolation.
 - $w_i$ is the train priority weight:
   $$w_i = \begin{cases} 2.5 & \text{if Priority} = \text{High (e.g., Vande Bharat, Rajdhani, Shatabdi)} \\ 1.0 & \text{if Priority} = \text{Medium (e.g., Superfast, Mail/Express)} \\ 0.6 & \text{if Priority} = \text{Low (e.g., Passenger, Freight)} \end{cases}$$
 - $\Delta_{i}(t_k)$ is the simulated delay incurred by train $T_i$.

@@ -394,9 +394,14 @@ Step 7: Feedback & Monitoring - Minimum-change dynamic replanning during emergen
                           <td>Railway track network topology, Dijkstra corridor routing, and junction connectivity.</td>
                         </tr>
                         <tr>
-                          <td><strong>Firebase Auth / Admin</strong></td>
-                          <td><Badge bg="success">Cloud Auth</Badge></td>
-                          <td>Role-Based Access Control (Controller, Maintenance Planner, Safety Officer) with offline fallback.</td>
+                          <td><strong>Firebase Cloud Firestore</strong></td>
+                          <td><Badge bg="success">Cloud NoSQL DB</Badge></td>
+                          <td>Persistent cloud storage for maintenance schedules, AI optimization plans, and emergency incident logs (Project: <code>rail-ai-bcbeb</code>).</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Firebase Auth & Analytics</strong></td>
+                          <td><Badge bg="success">Cloud Auth & Metrics</Badge></td>
+                          <td>Role-Based Access Control (Controller, Maintenance Planner, Safety Officer) and telemetry monitoring.</td>
                         </tr>
                       </tbody>
                     </Table>
@@ -516,14 +521,14 @@ Step 7: Feedback & Monitoring - Minimum-change dynamic replanning during emergen
                     <strong>Mathematical Objective Function:</strong>
                   </p>
                   <div className="bg-white p-2.5 rounded border mb-3 text-dark small font-monospace">
-                    min Z = &sum; [ &alpha; &middot; DelayMins(b) + &beta; &middot; AffectedTrains(b) + &gamma; &middot; PriorityPenalties(b) ] - &delta; &middot; NightShadowBonus(b)
+                    min Z = &sum; [ &alpha; &middot; (DelayMins(b) + SafetyBuffer(+20)) + &beta; &middot; AffectedTrains(b) + &gamma; &middot; PriorityPenalties(b) ] - &delta; &middot; NightShadowBonus(b)
                   </div>
                   <p className="text-muted small mb-2">
                     <strong>Hard Safety Constraints Enforced:</strong>
                   </p>
                   <ul className="text-muted small mb-3 ps-3">
                     <li><strong>Track Exclusivity:</strong> No train may occupy track section <code>e</code> during maintenance window <code>[Start_b, End_b]</code>.</li>
-                    <li><strong>Safety Buffer (Headway):</strong> Mandatory <code>&ge; 20 minutes</code> signal clearance gap before and after every maintenance possession.</li>
+                    <li><strong>Safety Buffer (Headway):</strong> Mandatory <code>+20 minutes</code> (<code>SafetyBuffer = +20</code>) signal clearance gap before and after every maintenance possession.</li>
                     <li><strong>Non-Overlapping Works:</strong> Incompatible simultaneous works on the same corridor section are strictly disallowed.</li>
                   </ul>
                   <div className="p-2.5 rounded bg-white border">

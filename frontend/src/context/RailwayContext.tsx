@@ -18,6 +18,13 @@ import type {
   AiExplanation,
 } from '../types';
 import { API_BASE_URL as API_URL } from '../config';
+import {
+  syncAllMaintenanceToFirebase,
+  deleteMaintenanceFromFirebase,
+  clearAllMaintenanceFromFirebase,
+  saveOptimizationPlanToFirebase,
+  subscribeToMaintenanceSchedules
+} from '../services/firebaseScheduleService';
 
 interface RailwayContextType {
   // Network & Train data
@@ -96,7 +103,13 @@ interface RailwayContextType {
     priority: string,
     scheduledDate?: string,
     scheduledDay?: string,
-    advanceNoticeDays?: number
+    advanceNoticeDays?: number,
+    department?: string,
+    zone?: string,
+    sectionName?: string,
+    createdBy?: string,
+    createdByRole?: string,
+    createdByDesignation?: string
   ) => Promise<void>;
   handleDeleteMaintenance: (id: string) => Promise<void>;
   handleClearAllMaintenance: () => Promise<void>;
@@ -167,6 +180,7 @@ export const RailwayProvider: React.FC<{ children: ReactNode }> = ({ children })
       if (maintRes.ok) {
         const data = await maintRes.json();
         setMaintenanceRequests(data);
+        syncAllMaintenanceToFirebase(data);
       }
       if (netRes.ok) {
         const data = await netRes.json();
@@ -183,6 +197,17 @@ export const RailwayProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   useEffect(() => {
     fetchData(networkMode);
+
+    // Subscribe to real-time Firebase Firestore maintenance schedule updates
+    const unsubscribe = subscribeToMaintenanceSchedules((remoteSchedules) => {
+      if (remoteSchedules && remoteSchedules.length > 0) {
+        setMaintenanceRequests(remoteSchedules);
+      }
+    });
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, []);
 
   const handleToggleNetworkMode = async (mode: 'major' | 'hdn' | 'full') => {
@@ -284,6 +309,15 @@ export const RailwayProvider: React.FC<{ children: ReactNode }> = ({ children })
     setMetrics(data.metrics);
     setAffectedTrains(data.affected_trains || []);
     setUnaffectedTrains(data.unaffected_trains || []);
+
+    // Persist complete Optimization Plan to Firebase Cloud Firestore
+    saveOptimizationPlanToFirebase({
+      selectedPlanId: data.recommended_plan_id || selectedPlanId || 'plan_optimal',
+      plan: data.plan,
+      metrics: data.metrics,
+      candidatePlans: data.candidate_plans || [],
+      breakdownByMaintenance: data.breakdown_by_maintenance
+    });
   };
 
   // Run AI Optimization
@@ -336,6 +370,7 @@ export const RailwayProvider: React.FC<{ children: ReactNode }> = ({ children })
       if (resMaint.ok) {
         const updatedMaint = await resMaint.json();
         setMaintenanceRequests(updatedMaint);
+        syncAllMaintenanceToFirebase(updatedMaint);
       }
 
       // Auto-load corridor track with intermediate stations
@@ -358,7 +393,13 @@ export const RailwayProvider: React.FC<{ children: ReactNode }> = ({ children })
     priority: string,
     scheduledDate?: string,
     scheduledDay?: string,
-    advanceNoticeDays?: number
+    advanceNoticeDays?: number,
+    department?: string,
+    zone?: string,
+    sectionName?: string,
+    createdBy?: string,
+    createdByRole?: string,
+    createdByDesignation?: string
   ) => {
     setLoading(true);
     setSelectedTrackId(assetId);
@@ -372,6 +413,12 @@ export const RailwayProvider: React.FC<{ children: ReactNode }> = ({ children })
           duration_mins: durationMins,
           type: failureType,
           priority: priority,
+          department: department || 'CIVIL',
+          zone: zone || 'CR',
+          section_name: sectionName || assetId,
+          created_by: createdBy || 'Section Controller',
+          created_by_role: createdByRole || 'OPERATOR',
+          created_by_designation: createdByDesignation || 'Section Dispatch Controller',
           scheduled_date: scheduledDate,
           scheduled_day: scheduledDay,
           advance_notice_days: advanceNoticeDays,
@@ -384,6 +431,7 @@ export const RailwayProvider: React.FC<{ children: ReactNode }> = ({ children })
       if (resMaint.ok) {
         const updatedMaint = await resMaint.json();
         setMaintenanceRequests(updatedMaint);
+        syncAllMaintenanceToFirebase(updatedMaint);
       }
 
       const parts = assetId.split('-');
@@ -404,6 +452,7 @@ export const RailwayProvider: React.FC<{ children: ReactNode }> = ({ children })
       if (res.ok) {
         const updatedList: MaintenanceRequest[] = await res.json();
         setMaintenanceRequests(updatedList);
+        deleteMaintenanceFromFirebase(id);
 
         if (updatedList.length > 0) {
           handleOptimize();
@@ -428,6 +477,7 @@ export const RailwayProvider: React.FC<{ children: ReactNode }> = ({ children })
       const res = await fetch(`${API_URL}/maintenance`, { method: 'DELETE' });
       if (res.ok) {
         setMaintenanceRequests([]);
+        clearAllMaintenanceFromFirebase();
         setOptimizationPlan(null);
         setMetrics(null);
         setCandidatePlans([]);
