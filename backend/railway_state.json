@@ -2,15 +2,15 @@
   "maintenance_requests": [
     {
       "id": "MNT-SCD-100",
-      "asset_id": "JAT-PUNE",
-      "type": "Signal Point Machine Overhaul",
-      "duration_mins": 120,
+      "asset_id": "AK-PUNE",
+      "type": "Rail Flaw Ultrasonic Testing",
+      "duration_mins": 180,
       "priority": "Medium",
       "status": "Pending Block",
       "deadline": "2026-09-05T00:00:00",
-      "scheduled_date": "2026-09-12",
-      "scheduled_day": "Saturday",
-      "advance_notice_days": 1
+      "scheduled_date": "2026-09-13",
+      "scheduled_day": "Sunday",
+      "advance_notice_days": 2
     }
   ]
 }
