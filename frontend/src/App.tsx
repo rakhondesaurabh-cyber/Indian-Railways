@@ -8,6 +8,7 @@ import { NetworkMapPage } from './pages/NetworkMapPage';
 import { MaintenancePlannerPage } from './pages/MaintenancePlannerPage';
 import { DispatchDeskPage } from './pages/DispatchDeskPage';
 import { CorridorExplorerPage } from './pages/CorridorExplorerPage';
+import { AboutUsPage } from './pages/AboutUsPage';
 import { EmergencyModal } from './components/EmergencyModal';
 import { MaintenanceModal } from './components/MaintenanceModal';
 import { TrainScheduleModal } from './components/TrainScheduleModal';
@@ -101,6 +102,7 @@ function AppLayout() {
           <Route path="/planner" element={<MaintenancePlannerPage />} />
           <Route path="/dispatch" element={<DispatchDeskPage />} />
           <Route path="/corridor" element={<CorridorExplorerPage />} />
+          <Route path="/about" element={<AboutUsPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

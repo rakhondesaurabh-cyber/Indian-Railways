@@ -12,7 +12,8 @@ import {
   LogOut,
   Globe2,
   Sliders,
-  Menu
+  Menu,
+  Info
 } from 'lucide-react';
 import { useRailway } from '../context/RailwayContext';
 import { useAuth, ZONES } from '../context/AuthContext';
@@ -32,6 +33,7 @@ export const NavigationHeader: React.FC = () => {
   const isPlanner = location.pathname === '/planner';
   const isDispatch = location.pathname === '/dispatch';
   const isCorridor = location.pathname === '/corridor';
+  const isAbout = location.pathname === '/about';
 
   const handleLogout = async () => {
     await logout();
@@ -149,6 +151,14 @@ export const NavigationHeader: React.FC = () => {
             >
               <Navigation size={13} />
               <span>Corridor Explorer</span>
+            </NavLink>
+
+            <NavLink
+              to="/about"
+              className={`nav-tab-pill ${isAbout ? 'active' : ''}`}
+            >
+              <Info size={13} />
+              <span>About & Architecture</span>
             </NavLink>
           </Nav>
 
