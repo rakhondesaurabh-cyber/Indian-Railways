@@ -157,7 +157,7 @@ export const MaintenancePlannerPage: React.FC = () => {
   const handleBlockOptimize = async (blockId: string) => {
     setOptimizingBlockId(blockId);
     try {
-      if (!metrics || candidatePlans.length === 0) {
+      if (!metrics || candidatePlans.length === 0 || !breakdownByMaintenance[blockId]) {
         await handleOptimize();
       }
       setExpandedRequestId(expandedRequestId === blockId ? null : blockId);
@@ -555,7 +555,7 @@ export const MaintenancePlannerPage: React.FC = () => {
                     variant="primary"
                     size="sm"
                     className="d-flex align-items-center gap-2 mx-auto shadow-sm fw-bold px-3 py-1.5"
-                    onClick={handleOptimize}
+                    onClick={() => handleOptimize()}
                     disabled={loading}
                   >
                     {loading ? <Spinner size="sm" animation="border" /> : <Settings size={15} />}

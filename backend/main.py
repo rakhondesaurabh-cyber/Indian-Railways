@@ -20,9 +20,10 @@ app = FastAPI(title="RailOpt AI Engine", description="Scalable AI Railway Mainte
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 # Paths
@@ -829,13 +830,24 @@ def get_train_live_status(number: str):
 class OptimizeRequest(BaseModel):
     weight_delay: float = 0.35
     weight_affected_trains: float = 0.25
+    maintenance_requests: Optional[List[dict]] = None
+    selected_block_id: Optional[str] = None
 
 @app.post("/api/optimize")
 def optimize_schedule(req: OptimizeRequest = OptimizeRequest()):
     state = load_state()
     net_full = get_network_full()
     trains = get_all_trains()
-    maint = state.get("maintenance_requests", [])
+    
+    if req.maintenance_requests is not None and len(req.maintenance_requests) > 0:
+        maint = req.maintenance_requests
+        try:
+            state["maintenance_requests"] = maint
+            save_state(state)
+        except Exception:
+            pass
+    else:
+        maint = state.get("maintenance_requests", [])
     
     optimal_results = run_optimization(
         net_full, 

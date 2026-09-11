@@ -41,7 +41,7 @@ export const DispatchDeskPage: React.FC = () => {
               size="sm"
               className="py-1 px-2.5 extra-small d-flex align-items-center gap-1.5"
               style={{ fontSize: '0.74rem' }}
-              onClick={handleOptimize}
+              onClick={() => handleOptimize()}
               disabled={loading}
             >
               <RefreshCw size={12} className={loading ? 'animate-spin' : ''} />

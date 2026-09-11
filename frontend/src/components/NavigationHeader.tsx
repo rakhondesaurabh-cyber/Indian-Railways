@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { Navbar, Container, Nav, Button, Dropdown } from 'react-bootstrap';
+import { Navbar, Container, Nav, Button, Dropdown, Modal, Form } from 'react-bootstrap';
 import {
   Train as TrainIcon,
   MapPin,
@@ -13,10 +13,12 @@ import {
   Globe2,
   Sliders,
   Menu,
-  Info
+  Info,
+  Server
 } from 'lucide-react';
 import { useRailway } from '../context/RailwayContext';
 import { useAuth, ZONES } from '../context/AuthContext';
+import { getApiBaseUrl, setCustomApiUrl } from '../config';
 
 export const NavigationHeader: React.FC = () => {
   const location = useLocation();
@@ -28,6 +30,9 @@ export const NavigationHeader: React.FC = () => {
     setShowMaintenanceModal,
     setShowEmergencyModal
   } = useRailway();
+
+  const [showServerModal, setShowServerModal] = useState(false);
+  const [serverUrlInput, setServerUrlInput] = useState(getApiBaseUrl());
 
   const isMap = location.pathname === '/' || location.pathname === '/map';
   const isPlanner = location.pathname === '/planner';
@@ -191,6 +196,22 @@ export const NavigationHeader: React.FC = () => {
               <span>Fail Track</span>
             </Button>
 
+            {/* Backend Server Connection Settings Trigger */}
+            <Button
+              variant="outline-secondary"
+              size="sm"
+              className="py-1 px-2 d-flex align-items-center gap-1 extra-small text-nowrap"
+              style={{ fontSize: '0.72rem', height: '30px' }}
+              onClick={() => {
+                setServerUrlInput(getApiBaseUrl());
+                setShowServerModal(true);
+              }}
+              title="Backend Server Engine Connection"
+            >
+              <Server size={13} className="text-success" />
+              <span className="d-none d-sm-inline">API</span>
+            </Button>
+
             {/* User Profile Info & Logout */}
             {user && (
               <div className="d-flex align-items-center gap-1 border-start ps-2 ms-1">
@@ -224,6 +245,65 @@ export const NavigationHeader: React.FC = () => {
         </Navbar.Collapse>
 
       </Container>
+
+      {/* Backend API Engine Connection Modal */}
+      <Modal show={showServerModal} onHide={() => setShowServerModal(false)} centered>
+        <Modal.Header closeButton className="py-2.5 bg-light">
+          <Modal.Title className="h6 mb-0 d-flex align-items-center gap-2">
+            <Server size={18} className="text-primary" />
+            <span className="fw-bold text-dark">Backend API Connection</span>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="p-3">
+          <div className="mb-3 p-2.5 rounded border bg-light">
+            <div className="extra-small text-muted mb-1">Active Backend URL:</div>
+            <code className="text-primary fw-bold extra-small text-break">{getApiBaseUrl()}</code>
+          </div>
+
+          <Form.Group className="mb-3">
+            <Form.Label className="fw-semibold small text-dark">
+              Render / Custom Backend URL:
+            </Form.Label>
+            <Form.Control
+              type="url"
+              size="sm"
+              placeholder="e.g. https://your-app.onrender.com"
+              value={serverUrlInput}
+              onChange={(e) => setServerUrlInput(e.target.value)}
+            />
+            <Form.Text className="extra-small text-muted">
+              Enter your Render backend service URL (e.g., <code>https://rail-opt-backend.onrender.com</code>).
+            </Form.Text>
+          </Form.Group>
+
+          <div className="d-flex gap-2">
+            <Button
+              variant="outline-secondary"
+              size="sm"
+              className="extra-small"
+              onClick={() => {
+                setCustomApiUrl('http://localhost:8000/api');
+              }}
+            >
+              Reset to Localhost
+            </Button>
+          </div>
+        </Modal.Body>
+        <Modal.Footer className="py-2">
+          <Button variant="light" size="sm" onClick={() => setShowServerModal(false)}>
+            Close
+          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => {
+              setCustomApiUrl(serverUrlInput);
+            }}
+          >
+            Save & Connect
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Navbar>
   );
 };

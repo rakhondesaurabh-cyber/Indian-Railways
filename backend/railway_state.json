@@ -11,6 +11,18 @@
       "scheduled_date": "2026-09-13",
       "scheduled_day": "Sunday",
       "advance_notice_days": 2
+    },
+    {
+      "id": "MNT-SCD-101",
+      "asset_id": "BZA-VSKP",
+      "type": "Wagon Inspection & Brake Rigging",
+      "duration_mins": 120,
+      "priority": "High",
+      "status": "Pending Block",
+      "deadline": "2026-09-05T00:00:00",
+      "scheduled_date": "2026-09-12",
+      "scheduled_day": "Saturday",
+      "advance_notice_days": 1
     }
   ]
 }
