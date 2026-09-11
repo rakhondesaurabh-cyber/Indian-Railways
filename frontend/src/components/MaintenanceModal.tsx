@@ -2,13 +2,11 @@ import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { Modal, Button, Form, Alert, Badge, InputGroup, Nav } from 'react-bootstrap';
 import {
   Zap,
-  Clock,
   Wrench,
   Search,
   MapPin,
   Calendar,
   CheckCircle2,
-  Building2,
   UserCheck,
   ShieldCheck,
   Plus,
@@ -22,7 +20,7 @@ import {
 } from 'lucide-react';
 import type { RailwayNetwork, TrackEdge, StationSearchResult, MaintenanceSubTask } from '../types';
 import { API_BASE_URL } from '../config';
-import { useAuth, ZONES } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 
 interface MaintenanceModalProps {
   show: boolean;

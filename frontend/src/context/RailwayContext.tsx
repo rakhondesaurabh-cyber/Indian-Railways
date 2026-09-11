@@ -16,6 +16,7 @@ import type {
   DispatchDirective,
   DispatchStats,
   AiExplanation,
+  MaintenanceSubTask,
 } from '../types';
 import { API_BASE_URL as API_URL } from '../config';
 import {

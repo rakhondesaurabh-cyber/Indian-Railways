@@ -41,6 +41,7 @@ export const MaintenancePlannerPage: React.FC = () => {
     activeAiExplanations,
     loading,
     setSelectedPlanId,
+    setSelectedTrackId,
     setShowMaintenanceModal,
     handleOptimize,
     handleDeleteMaintenance,
@@ -171,12 +172,6 @@ export const MaintenancePlannerPage: React.FC = () => {
       setOptimizingBlockId(null);
     }
   };
-
-  const activeExpandedReq = useMemo(() => {
-    if (!expandedRequestId) return null;
-    const list = Array.isArray(maintenanceRequests) ? maintenanceRequests : [];
-    return list.find((m) => m.id === expandedRequestId) || null;
-  }, [expandedRequestId, maintenanceRequests]);
 
   const activeBlockBreakdown = useMemo(() => {
     if (!expandedRequestId) return null;
